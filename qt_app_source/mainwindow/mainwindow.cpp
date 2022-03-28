@@ -6,11 +6,13 @@
 #include <QLabel>
 #include "canalofsignal/basewaveform.h"
 #include <QBoxLayout>
+#include <qwt_plot.h>
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    QwtPlot *d_plot = new QwtPlot( this );
 }
 
 MainWindow::~MainWindow()

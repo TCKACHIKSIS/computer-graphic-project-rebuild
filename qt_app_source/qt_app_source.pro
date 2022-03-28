@@ -30,5 +30,11 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
+
+include(/usr/local/qwt-6.2.0/features/qwt.prf)
+INCLUDEPATH += /usr/local/qwt-6.2.0/lib/qwt.framework/Versions/6/Headers
+LIBS  += -F "/usr/local/qwt-6.2.0/lib/qwt.framework"
+LIBS += -framework qwt
+
 DISTFILES += \
     data.txt

@@ -14,10 +14,10 @@ EQ            = =
 
 CC            = /Library/Developer/CommandLineTools/usr/bin/clang
 CXX           = /Library/Developer/CommandLineTools/usr/bin/clang++
-DEFINES       = -DQT_QML_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
+DEFINES       = -DQWT_DLL -DQT_QML_DEBUG -DQT_SVG_LIB -DQT_WIDGETS_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -g $(EXPORT_ARCH_ARGS) -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -mmacosx-version-min=10.14 -Wall -Wextra -fPIC $(DEFINES)
 CXXFLAGS      = -pipe -stdlib=libc++ -g -std=gnu++1z $(EXPORT_ARCH_ARGS) -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -mmacosx-version-min=10.14 -Wall -Wextra -fPIC $(DEFINES)
-INCPATH       = -I../qt_app_source -I. -I/Users/ivan/Qt/6.2.3/macos/lib/QtWidgets.framework/Headers -I/Users/ivan/Qt/6.2.3/macos/lib/QtGui.framework/Headers -I/Users/ivan/Qt/6.2.3/macos/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/OpenGL.framework/Headers -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/AGL.framework/Headers -I. -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/OpenGL.framework/Headers -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/AGL.framework/Headers -I/Users/ivan/Qt/6.2.3/macos/mkspecs/macx-clang -F/Users/ivan/Qt/6.2.3/macos/lib
+INCPATH       = -I../qt_app_source -I. -I/usr/local/qwt-6.2.0/lib/qwt.framework/Headers -I/usr/local/qwt-6.2.0/lib/qwt.framework/Versions/6/Headers -I/Users/ivan/Qt/6.2.3/macos/lib/QtSvg.framework/Headers -I/Users/ivan/Qt/6.2.3/macos/lib/QtWidgets.framework/Headers -I/Users/ivan/Qt/6.2.3/macos/lib/QtOpenGL.framework/Headers -I/Users/ivan/Qt/6.2.3/macos/lib/QtGui.framework/Headers -I/Users/ivan/Qt/6.2.3/macos/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/OpenGL.framework/Headers -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/AGL.framework/Headers -I. -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/OpenGL.framework/Headers -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/AGL.framework/Headers -I/Users/ivan/Qt/6.2.3/macos/mkspecs/macx-clang -F/Users/ivan/Qt/6.2.3/macos/lib
 QMAKE         = /Users/ivan/Qt/6.2.3/macos/bin/qmake
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -40,7 +40,7 @@ DISTNAME      = qt_app_source1.0.0
 DISTDIR = /Users/ivan/Desktop/egor_learning/github/computer-graphic-project-rebuild/build-qt_app_source-Qt_6_2_3_for_macOS-Debug/.tmp/qt_app_source1.0.0
 LINK          = /Library/Developer/CommandLineTools/usr/bin/clang++
 LFLAGS        = -stdlib=libc++ -headerpad_max_install_names $(EXPORT_ARCH_ARGS) -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -mmacosx-version-min=10.14 -Wl,-rpath,@executable_path/../Frameworks -Wl,-rpath,/Users/ivan/Qt/6.2.3/macos/lib
-LIBS          = $(SUBLIBS) -F/Users/ivan/Qt/6.2.3/macos/lib -framework QtWidgets -framework QtGui -framework AppKit -framework ImageIO -framework Metal -framework QtCore -framework DiskArbitration -framework IOKit -framework AGL -framework OpenGL   
+LIBS          = $(SUBLIBS) -F/Users/ivan/Qt/6.2.3/macos/lib -F/usr/local/qwt-6.2.0/lib -F /usr/local/qwt-6.2.0/lib/qwt.framework -framework qwt -framework QtSvg -framework QtWidgets -framework QtOpenGL -framework QtGui -framework AppKit -framework ImageIO -framework Metal -framework QtCore -framework DiskArbitration -framework IOKit -framework AGL -framework OpenGL   
 AR            = /Library/Developer/CommandLineTools/usr/bin/ar cq
 RANLIB        = /Library/Developer/CommandLineTools/usr/bin/ranlib -s
 SED           = sed
@@ -182,6 +182,9 @@ DIST          = ../qt_app_source/data.txt \
 		/Users/ivan/Qt/6.2.3/macos/mkspecs/features/mac/toolchain.prf \
 		/Users/ivan/Qt/6.2.3/macos/mkspecs/features/default_pre.prf \
 		/Users/ivan/Qt/6.2.3/macos/mkspecs/features/mac/default_pre.prf \
+		/usr/local/qwt-6.2.0/features/qwtconfig.pri \
+		/usr/local/qwt-6.2.0/features/qwtfunctions.pri \
+		/usr/local/qwt-6.2.0/features/qwt.prf \
 		/Users/ivan/Qt/6.2.3/macos/mkspecs/features/resolve_config.prf \
 		/Users/ivan/Qt/6.2.3/macos/mkspecs/features/default_post.prf \
 		/Users/ivan/Qt/6.2.3/macos/mkspecs/features/mac/default_post.prf \
@@ -355,6 +358,9 @@ Makefile: ../qt_app_source/qt_app_source.pro /Users/ivan/Qt/6.2.3/macos/mkspecs/
 		/Users/ivan/Qt/6.2.3/macos/mkspecs/features/mac/toolchain.prf \
 		/Users/ivan/Qt/6.2.3/macos/mkspecs/features/default_pre.prf \
 		/Users/ivan/Qt/6.2.3/macos/mkspecs/features/mac/default_pre.prf \
+		/usr/local/qwt-6.2.0/features/qwtconfig.pri \
+		/usr/local/qwt-6.2.0/features/qwtfunctions.pri \
+		/usr/local/qwt-6.2.0/features/qwt.prf \
 		/Users/ivan/Qt/6.2.3/macos/mkspecs/features/resolve_config.prf \
 		/Users/ivan/Qt/6.2.3/macos/mkspecs/features/default_post.prf \
 		/Users/ivan/Qt/6.2.3/macos/mkspecs/features/mac/default_post.prf \
@@ -378,7 +384,10 @@ Makefile: ../qt_app_source/qt_app_source.pro /Users/ivan/Qt/6.2.3/macos/mkspecs/
 		/Users/ivan/Qt/6.2.3/macos/mkspecs/features/yacc.prf \
 		/Users/ivan/Qt/6.2.3/macos/mkspecs/features/lex.prf \
 		../qt_app_source/qt_app_source.pro \
+		/usr/local/qwt-6.2.0/lib/qwt.framework/Resources/qwt.prl \
+		/Users/ivan/Qt/6.2.3/macos/lib/QtSvg.framework/Resources/QtSvg.prl \
 		/Users/ivan/Qt/6.2.3/macos/lib/QtWidgets.framework/Resources/QtWidgets.prl \
+		/Users/ivan/Qt/6.2.3/macos/lib/QtOpenGL.framework/Resources/QtOpenGL.prl \
 		/Users/ivan/Qt/6.2.3/macos/lib/QtGui.framework/Resources/QtGui.prl \
 		/Users/ivan/Qt/6.2.3/macos/lib/QtCore.framework/Resources/QtCore.prl
 	$(QMAKE) -o Makefile ../qt_app_source/qt_app_source.pro -spec macx-clang CONFIG+=debug CONFIG+=qml_debug
@@ -500,6 +509,9 @@ Makefile: ../qt_app_source/qt_app_source.pro /Users/ivan/Qt/6.2.3/macos/mkspecs/
 /Users/ivan/Qt/6.2.3/macos/mkspecs/features/mac/toolchain.prf:
 /Users/ivan/Qt/6.2.3/macos/mkspecs/features/default_pre.prf:
 /Users/ivan/Qt/6.2.3/macos/mkspecs/features/mac/default_pre.prf:
+/usr/local/qwt-6.2.0/features/qwtconfig.pri:
+/usr/local/qwt-6.2.0/features/qwtfunctions.pri:
+/usr/local/qwt-6.2.0/features/qwt.prf:
 /Users/ivan/Qt/6.2.3/macos/mkspecs/features/resolve_config.prf:
 /Users/ivan/Qt/6.2.3/macos/mkspecs/features/default_post.prf:
 /Users/ivan/Qt/6.2.3/macos/mkspecs/features/mac/default_post.prf:
@@ -523,7 +535,10 @@ Makefile: ../qt_app_source/qt_app_source.pro /Users/ivan/Qt/6.2.3/macos/mkspecs/
 /Users/ivan/Qt/6.2.3/macos/mkspecs/features/yacc.prf:
 /Users/ivan/Qt/6.2.3/macos/mkspecs/features/lex.prf:
 ../qt_app_source/qt_app_source.pro:
+/usr/local/qwt-6.2.0/lib/qwt.framework/Resources/qwt.prl:
+/Users/ivan/Qt/6.2.3/macos/lib/QtSvg.framework/Resources/QtSvg.prl:
 /Users/ivan/Qt/6.2.3/macos/lib/QtWidgets.framework/Resources/QtWidgets.prl:
+/Users/ivan/Qt/6.2.3/macos/lib/QtOpenGL.framework/Resources/QtOpenGL.prl:
 /Users/ivan/Qt/6.2.3/macos/lib/QtGui.framework/Resources/QtGui.prl:
 /Users/ivan/Qt/6.2.3/macos/lib/QtCore.framework/Resources/QtCore.prl:
 qmake: FORCE
@@ -597,7 +612,7 @@ moc_mainwindow.cpp: ../qt_app_source/mainwindow/mainwindow.h \
 		/Users/ivan/Qt/6.2.3/macos/lib/QtWidgets.framework/Headers/QTabWidget \
 		/Users/ivan/Qt/6.2.3/macos/lib/QtWidgets.framework/Headers/qtabwidget.h \
 		/Users/ivan/Qt/6.2.3/macos/libexec/moc
-	/Users/ivan/Qt/6.2.3/macos/libexec/moc $(DEFINES) -D__APPLE__ -D__GNUC__=4 -D__APPLE_CC__ -D__cplusplus=199711L -D__APPLE_CC__=6000 -D__clang__ -D__clang_major__=12 -D__clang_minor__=0 -D__clang_patchlevel__=5 -D__GNUC__=4 -D__GNUC_MINOR__=2 -D__GNUC_PATCHLEVEL__=1 -I/Users/ivan/Qt/6.2.3/macos/mkspecs/macx-clang -I/Users/ivan/Desktop/egor_learning/github/computer-graphic-project-rebuild/qt_app_source -I/Users/ivan/Qt/6.2.3/macos/lib/QtWidgets.framework/Headers -I/Users/ivan/Qt/6.2.3/macos/lib/QtGui.framework/Headers -I/Users/ivan/Qt/6.2.3/macos/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Users/ivan/Qt/6.2.3/macos/lib ../qt_app_source/mainwindow/mainwindow.h -o moc_mainwindow.cpp
+	/Users/ivan/Qt/6.2.3/macos/libexec/moc $(DEFINES) -D__APPLE__ -D__GNUC__=4 -D__APPLE_CC__ -D__cplusplus=199711L -D__APPLE_CC__=6000 -D__clang__ -D__clang_major__=12 -D__clang_minor__=0 -D__clang_patchlevel__=5 -D__GNUC__=4 -D__GNUC_MINOR__=2 -D__GNUC_PATCHLEVEL__=1 -I/Users/ivan/Qt/6.2.3/macos/mkspecs/macx-clang -I/Users/ivan/Desktop/egor_learning/github/computer-graphic-project-rebuild/qt_app_source -I/usr/local/qwt-6.2.0/lib/qwt.framework/Headers -I/usr/local/qwt-6.2.0/lib/qwt.framework/Versions/6/Headers -I/Users/ivan/Qt/6.2.3/macos/lib/QtSvg.framework/Headers -I/Users/ivan/Qt/6.2.3/macos/lib/QtWidgets.framework/Headers -I/Users/ivan/Qt/6.2.3/macos/lib/QtOpenGL.framework/Headers -I/Users/ivan/Qt/6.2.3/macos/lib/QtGui.framework/Headers -I/Users/ivan/Qt/6.2.3/macos/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Users/ivan/Qt/6.2.3/macos/lib ../qt_app_source/mainwindow/mainwindow.h -o moc_mainwindow.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -644,6 +659,16 @@ main.o: ../qt_app_source/main.cpp ../qt_app_source/mainwindow/mainwindow.h \
 		../qt_app_source/canalofsignal/canalofsignal.h \
 		/Users/ivan/Qt/6.2.3/macos/lib/QtWidgets.framework/Headers/QTabWidget \
 		/Users/ivan/Qt/6.2.3/macos/lib/QtWidgets.framework/Headers/qtabwidget.h \
+		/usr/local/qwt-6.2.0/lib/qwt.framework/Headers/qwt_plot.h \
+		/usr/local/qwt-6.2.0/lib/qwt.framework/Headers/qwt_global.h \
+		/Users/ivan/Qt/6.2.3/macos/lib/QtCore.framework/Headers/qglobal.h \
+		/usr/local/qwt-6.2.0/lib/qwt.framework/Headers/qwt_axis_id.h \
+		/usr/local/qwt-6.2.0/lib/qwt.framework/Headers/qwt_axis.h \
+		/usr/local/qwt-6.2.0/lib/qwt.framework/Headers/qwt_plot_dict.h \
+		/usr/local/qwt-6.2.0/lib/qwt.framework/Headers/qwt_plot_item.h \
+		/Users/ivan/Qt/6.2.3/macos/lib/QtCore.framework/Headers/qmetatype.h \
+		/Users/ivan/Qt/6.2.3/macos/lib/QtCore.framework/Headers/qlist.h \
+		/Users/ivan/Qt/6.2.3/macos/lib/QtWidgets.framework/Headers/qframe.h \
 		/Users/ivan/Qt/6.2.3/macos/lib/QtWidgets.framework/Headers/QApplication \
 		/Users/ivan/Qt/6.2.3/macos/lib/QtWidgets.framework/Headers/qapplication.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../qt_app_source/main.cpp
@@ -667,7 +692,19 @@ mainwindow.o: ../qt_app_source/mainwindow/mainwindow.cpp ../qt_app_source/mainwi
 		/Users/ivan/Qt/6.2.3/macos/lib/QtWidgets.framework/Headers/QWidget \
 		/Users/ivan/Qt/6.2.3/macos/lib/QtWidgets.framework/Headers/qwidget.h \
 		/Users/ivan/Qt/6.2.3/macos/lib/QtGui.framework/Headers/QPainter \
-		/Users/ivan/Qt/6.2.3/macos/lib/QtGui.framework/Headers/qpainter.h
+		/Users/ivan/Qt/6.2.3/macos/lib/QtGui.framework/Headers/qpainter.h \
+		/Users/ivan/Qt/6.2.3/macos/lib/QtWidgets.framework/Headers/QBoxLayout \
+		/Users/ivan/Qt/6.2.3/macos/lib/QtWidgets.framework/Headers/qboxlayout.h \
+		/usr/local/qwt-6.2.0/lib/qwt.framework/Headers/qwt_plot.h \
+		/usr/local/qwt-6.2.0/lib/qwt.framework/Headers/qwt_global.h \
+		/Users/ivan/Qt/6.2.3/macos/lib/QtCore.framework/Headers/qglobal.h \
+		/usr/local/qwt-6.2.0/lib/qwt.framework/Headers/qwt_axis_id.h \
+		/usr/local/qwt-6.2.0/lib/qwt.framework/Headers/qwt_axis.h \
+		/usr/local/qwt-6.2.0/lib/qwt.framework/Headers/qwt_plot_dict.h \
+		/usr/local/qwt-6.2.0/lib/qwt.framework/Headers/qwt_plot_item.h \
+		/Users/ivan/Qt/6.2.3/macos/lib/QtCore.framework/Headers/qmetatype.h \
+		/Users/ivan/Qt/6.2.3/macos/lib/QtCore.framework/Headers/qlist.h \
+		/Users/ivan/Qt/6.2.3/macos/lib/QtWidgets.framework/Headers/qframe.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../qt_app_source/mainwindow/mainwindow.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 

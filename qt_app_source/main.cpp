@@ -1,5 +1,5 @@
 #include "mainwindow/mainwindow.h"
-
+#include <qwt_plot.h>
 #include <QApplication>
 
 int main(int argc, char *argv[])
