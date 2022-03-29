@@ -9,14 +9,14 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    canalofsignal/basewaveform.cpp \
+    basewaveform/basewaveform.cpp \
     canalofsignal/canalofsignal.cpp \
     filehandler/filehandler.cpp \
     main.cpp \
     mainwindow/mainwindow.cpp
 
 HEADERS += \
-    canalofsignal/basewaveform.h \
+    basewaveform/basewaveform.h \
     canalofsignal/canalofsignal.h \
     filehandler/dataStructure.h \
     filehandler/filehandler.h \

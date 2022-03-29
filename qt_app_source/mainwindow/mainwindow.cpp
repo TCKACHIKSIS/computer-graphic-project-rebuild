@@ -4,15 +4,14 @@
 #include <QMessageBox>
 #include "filehandler/filehandler.h"
 #include <QLabel>
-#include "canalofsignal/basewaveform.h"
-#include <QBoxLayout>
-#include <qwt_plot.h>
+#include <QGridLayout>
+#include <QScrollArea>
+#include <basewaveform/basewaveform.h>
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    QwtPlot *d_plot = new QwtPlot( this );
 }
 
 MainWindow::~MainWindow()
@@ -37,19 +36,40 @@ void MainWindow::on_fileOpen_triggered()
      }
     this->main_data_from_file = file.getData();
 
-    QTabWidget  *main_Tab_Widget = new QTabWidget(this);
-    main_Tab_Widget->setGeometry(0, 0, this->width(), this->height());
-    main_Tab_Widget->show();
+    this->main_tab_widget = new QTabWidget(this);
+    setCentralWidget(main_tab_widget);
+    main_tab_widget->show();
 
-    BaseWaveForm *new_tab = new BaseWaveForm();
+    //вынести в отдельный метод
+    QScrollArea *scroll = new QScrollArea();
+    scroll->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOn );
+    QWidget* ScrollAreaWidgetContents = new QWidget();
+    scroll->setWidget(ScrollAreaWidgetContents);
+    QSize AdjustSize = ScrollAreaWidgetContents->size();
+    ScrollAreaWidgetContents->setMinimumSize(AdjustSize);
 
-    main_Tab_Widget->addTab(new_tab, "Канал 1");
+    scroll->setWidgetResizable( true );
+
+    QGridLayout *layout_for_graphic = new QGridLayout(ScrollAreaWidgetContents);
+
+    for ( auto channel: this->main_data_from_file.signals_channels ){
+        BaseWaveForm *a = new BaseWaveForm();
+        a->createCoordinates(channel, this->main_data_from_file.period_of_tick);
+        a->plot = new QwtPlot(this);
+        a->createSimplePlot();
+        layout_for_graphic->addWidget(a->plot);
+    }
+
+    main_tab_widget->addTab(scroll, "Осциллограммы");
+
+
+
 
     QWidget *info_widget = new QWidget();
     QBoxLayout *box = new QBoxLayout(QBoxLayout::TopToBottom);
     QLabel *label = new QLabel();
 
-    std::string info_string ="Общее число каналов   -   " + std::to_string(this->main_data_from_file.number_of_channels);
+    std::string info_string ="Общее число каналов   -   " ;
     label->setText(info_string.c_str());
     box->addWidget(label);
 
@@ -68,8 +88,13 @@ void MainWindow::on_fileOpen_triggered()
     label->setText(info_string.c_str());
     box->addWidget(label);
 
+    label = new QLabel();
+    info_string = "Продолжительность записи:     -    " +std::to_string(this->main_data_from_file.recording_duration);
+    label->setText(info_string.c_str());
+    box->addWidget(label);
+
 
     info_widget->setLayout(box);
-    main_Tab_Widget->addTab(info_widget, "Информация о каналах");
+    main_tab_widget->addTab(info_widget, "Информация о каналах");
 }
 

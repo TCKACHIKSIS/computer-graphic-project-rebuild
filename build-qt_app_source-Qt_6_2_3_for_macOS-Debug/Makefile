@@ -52,16 +52,18 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES       = ../qt_app_source/canalofsignal/basewaveform.cpp \
+SOURCES       = ../qt_app_source/basewaveform/basewaveform.cpp \
 		../qt_app_source/canalofsignal/canalofsignal.cpp \
 		../qt_app_source/filehandler/filehandler.cpp \
 		../qt_app_source/main.cpp \
-		../qt_app_source/mainwindow/mainwindow.cpp moc_mainwindow.cpp
+		../qt_app_source/mainwindow/mainwindow.cpp moc_basewaveform.cpp \
+		moc_mainwindow.cpp
 OBJECTS       = basewaveform.o \
 		canalofsignal.o \
 		filehandler.o \
 		main.o \
 		mainwindow.o \
+		moc_basewaveform.o \
 		moc_mainwindow.o
 DIST          = ../qt_app_source/data.txt \
 		/Users/ivan/Qt/6.2.3/macos/mkspecs/features/spec_pre.prf \
@@ -207,11 +209,11 @@ DIST          = ../qt_app_source/data.txt \
 		/Users/ivan/Qt/6.2.3/macos/mkspecs/features/exceptions.prf \
 		/Users/ivan/Qt/6.2.3/macos/mkspecs/features/yacc.prf \
 		/Users/ivan/Qt/6.2.3/macos/mkspecs/features/lex.prf \
-		../qt_app_source/qt_app_source.pro ../qt_app_source/canalofsignal/basewaveform.h \
+		../qt_app_source/qt_app_source.pro ../qt_app_source/basewaveform/basewaveform.h \
 		../qt_app_source/canalofsignal/canalofsignal.h \
 		../qt_app_source/filehandler/dataStructure.h \
 		../qt_app_source/filehandler/filehandler.h \
-		../qt_app_source/mainwindow/mainwindow.h ../qt_app_source/canalofsignal/basewaveform.cpp \
+		../qt_app_source/mainwindow/mainwindow.h ../qt_app_source/basewaveform/basewaveform.cpp \
 		../qt_app_source/canalofsignal/canalofsignal.cpp \
 		../qt_app_source/filehandler/filehandler.cpp \
 		../qt_app_source/main.cpp \
@@ -570,8 +572,8 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
-	$(COPY_FILE) --parents ../qt_app_source/canalofsignal/basewaveform.h ../qt_app_source/canalofsignal/canalofsignal.h ../qt_app_source/filehandler/dataStructure.h ../qt_app_source/filehandler/filehandler.h ../qt_app_source/mainwindow/mainwindow.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../qt_app_source/canalofsignal/basewaveform.cpp ../qt_app_source/canalofsignal/canalofsignal.cpp ../qt_app_source/filehandler/filehandler.cpp ../qt_app_source/main.cpp ../qt_app_source/mainwindow/mainwindow.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../qt_app_source/basewaveform/basewaveform.h ../qt_app_source/canalofsignal/canalofsignal.h ../qt_app_source/filehandler/dataStructure.h ../qt_app_source/filehandler/filehandler.h ../qt_app_source/mainwindow/mainwindow.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../qt_app_source/basewaveform/basewaveform.cpp ../qt_app_source/canalofsignal/canalofsignal.cpp ../qt_app_source/filehandler/filehandler.cpp ../qt_app_source/main.cpp ../qt_app_source/mainwindow/mainwindow.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../qt_app_source/mainwindow/mainwindow.ui $(DISTDIR)/
 
 
@@ -601,9 +603,26 @@ benchmark: first
 
 compiler_rcc_make_all:
 compiler_rcc_clean:
-compiler_moc_header_make_all: moc_mainwindow.cpp
+compiler_moc_header_make_all: moc_basewaveform.cpp moc_mainwindow.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_mainwindow.cpp
+	-$(DEL_FILE) moc_basewaveform.cpp moc_mainwindow.cpp
+moc_basewaveform.cpp: ../qt_app_source/basewaveform/basewaveform.h \
+		/usr/local/qwt-6.2.0/lib/qwt.framework/Headers/qwt_plot.h \
+		/usr/local/qwt-6.2.0/lib/qwt.framework/Headers/qwt_global.h \
+		/Users/ivan/Qt/6.2.3/macos/lib/QtCore.framework/Headers/qglobal.h \
+		/usr/local/qwt-6.2.0/lib/qwt.framework/Headers/qwt_axis_id.h \
+		/usr/local/qwt-6.2.0/lib/qwt.framework/Headers/qwt_axis.h \
+		/usr/local/qwt-6.2.0/lib/qwt.framework/Headers/qwt_plot_dict.h \
+		/usr/local/qwt-6.2.0/lib/qwt.framework/Headers/qwt_plot_item.h \
+		/Users/ivan/Qt/6.2.3/macos/lib/QtCore.framework/Headers/qmetatype.h \
+		/Users/ivan/Qt/6.2.3/macos/lib/QtCore.framework/Headers/qlist.h \
+		/Users/ivan/Qt/6.2.3/macos/lib/QtWidgets.framework/Headers/qframe.h \
+		/Users/ivan/Qt/6.2.3/macos/lib/QtWidgets.framework/Headers/QWidget \
+		/Users/ivan/Qt/6.2.3/macos/lib/QtWidgets.framework/Headers/qwidget.h \
+		../qt_app_source/canalofsignal/canalofsignal.h \
+		/Users/ivan/Qt/6.2.3/macos/libexec/moc
+	/Users/ivan/Qt/6.2.3/macos/libexec/moc $(DEFINES) -D__APPLE__ -D__GNUC__=4 -D__APPLE_CC__ -D__cplusplus=199711L -D__APPLE_CC__=6000 -D__clang__ -D__clang_major__=12 -D__clang_minor__=0 -D__clang_patchlevel__=5 -D__GNUC__=4 -D__GNUC_MINOR__=2 -D__GNUC_PATCHLEVEL__=1 -I/Users/ivan/Qt/6.2.3/macos/mkspecs/macx-clang -I/Users/ivan/Desktop/egor_learning/github/computer-graphic-project-rebuild/qt_app_source -I/usr/local/qwt-6.2.0/lib/qwt.framework/Headers -I/usr/local/qwt-6.2.0/lib/qwt.framework/Versions/6/Headers -I/Users/ivan/Qt/6.2.3/macos/lib/QtSvg.framework/Headers -I/Users/ivan/Qt/6.2.3/macos/lib/QtWidgets.framework/Headers -I/Users/ivan/Qt/6.2.3/macos/lib/QtOpenGL.framework/Headers -I/Users/ivan/Qt/6.2.3/macos/lib/QtGui.framework/Headers -I/Users/ivan/Qt/6.2.3/macos/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Users/ivan/Qt/6.2.3/macos/lib ../qt_app_source/basewaveform/basewaveform.h -o moc_basewaveform.cpp
+
 moc_mainwindow.cpp: ../qt_app_source/mainwindow/mainwindow.h \
 		/Users/ivan/Qt/6.2.3/macos/lib/QtWidgets.framework/Headers/QMainWindow \
 		/Users/ivan/Qt/6.2.3/macos/lib/QtWidgets.framework/Headers/qmainwindow.h \
@@ -637,12 +656,21 @@ compiler_clean: compiler_moc_header_clean compiler_uic_clean
 
 ####### Compile
 
-basewaveform.o: ../qt_app_source/canalofsignal/basewaveform.cpp ../qt_app_source/canalofsignal/basewaveform.h \
+basewaveform.o: ../qt_app_source/basewaveform/basewaveform.cpp ../qt_app_source/basewaveform/basewaveform.h \
+		/usr/local/qwt-6.2.0/lib/qwt.framework/Headers/qwt_plot.h \
+		/usr/local/qwt-6.2.0/lib/qwt.framework/Headers/qwt_global.h \
+		/Users/ivan/Qt/6.2.3/macos/lib/QtCore.framework/Headers/qglobal.h \
+		/usr/local/qwt-6.2.0/lib/qwt.framework/Headers/qwt_axis_id.h \
+		/usr/local/qwt-6.2.0/lib/qwt.framework/Headers/qwt_axis.h \
+		/usr/local/qwt-6.2.0/lib/qwt.framework/Headers/qwt_plot_dict.h \
+		/usr/local/qwt-6.2.0/lib/qwt.framework/Headers/qwt_plot_item.h \
+		/Users/ivan/Qt/6.2.3/macos/lib/QtCore.framework/Headers/qmetatype.h \
+		/Users/ivan/Qt/6.2.3/macos/lib/QtCore.framework/Headers/qlist.h \
+		/Users/ivan/Qt/6.2.3/macos/lib/QtWidgets.framework/Headers/qframe.h \
 		/Users/ivan/Qt/6.2.3/macos/lib/QtWidgets.framework/Headers/QWidget \
 		/Users/ivan/Qt/6.2.3/macos/lib/QtWidgets.framework/Headers/qwidget.h \
-		/Users/ivan/Qt/6.2.3/macos/lib/QtGui.framework/Headers/QPainter \
-		/Users/ivan/Qt/6.2.3/macos/lib/QtGui.framework/Headers/qpainter.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o basewaveform.o ../qt_app_source/canalofsignal/basewaveform.cpp
+		../qt_app_source/canalofsignal/canalofsignal.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o basewaveform.o ../qt_app_source/basewaveform/basewaveform.cpp
 
 canalofsignal.o: ../qt_app_source/canalofsignal/canalofsignal.cpp ../qt_app_source/canalofsignal/canalofsignal.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o canalofsignal.o ../qt_app_source/canalofsignal/canalofsignal.cpp
@@ -688,11 +716,6 @@ mainwindow.o: ../qt_app_source/mainwindow/mainwindow.cpp ../qt_app_source/mainwi
 		../qt_app_source/filehandler/filehandler.h \
 		/Users/ivan/Qt/6.2.3/macos/lib/QtWidgets.framework/Headers/QLabel \
 		/Users/ivan/Qt/6.2.3/macos/lib/QtWidgets.framework/Headers/qlabel.h \
-		../qt_app_source/canalofsignal/basewaveform.h \
-		/Users/ivan/Qt/6.2.3/macos/lib/QtWidgets.framework/Headers/QWidget \
-		/Users/ivan/Qt/6.2.3/macos/lib/QtWidgets.framework/Headers/qwidget.h \
-		/Users/ivan/Qt/6.2.3/macos/lib/QtGui.framework/Headers/QPainter \
-		/Users/ivan/Qt/6.2.3/macos/lib/QtGui.framework/Headers/qpainter.h \
 		/Users/ivan/Qt/6.2.3/macos/lib/QtWidgets.framework/Headers/QBoxLayout \
 		/Users/ivan/Qt/6.2.3/macos/lib/QtWidgets.framework/Headers/qboxlayout.h \
 		/usr/local/qwt-6.2.0/lib/qwt.framework/Headers/qwt_plot.h \
@@ -706,6 +729,9 @@ mainwindow.o: ../qt_app_source/mainwindow/mainwindow.cpp ../qt_app_source/mainwi
 		/Users/ivan/Qt/6.2.3/macos/lib/QtCore.framework/Headers/qlist.h \
 		/Users/ivan/Qt/6.2.3/macos/lib/QtWidgets.framework/Headers/qframe.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../qt_app_source/mainwindow/mainwindow.cpp
+
+moc_basewaveform.o: moc_basewaveform.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_basewaveform.o moc_basewaveform.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp

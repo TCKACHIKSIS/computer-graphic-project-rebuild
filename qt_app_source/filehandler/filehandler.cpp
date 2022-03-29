@@ -111,6 +111,8 @@ dataStructure FileHandler::getData() {
       this->readDataField(structured_data.signal_start_time);
       this->readDataField(structured_data.channels_names);
       this->readDataField(structured_data.signals_channels, structured_data.channels_names);
+      structured_data.period_of_tick = ( 1 / structured_data.sampling_frequency);
+      structured_data.recording_duration = ( 1 / structured_data.sampling_frequency) * structured_data.number_of_samples;
     }
     return structured_data;
 }
