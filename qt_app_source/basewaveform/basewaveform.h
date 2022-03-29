@@ -1,6 +1,6 @@
 #ifndef BASEWAVEFORM_H
 #define BASEWAVEFORM_H
-#include <qwt_plot.h>
+#include <base_plot/baseplot.h>
 #include <QWidget>
 #include <canalofsignal/canalofsignal.h>
 #include <utility>
@@ -13,7 +13,7 @@ class BaseWaveForm
 private:
     std::vector< std::pair<double, double> > coordinates;
 public:
-    QwtPlot *plot;
+    BasePlot *plot;
     std::vector< std::pair<double, double> > Coordinates();
     CanalOfSignal *foundation;
     BaseWaveForm();

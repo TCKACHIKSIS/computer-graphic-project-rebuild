@@ -5,8 +5,9 @@
 #include "filehandler/filehandler.h"
 #include <QLabel>
 #include <QGridLayout>
-#include <QScrollArea>
+#include <QRadioButton>
 #include <basewaveform/basewaveform.h>
+#include <base_plot/baseplot.h>
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -19,6 +20,21 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+QScrollArea* MainWindow::createWaveformView(){
+
+    QScrollArea *scroll = new QScrollArea();
+    scroll->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOn );
+
+    QWidget* ScrollAreaWidgetContents = new QWidget();
+
+    scroll->setWidget(ScrollAreaWidgetContents);
+    scroll->setWidgetResizable( true );
+
+    QGridLayout *layout_for_waveform = new QGridLayout();
+    ScrollAreaWidgetContents->setLayout(layout_for_waveform);
+
+    return scroll;
+}
 
 void MainWindow::on_fileOpen_triggered()
 {
@@ -40,27 +56,19 @@ void MainWindow::on_fileOpen_triggered()
     setCentralWidget(main_tab_widget);
     main_tab_widget->show();
 
-    //вынести в отдельный метод
-    QScrollArea *scroll = new QScrollArea();
-    scroll->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOn );
-    QWidget* ScrollAreaWidgetContents = new QWidget();
-    scroll->setWidget(ScrollAreaWidgetContents);
-
-
-    scroll->setWidgetResizable( true );
-    QGridLayout *layout_for_graphic = new QGridLayout(ScrollAreaWidgetContents);
+    this->main_waveform_area = this->createWaveformView();
 
     for ( auto channel: this->main_data_from_file.signals_channels ){
         BaseWaveForm *a = new BaseWaveForm();
         a->createCoordinates(channel, this->main_data_from_file.period_of_tick);
-        a->plot = new QwtPlot(this);
+        a->plot = new BasePlot();
         a->plot->setTitle(channel.name_of_channel.c_str());
         a->createSimplePlot();
-        a->plot->setMaximumWidth(scroll->width());
-        layout_for_graphic->addWidget(a->plot);
+        a->plot->setMaximumWidth(this->main_waveform_area->width());
+        this->main_waveform_area->widget()->layout()->addWidget(a->plot);
     }
 
-    main_tab_widget->addTab(scroll, "Осциллограммы");
+    main_tab_widget->addTab(this->main_waveform_area, "Осциллограммы");
 
 
 

@@ -9,6 +9,8 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    base_plot/baseplot.cpp \
+    base_plot/custom_context_menu/baseplotcustromcontextmenu.cpp \
     basewaveform/basewaveform.cpp \
     canalofsignal/canalofsignal.cpp \
     filehandler/filehandler.cpp \
@@ -16,6 +18,8 @@ SOURCES += \
     mainwindow/mainwindow.cpp
 
 HEADERS += \
+    base_plot/baseplot.h \
+    base_plot/custom_context_menu/baseplotcustromcontextmenu.h \
     basewaveform/basewaveform.h \
     canalofsignal/canalofsignal.h \
     filehandler/dataStructure.h \
