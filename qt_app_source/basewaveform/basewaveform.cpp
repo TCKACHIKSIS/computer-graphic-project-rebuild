@@ -8,6 +8,7 @@ BaseWaveForm::BaseWaveForm(){
 
 void BaseWaveForm::createSimplePlot(){
     QwtPlotCurve *curve = new QwtPlotCurve();
+    curve->setTitle(this->foundation->name_of_channel.c_str());
     curve->setPen( Qt::blue, 2 );
     curve->setTitle( "Demo Curve" );
     QPolygonF points;
@@ -22,8 +23,9 @@ void BaseWaveForm::clearPlot(){
     return;
 }
 
-void BaseWaveForm::createCoordinates(const CanalOfSignal &base, const double &period_of_tick){
+void BaseWaveForm::createCoordinates(CanalOfSignal &base, const double &period_of_tick){
     int tick = 1;
+    this->foundation = &base;
     for ( auto y: base.values_of_signal ){
         this->coordinates.push_back(std::pair(tick * period_of_tick, y));
         tick++;

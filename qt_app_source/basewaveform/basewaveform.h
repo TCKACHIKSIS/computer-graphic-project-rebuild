@@ -15,11 +15,11 @@ private:
 public:
     QwtPlot *plot;
     std::vector< std::pair<double, double> > Coordinates();
-
+    CanalOfSignal *foundation;
     BaseWaveForm();
     void createSimplePlot();
     void clearPlot();
-    void createCoordinates(const CanalOfSignal &base, const double &period_of_tick);
+    void createCoordinates(CanalOfSignal &base, const double &period_of_tick);
 
 signals:
 

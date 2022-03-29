@@ -45,18 +45,18 @@ void MainWindow::on_fileOpen_triggered()
     scroll->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOn );
     QWidget* ScrollAreaWidgetContents = new QWidget();
     scroll->setWidget(ScrollAreaWidgetContents);
-    QSize AdjustSize = ScrollAreaWidgetContents->size();
-    ScrollAreaWidgetContents->setMinimumSize(AdjustSize);
+
 
     scroll->setWidgetResizable( true );
-
     QGridLayout *layout_for_graphic = new QGridLayout(ScrollAreaWidgetContents);
 
     for ( auto channel: this->main_data_from_file.signals_channels ){
         BaseWaveForm *a = new BaseWaveForm();
         a->createCoordinates(channel, this->main_data_from_file.period_of_tick);
         a->plot = new QwtPlot(this);
+        a->plot->setTitle(channel.name_of_channel.c_str());
         a->createSimplePlot();
+        a->plot->setMaximumWidth(scroll->width());
         layout_for_graphic->addWidget(a->plot);
     }
 
