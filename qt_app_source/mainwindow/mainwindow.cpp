@@ -60,12 +60,10 @@ void MainWindow::on_fileOpen_triggered()
 
     for ( auto channel: this->main_data_from_file.signals_channels ){
         BaseWaveForm *a = new BaseWaveForm();
-        a->createCoordinates(channel, this->main_data_from_file.period_of_tick);
-        a->plot = new BasePlot();
-        a->plot->setTitle(channel.name_of_channel.c_str());
-        a->createSimplePlot();
-        a->plot->setMaximumWidth(this->main_waveform_area->width());
-        this->main_waveform_area->widget()->layout()->addWidget(a->plot);
+        a->setTitle(channel.name_of_channel.c_str());
+        a->createSimplePlot(channel, this->main_data_from_file.period_of_tick);
+        a->setMaximumWidth(this->main_waveform_area->width());
+        this->main_waveform_area->widget()->layout()->addWidget(a);
     }
 
     main_tab_widget->addTab(this->main_waveform_area, "Осциллограммы");

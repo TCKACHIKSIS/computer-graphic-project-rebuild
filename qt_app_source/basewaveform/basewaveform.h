@@ -8,16 +8,15 @@
 
 #include <canalofsignal/canalofsignal.h>
 
-class BaseWaveForm
+class BaseWaveForm : public QwtPlot
 {
 private:
     std::vector< std::pair<double, double> > coordinates;
 public:
-    BasePlot *plot;
     std::vector< std::pair<double, double> > Coordinates();
     CanalOfSignal *foundation;
     BaseWaveForm();
-    void createSimplePlot();
+    void createSimplePlot(CanalOfSignal &base, const double &period_of_tick);
     void clearPlot();
     void createCoordinates(CanalOfSignal &base, const double &period_of_tick);
 

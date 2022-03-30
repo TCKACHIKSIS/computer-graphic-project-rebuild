@@ -6,7 +6,10 @@ BaseWaveForm::BaseWaveForm(){
     return;
 }
 
-void BaseWaveForm::createSimplePlot(){
+void BaseWaveForm::createSimplePlot(CanalOfSignal &base, const double &period_of_tick){
+
+    this->createCoordinates(base, period_of_tick);
+
     QwtPlotCurve *curve = new QwtPlotCurve();
     curve->setTitle(this->foundation->name_of_channel.c_str());
     curve->setPen( Qt::blue, 2 );
@@ -16,7 +19,7 @@ void BaseWaveForm::createSimplePlot(){
         points << QPointF(coordinate.first, coordinate.second);
     }
     curve->setSamples( points );
-    curve->attach( this->plot );
+    curve->attach( this );
 }
 
 void BaseWaveForm::clearPlot(){
