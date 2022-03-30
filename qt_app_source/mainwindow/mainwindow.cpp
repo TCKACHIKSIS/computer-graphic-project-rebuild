@@ -11,6 +11,7 @@
 #include <QTableWidget>
 #include <QStringList>
 #include <QBoxLayout>
+#include <QHeaderView>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -111,6 +112,7 @@ void MainWindow::on_signalInformation_triggered()
    headers.append("Имя");
    headers.append("Источник");
    table.setHorizontalHeaderLabels(headers);
+   table.verticalHeader()->hide();
    int i = 0;
    int number_of_channel = 1;
    for ( auto channel: this->main_data_from_file->signals_channels ){
@@ -127,4 +129,3 @@ void MainWindow::on_signalInformation_triggered()
    info.exec();
    return;
 }
-
