@@ -4,13 +4,15 @@
 #include <vector>
 #include "canalofsignal/canalofsignal.h"
 #include "filehandler/dataStructure.h"
+#include <QString>
 class FileHandler
 {
 private:
     std::ifstream file;
 public:
-    dataStructure getData();
-    void openFile(const std::string& path);
+    dataStructure* getData();
+    std::string name_of_current_file;
+    void openFile(const QString &path);
     bool isFileOpen();
     void readDataField(int &field);
     void readDataField(double &field);

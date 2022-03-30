@@ -31,9 +31,9 @@
    </widget>
    <widget class="QMenu" name="menu_2">
     <property name="title">
-     <string>Моделирование</string>
+     <string>Инструменты</string>
     </property>
-    <addaction name="action_1"/>
+    <addaction name="signalInformation"/>
    </widget>
    <widget class="QMenu" name="menu_3">
     <property name="title">
@@ -72,9 +72,9 @@
     <string>Открыть</string>
    </property>
   </action>
-  <action name="action_1">
+  <action name="signalInformation">
    <property name="text">
-    <string>Пункт 1</string>
+    <string>Информация о сигнале</string>
    </property>
   </action>
   <action name="action_2">

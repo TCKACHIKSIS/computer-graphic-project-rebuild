@@ -20,9 +20,11 @@ public:
 private slots:
     void on_fileOpen_triggered();
 
+    void on_signalInformation_triggered();
+
 private:
     Ui::MainWindow *ui;
-    dataStructure main_data_from_file;
+    dataStructure *main_data_from_file = nullptr;
     QTabWidget *main_tab_widget;
     QScrollArea *createWaveformView();
     QScrollArea *main_waveform_area;

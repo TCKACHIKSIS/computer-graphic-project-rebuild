@@ -5,9 +5,13 @@
 #include "filehandler/filehandler.h"
 #include <QLabel>
 #include <QGridLayout>
-#include <QRadioButton>
 #include <basewaveform/basewaveform.h>
 #include <base_plot/baseplot.h>
+#include <QDialog>
+#include <QTableWidget>
+#include <QStringList>
+#include <QBoxLayout>
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -45,11 +49,12 @@ void MainWindow::on_fileOpen_triggered()
     }
 
     FileHandler file;
-    file.openFile(path_to_open_file.toStdString());
+    file.openFile(path_to_open_file);
     if ( !file.isFileOpen()){
        QMessageBox::warning(this, "Внимание", "Ошибка открытия файла");
        return;
      }
+
     this->main_data_from_file = file.getData();
 
     this->main_tab_widget = new QTabWidget(this);
@@ -58,49 +63,68 @@ void MainWindow::on_fileOpen_triggered()
 
     this->main_waveform_area = this->createWaveformView();
 
-    for ( auto channel: this->main_data_from_file.signals_channels ){
+    for ( auto channel: this->main_data_from_file->signals_channels ){
         BaseWaveForm *a = new BaseWaveForm();
         a->setTitle(channel.name_of_channel.c_str());
-        a->createSimplePlot(channel, this->main_data_from_file.period_of_tick);
+        a->createSimplePlot(channel, this->main_data_from_file->period_of_tick);
         a->setMaximumWidth(this->main_waveform_area->width());
         this->main_waveform_area->widget()->layout()->addWidget(a);
     }
 
     main_tab_widget->addTab(this->main_waveform_area, "Осциллограммы");
+}
 
 
+void MainWindow::on_signalInformation_triggered()
+{
+   if (this->main_data_from_file == nullptr){
+       QMessageBox msg;
+       msg.setText("Нет открытого канала");
+       msg.exec();
+       return;
+   }
 
 
-    QWidget *info_widget = new QWidget();
-    QBoxLayout *box = new QBoxLayout(QBoxLayout::TopToBottom);
-    QLabel *label = new QLabel();
-
-    std::string info_string ="Общее число каналов   -   " ;
-    label->setText(info_string.c_str());
-    box->addWidget(label);
-
-    label = new QLabel();
-    info_string = "Общее количество отсчетов    -    " + std::to_string(this->main_data_from_file.number_of_samples);
-    label->setText(info_string.c_str());
-    box->addWidget(label);
-
-    label = new QLabel();
-    info_string = "Частота дискретизации     -    " + std::to_string(this->main_data_from_file.sampling_frequency);
-    label->setText(info_string.c_str());
-    box->addWidget(label);
-
-    label = new QLabel();
-    info_string = "Дата и время начала записи     -    " +this->main_data_from_file.signal_start_date+ this->main_data_from_file.signal_start_time;
-    label->setText(info_string.c_str());
-    box->addWidget(label);
-
-    label = new QLabel();
-    info_string = "Продолжительность записи:     -    " +std::to_string(this->main_data_from_file.recording_duration);
-    label->setText(info_string.c_str());
-    box->addWidget(label);
+   std::string information_text ="Общее число каналов: " + std::to_string(this->main_data_from_file->number_of_channels);
+   information_text += "\nОбщее количество отсчетов: " + std::to_string(this->main_data_from_file->number_of_samples);
+   information_text +="\nЧастота дискретизации: " + std::to_string(this->main_data_from_file->sampling_frequency) + "Гц";
+   information_text +="\nДата и время начала записи: " +
+                              this->main_data_from_file->signal_start_date + " " +
+                              this->main_data_from_file->signal_start_time;
+   information_text += "\nДата и время окончания записи: ";
+   information_text += "\nДлительность: ";
 
 
-    info_widget->setLayout(box);
-    main_tab_widget->addTab(info_widget, "Информация о каналах");
+   QDialog info;
+   QBoxLayout layout_for_info(QBoxLayout::TopToBottom);
+   info.setLayout(&layout_for_info);
+
+   QLabel label;
+   label.setText(information_text.c_str());
+   info.layout()->addWidget(&label);
+
+   QTableWidget table;
+   table.setColumnCount(3);
+   table.setShowGrid(true);
+   QStringList headers;
+   headers.append("N");
+   headers.append("Имя");
+   headers.append("Источник");
+   table.setHorizontalHeaderLabels(headers);
+   int i = 0;
+   int number_of_channel = 1;
+   for ( auto channel: this->main_data_from_file->signals_channels ){
+       table.insertRow(i);
+       table.setItem(i, 0 ,new QTableWidgetItem(std::to_string(number_of_channel).c_str()));
+       table.setItem(i, 1 ,new QTableWidgetItem(channel.name_of_channel.c_str()));
+       table.setItem(i, 2 ,new QTableWidgetItem(channel.source_of_channel.c_str()));
+       i++;
+       number_of_channel++;
+   }
+
+   info.layout()->addWidget(&table);
+
+   info.exec();
+   return;
 }
 

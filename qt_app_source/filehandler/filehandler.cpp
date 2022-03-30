@@ -1,9 +1,11 @@
 #include "filehandler.h"
 #include <iostream>
 #include <cstdlib>
+#include <QFileInfo>
 
-void FileHandler::openFile(const std::string &path) {
-  this->file.open(path);
+void FileHandler::openFile(const QString &path) {
+  this->file.open(path.toStdString());
+  this->name_of_current_file = QString(QFileInfo(path).fileName()).toStdString();
 }
 
 bool FileHandler::isFileOpen() {
@@ -77,7 +79,7 @@ void FileHandler::readDataField(std::vector<std::string> &field) {
 void FileHandler::readDataField(std::vector<CanalOfSignal> &field, const std::vector<std::string> &names) {
   std::string line;
   for ( const auto& name: names ){
-    field.push_back(name);
+    field.push_back(CanalOfSignal(name, this->name_of_current_file));
   }
 
   while ( getline( this->file, line ) ){
@@ -101,18 +103,19 @@ void FileHandler::readDataField(std::vector<CanalOfSignal> &field, const std::ve
   }
 }
 
-dataStructure FileHandler::getData() {
-    dataStructure structured_data;
+dataStructure* FileHandler::getData() {
+    dataStructure *structured_data;
+    structured_data = new dataStructure;
     if (this->isFileOpen()){
-      this->readDataField(structured_data.number_of_channels);
-      this->readDataField(structured_data.number_of_samples);
-      this->readDataField(structured_data.sampling_frequency);
-      this->readDataField(structured_data.signal_start_date);
-      this->readDataField(structured_data.signal_start_time);
-      this->readDataField(structured_data.channels_names);
-      this->readDataField(structured_data.signals_channels, structured_data.channels_names);
-      structured_data.period_of_tick = ( 1 / structured_data.sampling_frequency);
-      structured_data.recording_duration = ( 1 / structured_data.sampling_frequency) * structured_data.number_of_samples;
+      this->readDataField(structured_data->number_of_channels);
+      this->readDataField(structured_data->number_of_samples);
+      this->readDataField(structured_data->sampling_frequency);
+      this->readDataField(structured_data->signal_start_date);
+      this->readDataField(structured_data->signal_start_time);
+      this->readDataField(structured_data->channels_names);
+      this->readDataField(structured_data->signals_channels, structured_data->channels_names);
+      structured_data->period_of_tick = ( 1 / structured_data->sampling_frequency);
+      structured_data->recording_duration = ( 1 / structured_data->sampling_frequency) * structured_data->number_of_samples;
     }
     return structured_data;
 }

@@ -24,7 +24,7 @@ class Ui_MainWindow
 {
 public:
     QAction *fileOpen;
-    QAction *action_1;
+    QAction *signalInformation;
     QAction *action_2;
     QAction *action_3;
     QAction *action_4;
@@ -46,8 +46,8 @@ public:
         MainWindow->resize(800, 600);
         fileOpen = new QAction(MainWindow);
         fileOpen->setObjectName(QString::fromUtf8("fileOpen"));
-        action_1 = new QAction(MainWindow);
-        action_1->setObjectName(QString::fromUtf8("action_1"));
+        signalInformation = new QAction(MainWindow);
+        signalInformation->setObjectName(QString::fromUtf8("signalInformation"));
         action_2 = new QAction(MainWindow);
         action_2->setObjectName(QString::fromUtf8("action_2"));
         action_3 = new QAction(MainWindow);
@@ -86,7 +86,7 @@ public:
         menubar->addAction(menu_5->menuAction());
         menubar->addAction(menu_6->menuAction());
         menu->addAction(fileOpen);
-        menu_2->addAction(action_1);
+        menu_2->addAction(signalInformation);
         menu_3->addAction(action_2);
         menu_4->addAction(action_3);
         menu_5->addAction(action_4);
@@ -101,13 +101,13 @@ public:
     {
         MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "MainWindow", nullptr));
         fileOpen->setText(QCoreApplication::translate("MainWindow", "\320\236\321\202\320\272\321\200\321\213\321\202\321\214", nullptr));
-        action_1->setText(QCoreApplication::translate("MainWindow", "\320\237\321\203\320\275\320\272\321\202 1", nullptr));
+        signalInformation->setText(QCoreApplication::translate("MainWindow", "\320\230\320\275\321\204\320\276\321\200\320\274\320\260\321\206\320\270\321\217 \320\276 \321\201\320\270\320\263\320\275\320\260\320\273\320\265", nullptr));
         action_2->setText(QCoreApplication::translate("MainWindow", "\320\237\321\203\320\275\320\272\321\202 1", nullptr));
         action_3->setText(QCoreApplication::translate("MainWindow", "\320\237\321\203\320\275\320\272\321\202 1", nullptr));
         action_4->setText(QCoreApplication::translate("MainWindow", "\320\237\321\203\320\275\320\272\321\202 1", nullptr));
         action_5->setText(QCoreApplication::translate("MainWindow", "\320\237\321\203\320\275\320\272\321\202 1", nullptr));
         menu->setTitle(QCoreApplication::translate("MainWindow", "\320\244\320\260\320\271\320\273", nullptr));
-        menu_2->setTitle(QCoreApplication::translate("MainWindow", "\320\234\320\276\320\264\320\265\320\273\320\270\321\200\320\276\320\262\320\260\320\275\320\270\320\265", nullptr));
+        menu_2->setTitle(QCoreApplication::translate("MainWindow", "\320\230\320\275\321\201\321\202\321\200\321\203\320\274\320\265\320\275\321\202\321\213", nullptr));
         menu_3->setTitle(QCoreApplication::translate("MainWindow", "\320\244\320\270\320\273\321\214\321\202\321\200\320\260\321\206\320\270\321\217", nullptr));
         menu_4->setTitle(QCoreApplication::translate("MainWindow", "\320\220\320\275\320\260\320\273\320\270\320\267", nullptr));
         menu_5->setTitle(QCoreApplication::translate("MainWindow", "\320\235\320\260\321\201\321\202\321\200\320\276\320\271\320\272\320\260", nullptr));
