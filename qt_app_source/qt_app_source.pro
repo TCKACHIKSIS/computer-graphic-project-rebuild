@@ -15,7 +15,9 @@ SOURCES += \
     canalofsignal/canalofsignal.cpp \
     filehandler/filehandler.cpp \
     main.cpp \
-    mainwindow/mainwindow.cpp
+    mainwindow/centralgridarea.cpp \
+    mainwindow/mainwindow.cpp \
+    mainwindow/navigationWindow/navigationwindow.cpp
 
 HEADERS += \
     base_plot/baseplot.h \
@@ -24,7 +26,9 @@ HEADERS += \
     canalofsignal/canalofsignal.h \
     filehandler/dataStructure.h \
     filehandler/filehandler.h \
-    mainwindow/mainwindow.h
+    mainwindow/centralgridarea.h \
+    mainwindow/mainwindow.h \
+    mainwindow/navigationWindow/navigationwindow.h
 
 FORMS += \
     mainwindow/mainwindow.ui

@@ -12,11 +12,15 @@
 #include <QStringList>
 #include <QBoxLayout>
 #include <QHeaderView>
+#include <QWindow>
+#include <QBoxLayout>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
+    this->setWindowState(Qt::WindowMaximized);
+    this->setStyleSheet("background:white");
     ui->setupUi(this);
 }
 
@@ -29,6 +33,21 @@ QScrollArea* MainWindow::createWaveformView(){
 
     QScrollArea *scroll = new QScrollArea();
     scroll->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOn );
+
+    QWidget* ScrollAreaWidgetContents = new QWidget();
+
+    scroll->setWidget(ScrollAreaWidgetContents);
+    scroll->setWidgetResizable( true );
+
+    QGridLayout *layout_for_waveform = new QGridLayout();
+    ScrollAreaWidgetContents->setLayout(layout_for_waveform);
+
+    return scroll;
+}
+QScrollArea* MainWindow::createWaveformView2(QWidget *parent){
+
+    QScrollArea *scroll = new QScrollArea(parent);
+    scroll->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff);
 
     QWidget* ScrollAreaWidgetContents = new QWidget();
 
@@ -57,12 +76,17 @@ void MainWindow::on_fileOpen_triggered()
      }
 
     this->main_data_from_file = file.getData();
+    if ( this->navigationWindowMdi != nullptr ){
+        this->navigationWindowMdi->close();
+    }
 
-    this->main_tab_widget = new QTabWidget(this);
-    setCentralWidget(main_tab_widget);
-    main_tab_widget->show();
+    this->central_grid = new CentralGridArea();
+    this->setCentralWidget(this->central_grid);
+
 
     this->main_waveform_area = this->createWaveformView();
+
+
 
     for ( auto channel: this->main_data_from_file->signals_channels ){
         BaseWaveForm *a = new BaseWaveForm();
@@ -72,7 +96,29 @@ void MainWindow::on_fileOpen_triggered()
         this->main_waveform_area->widget()->layout()->addWidget(a);
     }
 
-    main_tab_widget->addTab(this->main_waveform_area, "Осциллограммы");
+
+    QScrollArea *navigation_scroll = this->createWaveformView();
+
+    for ( auto channel: this->main_data_from_file->signals_channels ){
+        BaseWaveForm *a = new BaseWaveForm();
+        a->setTitle(channel.name_of_channel.c_str());
+        a->createSimplePlot(channel, this->main_data_from_file->period_of_tick);
+        a->setMinimumHeight(65);
+
+        navigation_scroll->widget()->layout()->addWidget(a);
+    }
+    this->navigationWindowMdi = new QMdiArea();
+
+    this->central_grid->grid->addWidget(this->main_waveform_area, 0, 0);
+    this->central_grid->grid->setColumnStretch(0, 14);
+
+
+    this->central_grid->grid->addWidget(navigationWindowMdi, 0, 1);
+    this->central_grid->grid->setColumnStretch(1, 1);
+    navigation_scroll->setFixedSize(170, 600);
+    this->navigationWindowMdi->addSubWindow(navigation_scroll);
+
+
 }
 
 

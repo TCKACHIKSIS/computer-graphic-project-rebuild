@@ -1,10 +1,12 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
-
+#include <QMdiArea>
 #include <QMainWindow>
 #include "filehandler/dataStructure.h"
 #include <QTabWidget>
 #include <QScrollArea>
+#include <mainwindow/centralgridarea.h>
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -25,8 +27,12 @@ private slots:
 private:
     Ui::MainWindow *ui;
     dataStructure *main_data_from_file = nullptr;
+    CentralGridArea *central_grid;
     QTabWidget *main_tab_widget;
     QScrollArea *createWaveformView();
     QScrollArea *main_waveform_area;
+    QScrollArea *createWaveformView2(QWidget *parent);
+    QMdiArea *navigationWindowMdi;
+
 };
 #endif // MAINWINDOW_H
