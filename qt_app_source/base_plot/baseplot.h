@@ -2,7 +2,7 @@
 #define BASEPLOT_H
 #include <qwt_plot.h>
 #include "custom_context_menu/baseplotcustromcontextmenu.h"
-
+//unused, delete later
 class BasePlot : public QwtPlot
 {
 public:

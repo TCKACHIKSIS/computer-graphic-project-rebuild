@@ -59,7 +59,8 @@ SOURCES       = ../qt_app_source/base_plot/baseplot.cpp \
 		../qt_app_source/filehandler/filehandler.cpp \
 		../qt_app_source/main.cpp \
 		../qt_app_source/mainwindow/centralgridarea.cpp \
-		../qt_app_source/mainwindow/mainwindow.cpp moc_mainwindow.cpp
+		../qt_app_source/mainwindow/mainwindow.cpp \
+		../qt_app_source/mainwindow/navigationWindow/navigationwindow.cpp moc_mainwindow.cpp
 OBJECTS       = baseplot.o \
 		baseplotcustromcontextmenu.o \
 		basewaveform.o \
@@ -68,6 +69,7 @@ OBJECTS       = baseplot.o \
 		main.o \
 		centralgridarea.o \
 		mainwindow.o \
+		navigationwindow.o \
 		moc_mainwindow.o
 DIST          = ../qt_app_source/data.txt \
 		/Users/ivan/Qt/6.2.3/macos/mkspecs/features/spec_pre.prf \
@@ -220,14 +222,16 @@ DIST          = ../qt_app_source/data.txt \
 		../qt_app_source/filehandler/dataStructure.h \
 		../qt_app_source/filehandler/filehandler.h \
 		../qt_app_source/mainwindow/centralgridarea.h \
-		../qt_app_source/mainwindow/mainwindow.h ../qt_app_source/base_plot/baseplot.cpp \
+		../qt_app_source/mainwindow/mainwindow.h \
+		../qt_app_source/mainwindow/navigationWindow/navigationwindow.h ../qt_app_source/base_plot/baseplot.cpp \
 		../qt_app_source/base_plot/custom_context_menu/baseplotcustromcontextmenu.cpp \
 		../qt_app_source/basewaveform/basewaveform.cpp \
 		../qt_app_source/canalofsignal/canalofsignal.cpp \
 		../qt_app_source/filehandler/filehandler.cpp \
 		../qt_app_source/main.cpp \
 		../qt_app_source/mainwindow/centralgridarea.cpp \
-		../qt_app_source/mainwindow/mainwindow.cpp
+		../qt_app_source/mainwindow/mainwindow.cpp \
+		../qt_app_source/mainwindow/navigationWindow/navigationwindow.cpp
 QMAKE_TARGET  = qt_app_source
 DESTDIR       = 
 TARGET        = qt_app_source.app/Contents/MacOS/qt_app_source
@@ -582,8 +586,8 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
-	$(COPY_FILE) --parents ../qt_app_source/base_plot/baseplot.h ../qt_app_source/base_plot/custom_context_menu/baseplotcustromcontextmenu.h ../qt_app_source/basewaveform/basewaveform.h ../qt_app_source/canalofsignal/canalofsignal.h ../qt_app_source/filehandler/dataStructure.h ../qt_app_source/filehandler/filehandler.h ../qt_app_source/mainwindow/centralgridarea.h ../qt_app_source/mainwindow/mainwindow.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../qt_app_source/base_plot/baseplot.cpp ../qt_app_source/base_plot/custom_context_menu/baseplotcustromcontextmenu.cpp ../qt_app_source/basewaveform/basewaveform.cpp ../qt_app_source/canalofsignal/canalofsignal.cpp ../qt_app_source/filehandler/filehandler.cpp ../qt_app_source/main.cpp ../qt_app_source/mainwindow/centralgridarea.cpp ../qt_app_source/mainwindow/mainwindow.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../qt_app_source/base_plot/baseplot.h ../qt_app_source/base_plot/custom_context_menu/baseplotcustromcontextmenu.h ../qt_app_source/basewaveform/basewaveform.h ../qt_app_source/canalofsignal/canalofsignal.h ../qt_app_source/filehandler/dataStructure.h ../qt_app_source/filehandler/filehandler.h ../qt_app_source/mainwindow/centralgridarea.h ../qt_app_source/mainwindow/mainwindow.h ../qt_app_source/mainwindow/navigationWindow/navigationwindow.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../qt_app_source/base_plot/baseplot.cpp ../qt_app_source/base_plot/custom_context_menu/baseplotcustromcontextmenu.cpp ../qt_app_source/basewaveform/basewaveform.cpp ../qt_app_source/canalofsignal/canalofsignal.cpp ../qt_app_source/filehandler/filehandler.cpp ../qt_app_source/main.cpp ../qt_app_source/mainwindow/centralgridarea.cpp ../qt_app_source/mainwindow/mainwindow.cpp ../qt_app_source/mainwindow/navigationWindow/navigationwindow.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../qt_app_source/mainwindow/mainwindow.ui $(DISTDIR)/
 
 
@@ -617,6 +621,8 @@ compiler_moc_header_make_all: moc_mainwindow.cpp
 compiler_moc_header_clean:
 	-$(DEL_FILE) moc_mainwindow.cpp
 moc_mainwindow.cpp: ../qt_app_source/mainwindow/mainwindow.h \
+		/Users/ivan/Qt/6.2.3/macos/lib/QtWidgets.framework/Headers/QMdiArea \
+		/Users/ivan/Qt/6.2.3/macos/lib/QtWidgets.framework/Headers/qmdiarea.h \
 		/Users/ivan/Qt/6.2.3/macos/lib/QtWidgets.framework/Headers/QMainWindow \
 		/Users/ivan/Qt/6.2.3/macos/lib/QtWidgets.framework/Headers/qmainwindow.h \
 		../qt_app_source/filehandler/dataStructure.h \
@@ -734,6 +740,8 @@ filehandler.o: ../qt_app_source/filehandler/filehandler.cpp ../qt_app_source/fil
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o filehandler.o ../qt_app_source/filehandler/filehandler.cpp
 
 main.o: ../qt_app_source/main.cpp ../qt_app_source/mainwindow/mainwindow.h \
+		/Users/ivan/Qt/6.2.3/macos/lib/QtWidgets.framework/Headers/QMdiArea \
+		/Users/ivan/Qt/6.2.3/macos/lib/QtWidgets.framework/Headers/qmdiarea.h \
 		/Users/ivan/Qt/6.2.3/macos/lib/QtWidgets.framework/Headers/QMainWindow \
 		/Users/ivan/Qt/6.2.3/macos/lib/QtWidgets.framework/Headers/qmainwindow.h \
 		../qt_app_source/filehandler/dataStructure.h \
@@ -769,6 +777,8 @@ centralgridarea.o: ../qt_app_source/mainwindow/centralgridarea.cpp ../qt_app_sou
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o centralgridarea.o ../qt_app_source/mainwindow/centralgridarea.cpp
 
 mainwindow.o: ../qt_app_source/mainwindow/mainwindow.cpp ../qt_app_source/mainwindow/mainwindow.h \
+		/Users/ivan/Qt/6.2.3/macos/lib/QtWidgets.framework/Headers/QMdiArea \
+		/Users/ivan/Qt/6.2.3/macos/lib/QtWidgets.framework/Headers/qmdiarea.h \
 		/Users/ivan/Qt/6.2.3/macos/lib/QtWidgets.framework/Headers/QMainWindow \
 		/Users/ivan/Qt/6.2.3/macos/lib/QtWidgets.framework/Headers/qmainwindow.h \
 		../qt_app_source/filehandler/dataStructure.h \
@@ -822,6 +832,11 @@ mainwindow.o: ../qt_app_source/mainwindow/mainwindow.cpp ../qt_app_source/mainwi
 		/Users/ivan/Qt/6.2.3/macos/lib/QtGui.framework/Headers/QWindow \
 		/Users/ivan/Qt/6.2.3/macos/lib/QtGui.framework/Headers/qwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../qt_app_source/mainwindow/mainwindow.cpp
+
+navigationwindow.o: ../qt_app_source/mainwindow/navigationWindow/navigationwindow.cpp ../qt_app_source/mainwindow/navigationWindow/navigationwindow.h \
+		/Users/ivan/Qt/6.2.3/macos/lib/QtWidgets.framework/Headers/QScrollArea \
+		/Users/ivan/Qt/6.2.3/macos/lib/QtWidgets.framework/Headers/qscrollarea.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o navigationwindow.o ../qt_app_source/mainwindow/navigationWindow/navigationwindow.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp

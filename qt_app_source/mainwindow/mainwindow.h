@@ -6,6 +6,7 @@
 #include <QTabWidget>
 #include <QScrollArea>
 #include <mainwindow/centralgridarea.h>
+#include <mainwindow/navigationWindow/navigationwindow.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -32,7 +33,8 @@ private:
     QScrollArea *createWaveformView();
     QScrollArea *main_waveform_area;
     QScrollArea *createWaveformView2(QWidget *parent);
-    QMdiArea *navigationWindowMdi;
+    QMdiArea *right_mdi;
+    NavigationWindow *navigation_window;
 
 };
 #endif // MAINWINDOW_H

@@ -15,6 +15,7 @@
 #include <QWindow>
 #include <QBoxLayout>
 
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -44,21 +45,6 @@ QScrollArea* MainWindow::createWaveformView(){
 
     return scroll;
 }
-QScrollArea* MainWindow::createWaveformView2(QWidget *parent){
-
-    QScrollArea *scroll = new QScrollArea(parent);
-    scroll->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff);
-
-    QWidget* ScrollAreaWidgetContents = new QWidget();
-
-    scroll->setWidget(ScrollAreaWidgetContents);
-    scroll->setWidgetResizable( true );
-
-    QGridLayout *layout_for_waveform = new QGridLayout();
-    ScrollAreaWidgetContents->setLayout(layout_for_waveform);
-
-    return scroll;
-}
 
 void MainWindow::on_fileOpen_triggered()
 {
@@ -76,8 +62,8 @@ void MainWindow::on_fileOpen_triggered()
      }
 
     this->main_data_from_file = file.getData();
-    if ( this->navigationWindowMdi != nullptr ){
-        this->navigationWindowMdi->close();
+    if ( this->right_mdi != nullptr ){
+        this->right_mdi->close();
     }
 
     this->central_grid = new CentralGridArea();
@@ -97,7 +83,7 @@ void MainWindow::on_fileOpen_triggered()
     }
 
 
-    QScrollArea *navigation_scroll = this->createWaveformView();
+   this->navigation_window = new NavigationWindow();
 
     for ( auto channel: this->main_data_from_file->signals_channels ){
         BaseWaveForm *a = new BaseWaveForm();
@@ -105,18 +91,21 @@ void MainWindow::on_fileOpen_triggered()
         a->createSimplePlot(channel, this->main_data_from_file->period_of_tick);
         a->setMinimumHeight(65);
 
-        navigation_scroll->widget()->layout()->addWidget(a);
+        navigation_window->widget()->layout()->addWidget(a);
     }
-    this->navigationWindowMdi = new QMdiArea();
 
     this->central_grid->grid->addWidget(this->main_waveform_area, 0, 0);
     this->central_grid->grid->setColumnStretch(0, 14);
 
 
-    this->central_grid->grid->addWidget(navigationWindowMdi, 0, 1);
+    this->right_mdi = new QMdiArea();
+
     this->central_grid->grid->setColumnStretch(1, 1);
-    navigation_scroll->setFixedSize(170, 600);
-    this->navigationWindowMdi->addSubWindow(navigation_scroll);
+    this->central_grid->grid->addWidget(right_mdi, 0, 1);
+    this->right_mdi->setFixedSize(170, 600);
+    this->navigation_window->setFixedSize(170, 600);
+    this->right_mdi->addSubWindow(navigation_window, Qt::FramelessWindowHint);
+
 
 
 }

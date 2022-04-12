@@ -1,15 +1,17 @@
 #ifndef BASEWAVEFORM_H
 #define BASEWAVEFORM_H
-#include <base_plot/baseplot.h>
 #include <QWidget>
 #include <canalofsignal/canalofsignal.h>
 #include <utility>
 #include <vector>
+#include <qwt_plot.h>
+#include <QMouseEvent>
 
 #include <canalofsignal/canalofsignal.h>
 
 class BaseWaveForm : public QwtPlot
 {
+
 private:
     std::vector< std::pair<double, double> > coordinates;
 public:
@@ -20,7 +22,8 @@ public:
     void clearPlot();
     void createCoordinates(CanalOfSignal &base, const double &period_of_tick);
 
-signals:
+protected:
+    virtual void mousePressEvent(QMouseEvent* event);
 
 };
 

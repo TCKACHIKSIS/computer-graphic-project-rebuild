@@ -1,8 +1,8 @@
 #ifndef NAVIGATIONWINDOW_H
 #define NAVIGATIONWINDOW_H
+#include <QScrollArea>
 
-
-class NavigationWindow
+class NavigationWindow : public QScrollArea
 {
 public:
     NavigationWindow();

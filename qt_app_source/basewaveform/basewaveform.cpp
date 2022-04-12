@@ -2,13 +2,14 @@
 #include <qwt_plot_curve.h>
 #include <QPolygonF>
 #include <QPointF>
+#include <QMenu>
 BaseWaveForm::BaseWaveForm(){
 
-    return;
+    return ;
 }
 
 void BaseWaveForm::createSimplePlot(CanalOfSignal &base, const double &period_of_tick){
-    this->setStyleSheet("border: 2px solid black ;color:black");
+    this->setStyleSheet("border: 1px solid black ;color:black");
     this->createCoordinates(base, period_of_tick);
     this->enableAxis(QwtPlot::xBottom, false);
     this->enableAxis(QwtPlot::yLeft, false);
@@ -22,6 +23,9 @@ void BaseWaveForm::createSimplePlot(CanalOfSignal &base, const double &period_of
     }
     curve->setSamples( points );
     curve->attach( this );
+    this->setContextMenuPolicy(Qt::CustomContextMenu);
+
+
 }
 
 void BaseWaveForm::clearPlot(){
@@ -40,3 +44,12 @@ void BaseWaveForm::createCoordinates(CanalOfSignal &base, const double &period_o
 std::vector< std::pair<double, double> >BaseWaveForm:: Coordinates(){
     return this->coordinates;
 }
+
+void BaseWaveForm::mousePressEvent(QMouseEvent *event){
+    QMenu *menu=new QMenu(this);
+    menu->addAction(new QAction("Action 1", this));
+    menu->addAction(new QAction("Action 2", this));
+    menu->addAction(new QAction("Action 3", this));
+    menu->popup(this->mapToGlobal(event->pos()));
+}
+
