@@ -6,7 +6,6 @@
 #include <QLabel>
 #include <QGridLayout>
 #include <basewaveform/basewaveform.h>
-#include <base_plot/baseplot.h>
 #include <QDialog>
 #include <QTableWidget>
 #include <QStringList>
@@ -14,6 +13,8 @@
 #include <QHeaderView>
 #include <QWindow>
 #include <QBoxLayout>
+#include <waveform_mods/navigationwaveform.h>
+
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -86,7 +87,7 @@ void MainWindow::on_fileOpen_triggered()
    this->navigation_window = new NavigationWindow();
 
     for ( auto channel: this->main_data_from_file->signals_channels ){
-        BaseWaveForm *a = new BaseWaveForm();
+        BaseWaveForm *a = new navigationWaveform();
         a->setTitle(channel.name_of_channel.c_str());
         a->createSimplePlot(channel, this->main_data_from_file->period_of_tick);
         a->setMinimumHeight(65);

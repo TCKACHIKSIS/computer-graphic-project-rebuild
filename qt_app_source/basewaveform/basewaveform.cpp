@@ -45,11 +45,3 @@ std::vector< std::pair<double, double> >BaseWaveForm:: Coordinates(){
     return this->coordinates;
 }
 
-void BaseWaveForm::mousePressEvent(QMouseEvent *event){
-    QMenu *menu=new QMenu(this);
-    menu->addAction(new QAction("Action 1", this));
-    menu->addAction(new QAction("Action 2", this));
-    menu->addAction(new QAction("Action 3", this));
-    menu->popup(this->mapToGlobal(event->pos()));
-}
-

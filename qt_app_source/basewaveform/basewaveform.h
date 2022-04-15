@@ -22,9 +22,6 @@ public:
     void clearPlot();
     void createCoordinates(CanalOfSignal &base, const double &period_of_tick);
 
-protected:
-    virtual void mousePressEvent(QMouseEvent* event);
-
 };
 
 #endif // BASEWAVEFORM_H
