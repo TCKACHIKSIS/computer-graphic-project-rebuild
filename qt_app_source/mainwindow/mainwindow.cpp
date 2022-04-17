@@ -75,24 +75,22 @@ void MainWindow::on_fileOpen_triggered()
 
 
 
-    /*for ( auto channel: this->main_data_from_file->signals_channels ){
+    for ( auto channel: this->main_data_from_file->signals_channels ){
         BaseWaveForm *a = new BaseWaveForm();
         a->setTitle(channel.name_of_channel.c_str());
         a->createSimplePlot(channel, this->main_data_from_file->period_of_tick);
         a->setMaximumWidth(this->main_waveform_area->width());
         this->main_waveform_area->widget()->layout()->addWidget(a);
-    }*/
+    }
 
 
    this->navigation_window = new NavigationWindow();
 
     for ( auto channel: this->main_data_from_file->signals_channels ){
-        navigationWaveform *a = new navigationWaveform();
-
+        BaseWaveForm *a = new navigationWaveform();
         a->setTitle(channel.name_of_channel.c_str());
         a->createSimplePlot(channel, this->main_data_from_file->period_of_tick);
         a->setMinimumHeight(65);
-
 
         navigation_window->widget()->layout()->addWidget(a);
     }
@@ -108,6 +106,9 @@ void MainWindow::on_fileOpen_triggered()
     this->right_mdi->setFixedSize(170, 600);
     this->navigation_window->setFixedSize(170, 600);
     this->right_mdi->addSubWindow(navigation_window, Qt::FramelessWindowHint);
+
+
+
 }
 
 
@@ -163,13 +164,4 @@ void MainWindow::on_signalInformation_triggered()
 
    info.exec();
    return;
-}
-
-void MainWindow::addWaveformToCental(const navigationWaveform &package){
-    std::cout << "ok" << std::endl;
-    BaseWaveForm *add = new BaseWaveForm();
-    add->setTitle(package.foundation->name_of_channel.c_str());
-    add->createSimplePlot(*package.foundation, this->main_data_from_file->period_of_tick);
-    add->setMaximumWidth(this->main_waveform_area->width());
-    this->main_waveform_area->widget()->layout()->addWidget(add);
 }
