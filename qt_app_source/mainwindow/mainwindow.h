@@ -7,6 +7,7 @@
 #include <QScrollArea>
 #include <mainwindow/centralgridarea.h>
 #include <mainwindow/navigationWindow/navigationwindow.h>
+#include <waveform_mods/navigationwaveform.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -19,12 +20,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-
-private slots:
-    void on_fileOpen_triggered();
-
-    void on_signalInformation_triggered();
-
+    void addWaveformToCentral(const navigationWaveform &package);
 private:
     Ui::MainWindow *ui;
     dataStructure *main_data_from_file = nullptr;
@@ -35,6 +31,11 @@ private:
     QScrollArea *createWaveformView2(QWidget *parent);
     QMdiArea *right_mdi;
     NavigationWindow *navigation_window;
+
+private slots:
+    void on_fileOpen_triggered();
+    void on_signalInformation_triggered();
+
 
 };
 #endif // MAINWINDOW_H
