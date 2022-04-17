@@ -7,6 +7,7 @@
 #include <QScrollArea>
 #include <mainwindow/centralgridarea.h>
 #include <mainwindow/navigationWindow/navigationwindow.h>
+#include <waveform_mods/navigationwaveform.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -19,7 +20,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-
+    void addWaveformToCentral(const navigationWaveform &package);
 private slots:
     void on_fileOpen_triggered();
 
