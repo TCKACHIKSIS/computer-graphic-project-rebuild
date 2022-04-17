@@ -1,9 +1,13 @@
 #include "navigationcontextmenu.h"
 #include <iostream>
 
-NavigationContextMenu::NavigationContextMenu()
+NavigationContextMenu::NavigationContextMenu(navigationWaveform *parent_plot)
 {
-    this->addAction(new QAction("Action 1", this));
-    this->addAction(new QAction("Action 4", this));
-    this->addAction(new QAction("Action 3", this));
+    this->parentPlot = parent_plot;
+    this->add_waveform = new QAction("Осцилограмма", this);
+    this->addAction(this->add_waveform);
+    connect(this->add_waveform, &QAction::triggered, this, &NavigationContextMenu::addWaveformEmit );
+}
+void NavigationContextMenu::addWaveformEmit(){
+    this->parentPlot->add_wave_form_was_clicked();
 }

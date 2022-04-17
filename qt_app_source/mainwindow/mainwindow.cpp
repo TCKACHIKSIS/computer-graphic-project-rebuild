@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+#include "mainwindow/mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QFileDialog>
 #include <QMessageBox>
@@ -13,7 +13,7 @@
 #include <QHeaderView>
 #include <QWindow>
 #include <QBoxLayout>
-#include <waveform_mods/navigationwaveform.h>
+
 
 
 
@@ -73,7 +73,7 @@ void MainWindow::on_fileOpen_triggered()
 
     this->main_waveform_area = this->createWaveformView();
 
-
+    /*
 
     for ( auto channel: this->main_data_from_file->signals_channels ){
         BaseWaveForm *a = new BaseWaveForm();
@@ -82,12 +82,12 @@ void MainWindow::on_fileOpen_triggered()
         a->setMaximumWidth(this->main_waveform_area->width());
         this->main_waveform_area->widget()->layout()->addWidget(a);
     }
-
+    */
 
    this->navigation_window = new NavigationWindow();
 
     for ( auto channel: this->main_data_from_file->signals_channels ){
-        BaseWaveForm *a = new navigationWaveform();
+        BaseWaveForm *a = new navigationWaveform(this);
         a->setTitle(channel.name_of_channel.c_str());
         a->createSimplePlot(channel, this->main_data_from_file->period_of_tick);
         a->setMinimumHeight(65);
@@ -109,6 +109,15 @@ void MainWindow::on_fileOpen_triggered()
 
 
 
+}
+void MainWindow::addWaveformToCentral(const navigationWaveform *package){
+    std::cout << "ok" << std::endl;
+
+    BaseWaveForm *add = new BaseWaveForm();
+    add->setTitle(package->foundation->name_of_channel.c_str());
+    add->createSimplePlot(*package->foundation, this->main_data_from_file->period_of_tick);
+    add->setMaximumWidth(this->main_waveform_area->width());
+    this->main_waveform_area->widget()->layout()->addWidget(add);
 }
 
 
