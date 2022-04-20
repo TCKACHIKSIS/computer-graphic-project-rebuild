@@ -14,6 +14,7 @@ SOURCES += \
     context_menus/navigationContextMenu/navigationcontextmenu.cpp \
     filehandler/filehandler.cpp \
     main.cpp \
+    mainwindow/addwaveformaction.cpp \
     mainwindow/centralgridarea.cpp \
     mainwindow/mainwindow.cpp \
     mainwindow/navigationWindow/navigationwindow.cpp \
@@ -25,6 +26,7 @@ HEADERS += \
     context_menus/navigationContextMenu/navigationcontextmenu.h \
     filehandler/dataStructure.h \
     filehandler/filehandler.h \
+    mainwindow/addwaveformaction.h \
     mainwindow/centralgridarea.h \
     mainwindow/mainwindow.h \
     mainwindow/navigationWindow/navigationwindow.h \

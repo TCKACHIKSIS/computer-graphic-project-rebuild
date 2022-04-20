@@ -20,7 +20,8 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-     void addWaveformToCentral(const navigationWaveform &package);
+public slots:
+      void addWaveformToCentral(const navigationWaveform &package);
 private slots:
     void on_fileOpen_triggered();
 

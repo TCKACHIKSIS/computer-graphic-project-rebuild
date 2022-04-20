@@ -15,7 +15,7 @@
 #include <QHeaderView>
 #include <QWindow>
 #include <QBoxLayout>
-
+#include <mainwindow/addwaveformaction.h>
 
 
 
@@ -76,24 +76,16 @@ void MainWindow::on_fileOpen_triggered()
 
     this->main_waveform_area = this->createWaveformView();
 
-    /*
-
-    for ( auto channel: this->main_data_from_file->signals_channels ){
-        BaseWaveForm *a = new BaseWaveForm();
-        a->setTitle(channel.name_of_channel.c_str());
-        a->createSimplePlot(channel, this->main_data_from_file->period_of_tick);
-        a->setMaximumWidth(this->main_waveform_area->width());
-        this->main_waveform_area->widget()->layout()->addWidget(a);
-    }
-    */
-
    this->navigation_window = new NavigationWindow();
 
     for ( auto channel: this->main_data_from_file->signals_channels ){
+
         navigationWaveform *a = new navigationWaveform(channel, this->main_data_from_file->period_of_tick, this);
         a->setTitle(channel.name_of_channel.c_str());
         a->setMinimumHeight(65);
         navigation_window->widget()->layout()->addWidget(a);
+        AddWaveformAction *waveform_add_action = new AddWaveformAction(this, channel.name_of_channel.c_str(), *a);
+        this->ui->waveforms->addAction(waveform_add_action);
     }
 
     this->central_grid->grid->addWidget(this->main_waveform_area, 0, 0);
@@ -107,12 +99,12 @@ void MainWindow::on_fileOpen_triggered()
     this->right_mdi->setFixedSize(170, 600);
     this->navigation_window->setFixedSize(170, 600);
     this->right_mdi->addSubWindow(navigation_window, Qt::FramelessWindowHint);
-
-
-
 }
+
+
 void MainWindow::addWaveformToCentral(const navigationWaveform &package){
-    BaseWaveForm *a = new BaseWaveForm(package.foundation, 1);
+    std::cout << "ahahahahahah" << std::endl;
+    BaseWaveForm *a = new BaseWaveForm(package.foundation, main_data_from_file->period_of_tick);
     a->setTitle(a->foundation.name_of_channel.c_str());
     a->setMaximumWidth(this->main_waveform_area->width());
     a->setMinimumHeight(this->main_waveform_area->height()/5);
