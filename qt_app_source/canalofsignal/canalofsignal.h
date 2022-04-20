@@ -10,6 +10,7 @@ public:
     std::string name_of_channel;
     std::string source_of_channel;
     CanalOfSignal(std::string name, std::string source);
+    CanalOfSignal();
 };
 
 #endif // CANALOFSIGNAL_H

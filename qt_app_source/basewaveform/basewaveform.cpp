@@ -3,18 +3,18 @@
 #include <QPolygonF>
 #include <QPointF>
 #include <QMenu>
-BaseWaveForm::BaseWaveForm(){
-
-    return ;
+BaseWaveForm::BaseWaveForm(CanalOfSignal base, double period_of_tick){
+    this->foundation = base;
+    this->createSimplePlot(period_of_tick);
 }
 
-void BaseWaveForm::createSimplePlot(CanalOfSignal &base, const double &period_of_tick){
+void BaseWaveForm::createSimplePlot( const double &period_of_tick){
     this->setStyleSheet("border: 1px solid black ;color:black");
-    this->createCoordinates(base, period_of_tick);
+    this->createCoordinates(period_of_tick);
     this->enableAxis(QwtPlot::xBottom, false);
     this->enableAxis(QwtPlot::yLeft, false);
     QwtPlotCurve *curve = new QwtPlotCurve();
-    curve->setTitle(this->foundation->name_of_channel.c_str());
+    curve->setTitle(this->foundation.name_of_channel.c_str());
     curve->setPen( Qt::blue, 2 );
     curve->setTitle( "Demo Curve" );
     QPolygonF points;
@@ -24,18 +24,15 @@ void BaseWaveForm::createSimplePlot(CanalOfSignal &base, const double &period_of
     curve->setSamples( points );
     curve->attach( this );
     this->setContextMenuPolicy(Qt::CustomContextMenu);
-
-
 }
 
 void BaseWaveForm::clearPlot(){
     return;
 }
 
-void BaseWaveForm::createCoordinates(CanalOfSignal &base, const double &period_of_tick){
+void BaseWaveForm::createCoordinates(const double &period_of_tick){
     int tick = 1;
-    this->foundation = &base;
-    for ( auto y: base.values_of_signal ){
+    for ( auto y: this->foundation.values_of_signal ){
         this->coordinates.push_back(std::pair(tick * period_of_tick, y));
         tick++;
     }

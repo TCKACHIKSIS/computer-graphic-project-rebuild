@@ -16,11 +16,11 @@ private:
     std::vector< std::pair<double, double> > coordinates;
 public:
     std::vector< std::pair<double, double> > Coordinates();
-    CanalOfSignal *foundation;
-    BaseWaveForm();
-    void createSimplePlot(CanalOfSignal &base, const double &period_of_tick);
+    CanalOfSignal foundation;
+    BaseWaveForm(CanalOfSignal base, double period_of_tick);
+    void createSimplePlot(const double &period_of_tick);
     void clearPlot();
-    void createCoordinates(CanalOfSignal &base, const double &period_of_tick);
+    void createCoordinates(const double &period_of_tick);
 
 };
 

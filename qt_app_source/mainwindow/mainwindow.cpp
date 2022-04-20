@@ -1,3 +1,5 @@
+
+
 #include "mainwindow/mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QFileDialog>
@@ -13,6 +15,7 @@
 #include <QHeaderView>
 #include <QWindow>
 #include <QBoxLayout>
+
 
 
 
@@ -87,11 +90,9 @@ void MainWindow::on_fileOpen_triggered()
    this->navigation_window = new NavigationWindow();
 
     for ( auto channel: this->main_data_from_file->signals_channels ){
-        navigationWaveform *a = new navigationWaveform(this);
+        navigationWaveform *a = new navigationWaveform(channel, this->main_data_from_file->period_of_tick, this);
         a->setTitle(channel.name_of_channel.c_str());
-        a->createSimplePlot(channel, this->main_data_from_file->period_of_tick);
         a->setMinimumHeight(65);
-
         navigation_window->widget()->layout()->addWidget(a);
     }
 
@@ -111,7 +112,12 @@ void MainWindow::on_fileOpen_triggered()
 
 }
 void MainWindow::addWaveformToCentral(const navigationWaveform &package){
-    return;
+    BaseWaveForm *a = new BaseWaveForm(package.foundation, 1);
+    a->setTitle(a->foundation.name_of_channel.c_str());
+    a->setMaximumWidth(this->main_waveform_area->width());
+    a->setMinimumHeight(this->main_waveform_area->height()/5);
+    this->main_waveform_area->widget()->layout()->addWidget(a);
+
 }
 
 

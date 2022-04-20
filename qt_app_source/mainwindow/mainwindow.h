@@ -28,7 +28,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    dataStructure *main_data_from_file = nullptr;
+    dataStructure *main_data_from_file;
     CentralGridArea *central_grid;
     QTabWidget *main_tab_widget;
     QScrollArea *createWaveformView();
