@@ -10,8 +10,9 @@ class AddWaveformAction : public QAction
 public:
     navigationWaveform *waveform_from_navigate;
     MainWindow *window;
-    AddWaveformAction(MainWindow *mainwindow, const char *name, navigationWaveform &package);
     navigationWaveform *waveform;
+
+    AddWaveformAction(MainWindow *mainwindow, const char *name, navigationWaveform &package);
     void addToCentral();
 };
 

@@ -84,6 +84,7 @@ void MainWindow::on_fileOpen_triggered()
         a->setTitle(channel.name_of_channel.c_str());
         a->setMinimumHeight(65);
         navigation_window->widget()->layout()->addWidget(a);
+
         AddWaveformAction *waveform_add_action = new AddWaveformAction(this, channel.name_of_channel.c_str(), *a);
         this->ui->waveforms->addAction(waveform_add_action);
     }
