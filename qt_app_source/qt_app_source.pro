@@ -11,6 +11,7 @@ CONFIG += c++11
 SOURCES += \
     basewaveform/basewaveform.cpp \
     canalofsignal/canalofsignal.cpp \
+    context_menus/centralContextMenu/centralcontextmenu.cpp \
     context_menus/navigationContextMenu/navigationcontextmenu.cpp \
     filehandler/filehandler.cpp \
     main.cpp \
@@ -18,11 +19,13 @@ SOURCES += \
     mainwindow/centralgridarea.cpp \
     mainwindow/mainwindow.cpp \
     mainwindow/navigationWindow/navigationwindow.cpp \
+    waveform_mods/centralwaveform.cpp \
     waveform_mods/navigationwaveform.cpp
 
 HEADERS += \
     basewaveform/basewaveform.h \
     canalofsignal/canalofsignal.h \
+    context_menus/centralContextMenu/centralcontextmenu.h \
     context_menus/navigationContextMenu/navigationcontextmenu.h \
     filehandler/dataStructure.h \
     filehandler/filehandler.h \
@@ -30,6 +33,7 @@ HEADERS += \
     mainwindow/centralgridarea.h \
     mainwindow/mainwindow.h \
     mainwindow/navigationWindow/navigationwindow.h \
+    waveform_mods/centralwaveform.h \
     waveform_mods/navigationwaveform.h
 
 FORMS += \

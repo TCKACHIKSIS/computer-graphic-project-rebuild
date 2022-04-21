@@ -7,7 +7,7 @@
 #include "filehandler/filehandler.h"
 #include <QLabel>
 #include <QGridLayout>
-#include <basewaveform/basewaveform.h>
+#include <waveform_mods/centralwaveform.h>
 #include <QDialog>
 #include <QTableWidget>
 #include <QStringList>
@@ -104,8 +104,7 @@ void MainWindow::on_fileOpen_triggered()
 
 
 void MainWindow::addWaveformToCentral(const navigationWaveform &package){
-    std::cout << "ahahahahahah" << std::endl;
-    BaseWaveForm *a = new BaseWaveForm(package.foundation, main_data_from_file->period_of_tick);
+    BaseWaveForm *a = new CentralWaveform(package.foundation, main_data_from_file->period_of_tick);
     a->setTitle(a->foundation.name_of_channel.c_str());
     a->setMaximumWidth(this->main_waveform_area->width());
     a->setMinimumHeight(this->main_waveform_area->height()/5);
