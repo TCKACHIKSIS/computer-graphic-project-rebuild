@@ -1,13 +1,43 @@
 #include "centralcontextmenu.h"
-
+#include <iostream>
 centralContextMenu::centralContextMenu(CentralWaveform *parent_plot)
 {
     this->parentplot = parent_plot;
+
+    if ( this->parentplot->picker == nullptr ){
+        this->set_behavior_picker = new QAction("Включить ослеживание координат", this);
+        this->addAction(this->set_behavior_picker);
+    }
+    else{
+        this->set_behavior_picker = new QAction("Выключить отслеживание координат", this);
+        this->addAction(this->set_behavior_picker);
+    }
+
+    if (this->parentplot->axisEnabled(QwtPlot::yLeft)){
+        this->enable_axis = new QAction("Выключить отображение осей");
+        this->addAction(this->enable_axis);
+    }
+    else {
+        this->enable_axis = new QAction("Включить отображение осей");
+        this->addAction(this->enable_axis);
+    }
+
     this->delete_waveform = new QAction("Удалить", this);
     this->addAction(this->delete_waveform);
+
     connect(this->delete_waveform, &QAction::triggered, this, &centralContextMenu::deleteWaveformFromeCentral );
+    connect(this->set_behavior_picker, &QAction::triggered, this, &centralContextMenu::setPickerBehavior);
+    connect(this->enable_axis, &QAction::triggered, this, &centralContextMenu::enableAxises);
 }
 
 void centralContextMenu::deleteWaveformFromeCentral(){
     this->parentplot->~CentralWaveform();
+}
+
+void centralContextMenu::setPickerBehavior(){
+    this->parentplot->changePickerBehavior();
+}
+
+void centralContextMenu::enableAxises(){
+    this->parentplot->enableAxisesFromContext();
 }

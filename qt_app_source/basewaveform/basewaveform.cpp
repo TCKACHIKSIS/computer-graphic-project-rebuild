@@ -16,7 +16,6 @@ void BaseWaveForm::createSimplePlot( const double &period_of_tick){
     QwtPlotCurve *curve = new QwtPlotCurve();
     curve->setTitle(this->foundation.name_of_channel.c_str());
     curve->setPen( Qt::blue, 2 );
-    curve->setTitle( "Demo Curve" );
     QPolygonF points;
     for ( auto coordinate: this->coordinates ){
         points << QPointF(coordinate.first, coordinate.second);
