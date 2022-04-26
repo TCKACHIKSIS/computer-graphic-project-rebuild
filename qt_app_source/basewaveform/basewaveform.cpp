@@ -3,26 +3,47 @@
 #include <QPolygonF>
 #include <QPointF>
 #include <QMenu>
-BaseWaveForm::BaseWaveForm(CanalOfSignal base, double period_of_tick){
+#include <qwt_date_scale_draw.h>
+#include <qwt_date_scale_engine.h>
+#include <qwt_date.h>
+#include <iostream>
+#include <basewaveform/Splitter/splitter.h>
+#include <basewaveform/timescaledraw.h>
+
+BaseWaveForm::BaseWaveForm(CanalOfSignal base, const dataStructure &data_from_file){
     this->foundation = base;
-    this->createSimplePlot(period_of_tick);
+    this->createSimplePlot(data_from_file.period_of_tick, data_from_file);
 }
 
-void BaseWaveForm::createSimplePlot( const double &period_of_tick){
+void BaseWaveForm::createSimplePlot( const double &period_of_tick, const dataStructure &data_from_file){
+
+    Splitter *splitter = new Splitter();
+    std::vector<int> date = splitter->split(data_from_file.signal_start_date, '-');
+    std::vector<int> time = splitter->split(data_from_file.signal_start_time, ':');
+    delete(splitter);
+
+
     this->setStyleSheet("border: 1px solid black ;color:black");
     this->createCoordinates(period_of_tick);
     this->enableAxis(QwtPlot::xBottom, false);
     this->enableAxis(QwtPlot::yLeft, false);
+
+    this->setAxisScaleDraw(QwtPlot::xBottom, new TimeScaleDraw);
+
+
     QwtPlotCurve *curve = new QwtPlotCurve();
     curve->setTitle(this->foundation.name_of_channel.c_str());
     curve->setPen( Qt::blue, 2 );
     QPolygonF points;
+
     for ( auto coordinate: this->coordinates ){
         points << QPointF(coordinate.first, coordinate.second);
     }
+
     curve->setSamples( points );
     curve->attach( this );
     this->setContextMenuPolicy(Qt::CustomContextMenu);
+
 }
 
 void BaseWaveForm::clearPlot(){

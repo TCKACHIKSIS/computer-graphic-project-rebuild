@@ -80,7 +80,7 @@ void MainWindow::on_fileOpen_triggered()
 
     for ( auto channel: this->main_data_from_file->signals_channels ){
 
-        navigationWaveform *a = new navigationWaveform(channel, this->main_data_from_file->period_of_tick, this);
+        navigationWaveform *a = new navigationWaveform(channel, *this->main_data_from_file ,this);
         a->setTitle(channel.name_of_channel.c_str());
         a->setMinimumHeight(65);
         navigation_window->widget()->layout()->addWidget(a);
@@ -104,7 +104,7 @@ void MainWindow::on_fileOpen_triggered()
 
 
 void MainWindow::addWaveformToCentral(const navigationWaveform &package){
-    BaseWaveForm *a = new CentralWaveform(package.foundation, main_data_from_file->period_of_tick);
+    BaseWaveForm *a = new CentralWaveform(package.foundation, *this->main_data_from_file);
     a->setTitle(a->foundation.name_of_channel.c_str());
     a->setMaximumWidth(this->main_waveform_area->width());
     a->setMinimumHeight(this->main_waveform_area->height()/5);

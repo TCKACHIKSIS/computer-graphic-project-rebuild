@@ -9,7 +9,9 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    basewaveform/Splitter/splitter.cpp \
     basewaveform/basewaveform.cpp \
+    basewaveform/timescaledraw.cpp \
     canalofsignal/canalofsignal.cpp \
     context_menus/centralContextMenu/centralcontextmenu.cpp \
     context_menus/navigationContextMenu/navigationcontextmenu.cpp \
@@ -23,7 +25,9 @@ SOURCES += \
     waveform_mods/navigationwaveform.cpp
 
 HEADERS += \
+    basewaveform/Splitter/splitter.h \
     basewaveform/basewaveform.h \
+    basewaveform/timescaledraw.h \
     canalofsignal/canalofsignal.h \
     context_menus/centralContextMenu/centralcontextmenu.h \
     context_menus/navigationContextMenu/navigationcontextmenu.h \

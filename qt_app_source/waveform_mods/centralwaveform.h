@@ -16,7 +16,7 @@ public:
     QwtPlotPanner *panner;
     QwtPlotPicker *picker = nullptr;
 
-    CentralWaveform(CanalOfSignal base, double period_of_tick);
+    CentralWaveform(CanalOfSignal base, const dataStructure &data_from_file);
     void mousePressEvent(QMouseEvent *event);
     void changePickerBehavior();
     void enableAxisesFromContext();

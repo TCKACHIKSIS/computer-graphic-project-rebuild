@@ -1,7 +1,7 @@
 #include "centralwaveform.h"
 #include <context_menus/centralContextMenu/centralcontextmenu.h>
 #include <mainwindow/mainwindow.h>
-CentralWaveform::CentralWaveform(CanalOfSignal base, double period_of_tick) : BaseWaveForm(base, period_of_tick)
+CentralWaveform::CentralWaveform(CanalOfSignal base, const dataStructure &data_from_file) : BaseWaveForm(base, data_from_file)
 {
     this->enableAxis(QwtPlot::xBottom, true);
     this->enableAxis(QwtPlot::yLeft, true);

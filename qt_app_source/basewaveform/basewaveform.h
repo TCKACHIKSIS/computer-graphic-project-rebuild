@@ -8,6 +8,7 @@
 #include <QMouseEvent>
 
 #include <canalofsignal/canalofsignal.h>
+#include <filehandler/dataStructure.h>
 
 class BaseWaveForm : public QwtPlot
 {
@@ -17,8 +18,9 @@ private:
 public:
     std::vector< std::pair<double, double> > Coordinates();
     CanalOfSignal foundation;
-    BaseWaveForm(CanalOfSignal base, double period_of_tick);
-    void createSimplePlot(const double &period_of_tick);
+    dataStructure *data_from_file;
+    BaseWaveForm(CanalOfSignal base, const dataStructure &data_from_file);
+    void createSimplePlot(const double &period_of_tick, const dataStructure &data_from_file);
     void clearPlot();
     void createCoordinates(const double &period_of_tick);
 
