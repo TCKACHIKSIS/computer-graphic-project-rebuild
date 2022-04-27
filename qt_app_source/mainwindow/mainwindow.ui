@@ -34,6 +34,7 @@
      <string>Инструменты</string>
     </property>
     <addaction name="signalInformation"/>
+    <addaction name="fragment"/>
    </widget>
    <widget class="QMenu" name="menu_3">
     <property name="title">
@@ -101,6 +102,11 @@
   <action name="action_5">
    <property name="text">
     <string>Пункт 1</string>
+   </property>
+  </action>
+  <action name="fragment">
+   <property name="text">
+    <string>Фрагмент</string>
    </property>
   </action>
  </widget>

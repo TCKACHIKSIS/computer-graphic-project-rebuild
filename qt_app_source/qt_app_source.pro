@@ -19,6 +19,7 @@ SOURCES += \
     main.cpp \
     mainwindow/addwaveformaction.cpp \
     mainwindow/centralgridarea.cpp \
+    mainwindow/dialowWindowFragmet/dialogwindowfragment.cpp \
     mainwindow/mainwindow.cpp \
     mainwindow/navigationWindow/navigationwindow.cpp \
     waveform_mods/centralwaveform.cpp \
@@ -35,6 +36,7 @@ HEADERS += \
     filehandler/filehandler.h \
     mainwindow/addwaveformaction.h \
     mainwindow/centralgridarea.h \
+    mainwindow/dialowWindowFragmet/dialogwindowfragment.h \
     mainwindow/mainwindow.h \
     mainwindow/navigationWindow/navigationwindow.h \
     waveform_mods/centralwaveform.h \

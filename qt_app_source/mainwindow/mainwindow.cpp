@@ -16,7 +16,7 @@
 #include <QWindow>
 #include <QBoxLayout>
 #include <mainwindow/addwaveformaction.h>
-
+#include <mainwindow/mainwindow.h>
 
 
 
@@ -165,4 +165,19 @@ void MainWindow::on_signalInformation_triggered()
 
    info.exec();
    return;
+}
+
+void MainWindow::on_fragment_triggered()
+{
+    if (this->main_data_from_file == nullptr ){
+        QMessageBox msg;
+        msg.setText("Нет открытого канала");
+        msg.exec();
+        return;
+    }
+    this->fragment_window = new DialogWindowFragment(this);
+    this->fragment_window->exec();
+}
+void MainWindow::scaleToChosenFragment(int start, int end){
+    return;
 }

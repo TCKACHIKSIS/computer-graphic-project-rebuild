@@ -8,6 +8,7 @@
 #include <mainwindow/centralgridarea.h>
 #include <mainwindow/navigationWindow/navigationwindow.h>
 #include <waveform_mods/navigationwaveform.h>
+#include <mainwindow/dialowWindowFragmet/dialogwindowfragment.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -22,10 +23,13 @@ public:
     ~MainWindow();
 public slots:
       void addWaveformToCentral(const navigationWaveform &package);
+      void scaleToChosenFragment(int start, int end);
 private slots:
     void on_fileOpen_triggered();
 
     void on_signalInformation_triggered();
+
+    void on_fragment_triggered();
 
 private:
     Ui::MainWindow *ui;
@@ -37,6 +41,6 @@ private:
     QScrollArea *createWaveformView2(QWidget *parent);
     QMdiArea *right_mdi;
     NavigationWindow *navigation_window;
-
+    DialogWindowFragment *fragment_window;
 };
 #endif // MAINWINDOW_H

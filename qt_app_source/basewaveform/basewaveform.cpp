@@ -17,19 +17,12 @@ BaseWaveForm::BaseWaveForm(CanalOfSignal base, const dataStructure &data_from_fi
 
 void BaseWaveForm::createSimplePlot( const double &period_of_tick, const dataStructure &data_from_file){
 
-    Splitter *splitter = new Splitter();
-    std::vector<int> date = splitter->split(data_from_file.signal_start_date, '-');
-    std::vector<int> time = splitter->split(data_from_file.signal_start_time, ':');
-    delete(splitter);
-
-
     this->setStyleSheet("border: 1px solid black ;color:black");
     this->createCoordinates(period_of_tick);
     this->enableAxis(QwtPlot::xBottom, false);
     this->enableAxis(QwtPlot::yLeft, false);
 
     this->setAxisScaleDraw(QwtPlot::xBottom, new TimeScaleDraw);
-
 
     QwtPlotCurve *curve = new QwtPlotCurve();
     curve->setTitle(this->foundation.name_of_channel.c_str());
