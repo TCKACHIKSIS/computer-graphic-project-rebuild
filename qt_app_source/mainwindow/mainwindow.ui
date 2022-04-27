@@ -35,6 +35,7 @@
     </property>
     <addaction name="signalInformation"/>
     <addaction name="fragment"/>
+    <addaction name="resetScale"/>
    </widget>
    <widget class="QMenu" name="menu_3">
     <property name="title">
@@ -107,6 +108,11 @@
   <action name="fragment">
    <property name="text">
     <string>Фрагмент</string>
+   </property>
+  </action>
+  <action name="resetScale">
+   <property name="text">
+    <string>Восстановить первоначальный масштаб</string>
    </property>
   </action>
  </widget>

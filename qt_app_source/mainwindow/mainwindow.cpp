@@ -178,13 +178,24 @@ void MainWindow::on_fragment_triggered()
     this->fragment_window = new DialogWindowFragment(this);
     this->fragment_window->exec();
 }
+
 void MainWindow::scaleToChosenFragment(int start, int end){
     for ( int i = 0; i < this->main_waveform_area->widget()->layout()->count(); i++ ){
         std::cout << start << " " << end << std::endl;
         CentralWaveform *widget = (CentralWaveform*)this->main_waveform_area->widget()->layout()->itemAt(i)->widget();
-        widget->setAxisScale(QwtPlot::xBottom, start, end);
+        widget->setAxisScale(QwtPlot::xBottom, this->main_data_from_file->period_of_tick*start, this->main_data_from_file->period_of_tick*end);
         widget->replot();
     }
 
     return;
 }
+
+void MainWindow::on_resetScale_triggered()
+{
+  for ( int i = 0; i < this->main_waveform_area->widget()->layout()->count(); i++ ){
+        CentralWaveform *widget = (CentralWaveform*)this->main_waveform_area->widget()->layout()->itemAt(i)->widget();
+        widget->setAxisAutoScale(QwtPlot::xBottom);
+        widget->replot();
+    }
+}
+

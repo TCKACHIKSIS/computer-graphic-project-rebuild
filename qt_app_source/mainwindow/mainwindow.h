@@ -31,6 +31,8 @@ private slots:
 
     void on_fragment_triggered();
 
+    void on_resetScale_triggered();
+
 private:
     Ui::MainWindow *ui;
     dataStructure *main_data_from_file;
