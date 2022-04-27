@@ -3,6 +3,7 @@
 #include <mainwindow/mainwindow.h>
 CentralWaveform::CentralWaveform(CanalOfSignal base, const dataStructure &data_from_file) : BaseWaveForm(base, data_from_file)
 {
+
     this->enableAxis(QwtPlot::xBottom, true);
     this->enableAxis(QwtPlot::yLeft, true);
 

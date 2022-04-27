@@ -179,5 +179,12 @@ void MainWindow::on_fragment_triggered()
     this->fragment_window->exec();
 }
 void MainWindow::scaleToChosenFragment(int start, int end){
+    for ( int i = 0; i < this->main_waveform_area->widget()->layout()->count(); i++ ){
+        std::cout << start << " " << end << std::endl;
+        CentralWaveform *widget = (CentralWaveform*)this->main_waveform_area->widget()->layout()->itemAt(i)->widget();
+        widget->setAxisScale(QwtPlot::xBottom, start, end);
+        widget->replot();
+    }
+
     return;
 }

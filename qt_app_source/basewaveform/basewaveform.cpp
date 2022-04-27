@@ -24,6 +24,7 @@ void BaseWaveForm::createSimplePlot( const double &period_of_tick, const dataStr
 
     this->setAxisScaleDraw(QwtPlot::xBottom, new TimeScaleDraw);
 
+
     QwtPlotCurve *curve = new QwtPlotCurve();
     curve->setTitle(this->foundation.name_of_channel.c_str());
     curve->setPen( Qt::blue, 2 );
