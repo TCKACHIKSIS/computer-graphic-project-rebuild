@@ -9,6 +9,7 @@
 #include <mainwindow/navigationWindow/navigationwindow.h>
 #include <waveform_mods/navigationwaveform.h>
 #include <mainwindow/dialowWindowFragmet/dialogwindowfragment.h>
+#include <utility>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -21,6 +22,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    std::pair<int, int> *current_scale_central_waveform;
 public slots:
       void addWaveformToCentral(const navigationWaveform &package);
       void scaleToChosenFragment(int start, int end);

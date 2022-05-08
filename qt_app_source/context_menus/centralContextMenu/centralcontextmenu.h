@@ -10,11 +10,13 @@ public:
     QAction *delete_waveform;
     QAction *set_behavior_picker;
     QAction *enable_axis;
+    QAction *set_curve_markers;
     centralContextMenu(CentralWaveform *parent_plot);
 public slots:
     void deleteWaveformFromeCentral();
     void setPickerBehavior();
     void enableAxises();
+    void setMarkers();
 };
 
 #endif // CENTRALCONTEXTMENU_H

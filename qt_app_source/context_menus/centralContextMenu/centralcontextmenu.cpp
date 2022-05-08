@@ -22,12 +22,22 @@ centralContextMenu::centralContextMenu(CentralWaveform *parent_plot)
         this->addAction(this->enable_axis);
     }
 
+    if ( this->parentplot->markers == nullptr ){
+        this->set_curve_markers = new QAction("Включить маркеры точек");
+        this->addAction(this->set_curve_markers);
+    }
+    else {
+        this->set_curve_markers = new QAction("Выключить маркеры точек");
+        this->addAction(this->set_curve_markers);
+    }
+
     this->delete_waveform = new QAction("Удалить", this);
     this->addAction(this->delete_waveform);
 
     connect(this->delete_waveform, &QAction::triggered, this, &centralContextMenu::deleteWaveformFromeCentral );
     connect(this->set_behavior_picker, &QAction::triggered, this, &centralContextMenu::setPickerBehavior);
     connect(this->enable_axis, &QAction::triggered, this, &centralContextMenu::enableAxises);
+    connect(this->set_curve_markers, &QAction::triggered, this, &centralContextMenu::setMarkers);
 }
 
 void centralContextMenu::deleteWaveformFromeCentral(){
@@ -40,4 +50,8 @@ void centralContextMenu::setPickerBehavior(){
 
 void centralContextMenu::enableAxises(){
     this->parentplot->enableAxisesFromContext();
+}
+
+void centralContextMenu::setMarkers(){
+    this->parentplot->changeMarkersVision();
 }

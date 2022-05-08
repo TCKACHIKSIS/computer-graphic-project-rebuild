@@ -13,7 +13,7 @@ void DialogWindowFragment::fragmentWasChosen(){
 }
 
 
-DialogWindowFragment::DialogWindowFragment( MainWindow *window )
+DialogWindowFragment::DialogWindowFragment( MainWindow *window, std::pair<int, int> &scale )
 {
     this->main_window = window;
 
@@ -24,6 +24,11 @@ DialogWindowFragment::DialogWindowFragment( MainWindow *window )
 
     this->start_value = new QLineEdit();
     this->end_value = new QLineEdit();
+
+    if ( scale.first != 0 || scale.second != 0 ){
+        this->start_value->setText(std::to_string(scale.first).c_str());
+        this->end_value->setText(std::to_string(scale.second).c_str());
+    }
 
     this->button = new QPushButton();
     button->setText("OK");

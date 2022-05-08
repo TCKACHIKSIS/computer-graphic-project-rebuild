@@ -100,6 +100,13 @@ void MainWindow::on_fileOpen_triggered()
     this->right_mdi->setFixedSize(170, 600);
     this->navigation_window->setFixedSize(170, 600);
     this->right_mdi->addSubWindow(navigation_window, Qt::FramelessWindowHint);
+
+    if ( this->current_scale_central_waveform != nullptr ){
+        this->current_scale_central_waveform = nullptr;
+    }
+    this->current_scale_central_waveform = new std::pair<int, int>();
+    this->current_scale_central_waveform->first = 0;
+    this->current_scale_central_waveform->second = 0;
 }
 
 
@@ -175,13 +182,14 @@ void MainWindow::on_fragment_triggered()
         msg.exec();
         return;
     }
-    this->fragment_window = new DialogWindowFragment(this);
+    this->fragment_window = new DialogWindowFragment(this, *this->current_scale_central_waveform);
     this->fragment_window->exec();
 }
 
 void MainWindow::scaleToChosenFragment(int start, int end){
     for ( int i = 0; i < this->main_waveform_area->widget()->layout()->count(); i++ ){
-        std::cout << start << " " << end << std::endl;
+        this->current_scale_central_waveform->first = start;
+        this->current_scale_central_waveform->second = end;
         CentralWaveform *widget = (CentralWaveform*)this->main_waveform_area->widget()->layout()->itemAt(i)->widget();
         widget->setAxisScale(QwtPlot::xBottom, this->main_data_from_file->period_of_tick*start, this->main_data_from_file->period_of_tick*end);
         widget->replot();
@@ -195,6 +203,7 @@ void MainWindow::on_resetScale_triggered()
   for ( int i = 0; i < this->main_waveform_area->widget()->layout()->count(); i++ ){
         CentralWaveform *widget = (CentralWaveform*)this->main_waveform_area->widget()->layout()->itemAt(i)->widget();
         widget->setAxisAutoScale(QwtPlot::xBottom);
+        widget->setAxisAutoScale(QwtPlot::yLeft);
         widget->replot();
     }
 }

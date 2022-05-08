@@ -7,12 +7,16 @@ CentralWaveform::CentralWaveform(CanalOfSignal base, const dataStructure &data_f
     this->enableAxis(QwtPlot::xBottom, true);
     this->enableAxis(QwtPlot::yLeft, true);
 
+    /*
     this->magnifier = new QwtPlotMagnifier(this->canvas());
     this->magnifier->setMouseButton(Qt::MiddleButton);
 
     this->panner = new QwtPlotPanner(this->canvas());
     this->panner->setMouseButton(Qt::LeftButton);
+    */
 
+    this->zoomer = new QwtPlotZoomer(this->canvas());
+    this->zoomer->setRubberBandPen(QPen(Qt::white));
 }
 void CentralWaveform::mousePressEvent(QMouseEvent *event){
     if (event->button() == Qt::RightButton){
@@ -40,4 +44,20 @@ void CentralWaveform::changePickerBehavior(){
 void CentralWaveform::enableAxisesFromContext(){
     this->enableAxis(QwtPlot::xBottom, !this->axisEnabled(QwtPlot::xBottom));
     this->enableAxis(QwtPlot::yLeft, !this->axisEnabled(QwtPlot::yLeft));
+}
+
+void CentralWaveform::changeMarkersVision(){
+    if ( this->markers == nullptr ){
+        this->markers = new QwtSymbol( QwtSymbol::Ellipse,
+                                   QBrush( Qt::yellow ), QPen( Qt::red, 2 ), QSize( 8, 8 ) );
+        this->curve->setSymbol(this->markers);
+        this->replot();
+    }
+    else{
+        this->curve->setSymbol(nullptr);
+        this->markers = nullptr;
+        this->replot();
+
+    }
+
 }

@@ -12,7 +12,7 @@ class MainWindow;
 class DialogWindowFragment : public QDialog
 {
 public:
-    DialogWindowFragment(MainWindow *window);
+    DialogWindowFragment(MainWindow *window, std::pair<int, int> &scale);
     QBoxLayout *grid_layout;
     QLineEdit *start_value;
     QLineEdit *end_value;

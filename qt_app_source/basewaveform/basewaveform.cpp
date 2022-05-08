@@ -1,5 +1,4 @@
 #include "basewaveform.h"
-#include <qwt_plot_curve.h>
 #include <QPolygonF>
 #include <QPointF>
 #include <QMenu>
@@ -21,21 +20,24 @@ void BaseWaveForm::createSimplePlot( const double &period_of_tick, const dataStr
     this->createCoordinates(period_of_tick);
     this->enableAxis(QwtPlot::xBottom, false);
     this->enableAxis(QwtPlot::yLeft, false);
+    this->grid_on_plot = new QwtPlotGrid();
+    this->grid_on_plot->setMajorPen(Qt::gray);
+    this->grid_on_plot->attach(this);
 
     this->setAxisScaleDraw(QwtPlot::xBottom, new TimeScaleDraw);
 
 
-    QwtPlotCurve *curve = new QwtPlotCurve();
-    curve->setTitle(this->foundation.name_of_channel.c_str());
-    curve->setPen( Qt::blue, 2 );
+    this->curve = new QwtPlotCurve();
+    this->curve->setTitle(this->foundation.name_of_channel.c_str());
+    this->curve->setPen( Qt::blue, 2 );
     QPolygonF points;
 
     for ( auto coordinate: this->coordinates ){
         points << QPointF(coordinate.first, coordinate.second);
     }
 
-    curve->setSamples( points );
-    curve->attach( this );
+    this->curve->setSamples( points );
+    this->curve->attach( this );
     this->setContextMenuPolicy(Qt::CustomContextMenu);
 
 }
