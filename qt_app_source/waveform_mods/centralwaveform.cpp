@@ -1,6 +1,7 @@
 #include "centralwaveform.h"
 #include <context_menus/centralContextMenu/centralcontextmenu.h>
 #include <mainwindow/mainwindow.h>
+#include <algorithm>
 CentralWaveform::CentralWaveform(CanalOfSignal base, const dataStructure &data_from_file) : BaseWaveForm(base, data_from_file)
 {
 
@@ -60,4 +61,23 @@ void CentralWaveform::changeMarkersVision(){
 
     }
 
+}
+
+void CentralWaveform::setLocalScale(){
+    std::cout << "ok1" << std::endl;
+   if ( this->mainWindow->current_scale_central_waveform->first == 0 && this->mainWindow->current_scale_central_waveform->second == 0){
+        this->setGlobalScale();
+    }
+    std::cout << "ok2" << std::endl;
+    auto scale_y_min = std::max_element(this->foundation.values_of_signal.begin(), this->foundation.values_of_signal.end());
+    auto scale_y_max = std::min_element(this->foundation.values_of_signal.begin(), this->foundation.values_of_signal.end());
+    this-> setAxisScale(QwtPlot::yLeft, *scale_y_max, *scale_y_min);
+    this->replot();
+}
+
+void CentralWaveform::setGlobalScale(){
+    auto scale_y_min = std::max_element(this->foundation.values_of_signal.begin(), this->foundation.values_of_signal.end());
+    auto scale_y_max = std::min_element(this->foundation.values_of_signal.begin(), this->foundation.values_of_signal.end());
+    this-> setAxisScale(QwtPlot::yLeft, *scale_y_max, *scale_y_min);
+    this->replot();
 }

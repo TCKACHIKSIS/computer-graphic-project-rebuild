@@ -14,5 +14,5 @@ void navigationWaveform::mousePressEvent(QMouseEvent *event){
 
 void navigationWaveform::add_wave_form_was_clicked(){
     this->mainWindow->addWaveformToCentral(*this);
-
 }
+

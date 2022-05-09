@@ -26,6 +26,8 @@ public:
     void changePickerBehavior();
     void enableAxisesFromContext();
     void setAxisBorders();
+    void setLocalScale();
+    void setGlobalScale();
 };
 
 #endif // CENTRALWAVEFORM_H

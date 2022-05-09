@@ -23,7 +23,8 @@ SOURCES += \
     mainwindow/mainwindow.cpp \
     mainwindow/navigationWindow/navigationwindow.cpp \
     waveform_mods/centralwaveform.cpp \
-    waveform_mods/navigationwaveform.cpp
+    waveform_mods/navigationwaveform.cpp \
+    waveform_mods/scales_for_central_waveforms/templatescaleforcentralwaveform.cpp
 
 HEADERS += \
     basewaveform/Splitter/splitter.h \
@@ -40,7 +41,8 @@ HEADERS += \
     mainwindow/mainwindow.h \
     mainwindow/navigationWindow/navigationwindow.h \
     waveform_mods/centralwaveform.h \
-    waveform_mods/navigationwaveform.h
+    waveform_mods/navigationwaveform.h \
+    waveform_mods/scales_for_central_waveforms/templatescaleforcentralwaveform.h
 
 FORMS += \
     mainwindow/mainwindow.ui
