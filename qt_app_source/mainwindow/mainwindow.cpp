@@ -111,7 +111,7 @@ void MainWindow::on_fileOpen_triggered()
 
 
 void MainWindow::addWaveformToCentral(const navigationWaveform &package){
-    BaseWaveForm *a = new CentralWaveform(package.foundation, *this->main_data_from_file);
+    BaseWaveForm *a = new CentralWaveform(package.foundation, *this->main_data_from_file, this);
     a->setTitle(a->foundation.name_of_channel.c_str());
     a->setMaximumWidth(this->main_waveform_area->width());
     a->setMinimumHeight(this->main_waveform_area->height()/5);
@@ -200,6 +200,8 @@ void MainWindow::scaleToChosenFragment(int start, int end){
 
 void MainWindow::on_resetScale_triggered()
 {
+  this->current_scale_central_waveform->first = 0;
+  this->current_scale_central_waveform->second = 0;
   for ( int i = 0; i < this->main_waveform_area->widget()->layout()->count(); i++ ){
         CentralWaveform *widget = (CentralWaveform*)this->main_waveform_area->widget()->layout()->itemAt(i)->widget();
         widget->setAxisAutoScale(QwtPlot::xBottom);
@@ -208,3 +210,56 @@ void MainWindow::on_resetScale_triggered()
     }
 }
 
+void MainWindow::setSingleLocalScale(){
+    if ( this->main_waveform_area->widget()->layout()->isEmpty() ){
+        return;
+    }
+    //здесь криво сделано, два раза первый элемент проходит и вообще все криво и уеби*но ты червяк, будет время- пределай
+    std::pair<double, double> scale_y_borders;
+    CentralWaveform *widget = (CentralWaveform*)this->main_waveform_area->widget()->layout()->itemAt(0)->widget();
+    scale_y_borders = widget->getMaxAndMinValueOfSignalInFramgent();
+
+    for ( int i = 0; i < this->main_waveform_area->widget()->layout()->count(); i++ ){
+        widget = (CentralWaveform*)this->main_waveform_area->widget()->layout()->itemAt(i)->widget();
+        std::pair<double, double> ptr = widget->getMaxAndMinValueOfSignalInFramgent();
+        if ( ptr.first < scale_y_borders.first ){
+            scale_y_borders.first = ptr.first;
+        }
+        if ( ptr.second > scale_y_borders.second ){
+            scale_y_borders.second = ptr.second;
+        }
+    }
+    for ( int i = 0; i < this->main_waveform_area->widget()->layout()->count(); i++ ){
+        widget = (CentralWaveform*)this->main_waveform_area->widget()->layout()->itemAt(i)->widget();
+        widget->setAxisScale(QwtPlot::yLeft, scale_y_borders.first, scale_y_borders.second );
+        widget->replot();
+    }
+    return;
+}
+
+void MainWindow::setSingleGlobalScale(){
+    if ( this->main_waveform_area->widget()->layout()->isEmpty() ){
+        return;
+    }
+    //здесь криво сделано, два раза первый элемент проходит и вообще все криво и уеби*но ты червяк, будет время- пределай
+    std::pair<double, double> scale_y_borders;
+    CentralWaveform *widget = (CentralWaveform*)this->main_waveform_area->widget()->layout()->itemAt(0)->widget();
+    scale_y_borders = widget->getMaxAndMinInAllSignal();
+
+    for ( int i = 0; i < this->main_waveform_area->widget()->layout()->count(); i++ ){
+        widget = (CentralWaveform*)this->main_waveform_area->widget()->layout()->itemAt(i)->widget();
+        std::pair<double, double> ptr = widget->getMaxAndMinInAllSignal();
+        if ( ptr.first < scale_y_borders.first ){
+            scale_y_borders.first = ptr.first;
+        }
+        if ( ptr.second > scale_y_borders.second ){
+            scale_y_borders.second = ptr.second;
+        }
+    }
+    for ( int i = 0; i < this->main_waveform_area->widget()->layout()->count(); i++ ){
+        widget = (CentralWaveform*)this->main_waveform_area->widget()->layout()->itemAt(i)->widget();
+        widget->setAxisScale(QwtPlot::yLeft, scale_y_borders.first, scale_y_borders.second );
+        widget->replot();
+    }
+    return;
+}

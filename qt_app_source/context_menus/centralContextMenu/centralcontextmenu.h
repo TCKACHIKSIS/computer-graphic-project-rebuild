@@ -24,6 +24,8 @@ public slots:
     void setMarkers();
     void setLocalScale();
     void setGlobalScale();
+    void setSingleLocalScale();
+    void setSingleGlobalScale();
 };
 
 #endif // CENTRALCONTEXTMENU_H

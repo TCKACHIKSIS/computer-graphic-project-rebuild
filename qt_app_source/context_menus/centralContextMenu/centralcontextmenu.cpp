@@ -1,5 +1,6 @@
 #include "centralcontextmenu.h"
 #include <iostream>
+#include <mainwindow/mainwindow.h>
 centralContextMenu::centralContextMenu(CentralWaveform *parent_plot)
 {
     this->parentplot = parent_plot;
@@ -13,7 +14,7 @@ centralContextMenu::centralContextMenu(CentralWaveform *parent_plot)
     this->set_scale = new QAction("Установить масштабирование");
     this->addAction(this->set_scale);
 
-    this->single_local_scale = new QAction("Единое локальное масштабирвоание");
+    this->single_local_scale = new QAction("Единое локальное масштабирование");
     this->addAction(this->single_local_scale);
 
     this->single_global_scale = new QAction("Единое глобальное масштабирование");
@@ -57,6 +58,8 @@ centralContextMenu::centralContextMenu(CentralWaveform *parent_plot)
     connect(this->set_curve_markers, &QAction::triggered, this, &centralContextMenu::setMarkers);
     connect(this->local_scale, &QAction::triggered, this, &centralContextMenu::setLocalScale);
     connect(this->global_scale, &QAction::triggered, this, &centralContextMenu::setGlobalScale);
+    connect(this->single_local_scale, &QAction::triggered, this, &centralContextMenu::setSingleLocalScale);
+    connect(this->single_global_scale, &QAction::triggered, this, &centralContextMenu::setSingleGlobalScale);
 }
 
 void centralContextMenu::deleteWaveformFromeCentral(){
@@ -81,4 +84,12 @@ void centralContextMenu::setLocalScale(){
 
 void centralContextMenu::setGlobalScale(){
     this->parentplot->setGlobalScale();
+}
+
+void centralContextMenu::setSingleLocalScale(){
+    this->parentplot->mainWindow->setSingleLocalScale();
+}
+
+void centralContextMenu::setSingleGlobalScale(){
+    this->parentplot->mainWindow->setSingleGlobalScale();
 }

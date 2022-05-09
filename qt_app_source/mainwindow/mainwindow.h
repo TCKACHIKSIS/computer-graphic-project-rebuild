@@ -26,6 +26,8 @@ public:
 public slots:
       void addWaveformToCentral(const navigationWaveform &package);
       void scaleToChosenFragment(int start, int end);
+      void setSingleLocalScale();
+      void setSingleGlobalScale();
 private slots:
     void on_fileOpen_triggered();
 

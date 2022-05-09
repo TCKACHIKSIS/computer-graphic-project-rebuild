@@ -8,6 +8,7 @@
 #include <QPen>
 #include <qwt_plot_zoomer.h>
 #include <qwt_symbol.h>
+#include <utility>
 class MainWindow;
 
 class CentralWaveform : public BaseWaveForm
@@ -20,14 +21,19 @@ public:
     QwtPlotZoomer *zoomer;
     QwtSymbol *markers = nullptr;
 
-    CentralWaveform(CanalOfSignal base, const dataStructure &data_from_file);
+    CentralWaveform(CanalOfSignal base, const dataStructure &data_from_file, MainWindow *mwind);
     void mousePressEvent(QMouseEvent *event);
     void changeMarkersVision();
     void changePickerBehavior();
     void enableAxisesFromContext();
+
     void setAxisBorders();
+
     void setLocalScale();
+    std::pair<double, double> getMaxAndMinValueOfSignalInFramgent();
+    std::pair<double, double> getMaxAndMinInAllSignal();
     void setGlobalScale();
+
 };
 
 #endif // CENTRALWAVEFORM_H
