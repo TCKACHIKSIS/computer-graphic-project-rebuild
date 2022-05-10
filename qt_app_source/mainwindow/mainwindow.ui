@@ -66,6 +66,24 @@
      <string>Осцилограммы</string>
     </property>
    </widget>
+   <widget class="QMenu" name="menu_7">
+    <property name="title">
+     <string>Моделирование</string>
+    </property>
+    <addaction name="separator"/>
+    <addaction name="delayed_single_pulse"/>
+    <addaction name="action"/>
+    <addaction name="action_6"/>
+    <addaction name="action_7"/>
+    <addaction name="action_8"/>
+    <addaction name="action_9"/>
+    <addaction name="separator"/>
+    <addaction name="action_12"/>
+    <addaction name="action_13"/>
+    <addaction name="action_14"/>
+    <addaction name="action_15"/>
+    <addaction name="action_16"/>
+   </widget>
    <addaction name="menu"/>
    <addaction name="menu_2"/>
    <addaction name="menu_3"/>
@@ -73,6 +91,7 @@
    <addaction name="menu_4"/>
    <addaction name="menu_5"/>
    <addaction name="menu_6"/>
+   <addaction name="menu_7"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="fileOpen">
@@ -113,6 +132,61 @@
   <action name="resetScale">
    <property name="text">
     <string>Восстановить первоначальный масштаб</string>
+   </property>
+  </action>
+  <action name="delayed_single_pulse">
+   <property name="text">
+    <string>Задержанный единичный импульс</string>
+   </property>
+  </action>
+  <action name="action">
+   <property name="text">
+    <string>Задержанный единичный скачок</string>
+   </property>
+  </action>
+  <action name="action_6">
+   <property name="text">
+    <string>Дискретизированная убывающая экспонента</string>
+   </property>
+  </action>
+  <action name="action_7">
+   <property name="text">
+    <string>Дискретизированная синусоида</string>
+   </property>
+  </action>
+  <action name="action_8">
+   <property name="text">
+    <string>Меандр</string>
+   </property>
+  </action>
+  <action name="action_9">
+   <property name="text">
+    <string>Пила</string>
+   </property>
+  </action>
+  <action name="action_12">
+   <property name="text">
+    <string>Амплитудная модуляция</string>
+   </property>
+  </action>
+  <action name="action_13">
+   <property name="text">
+    <string>Сигнал с экспоненциальной огибающей</string>
+   </property>
+  </action>
+  <action name="action_14">
+   <property name="text">
+    <string>Сигнал с балансной огибающей</string>
+   </property>
+  </action>
+  <action name="action_15">
+   <property name="text">
+    <string>Сигнал с тональной огибающей</string>
+   </property>
+  </action>
+  <action name="action_16">
+   <property name="text">
+    <string>Сигнал с линейной частотной модуляцией</string>
    </property>
   </action>
  </widget>

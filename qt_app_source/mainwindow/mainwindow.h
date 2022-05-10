@@ -37,9 +37,13 @@ private slots:
 
     void on_resetScale_triggered();
 
+
+    void on_delayed_single_pulse_triggered();
+
 private:
     Ui::MainWindow *ui;
     dataStructure *main_data_from_file;
+    std::vector<dataStructure> simulated_signals;
     CentralGridArea *central_grid;
     QTabWidget *main_tab_widget;
     QScrollArea *createWaveformView();
@@ -48,5 +52,6 @@ private:
     QMdiArea *right_mdi;
     NavigationWindow *navigation_window;
     DialogWindowFragment *fragment_window;
+
 };
 #endif // MAINWINDOW_H

@@ -22,6 +22,8 @@ SOURCES += \
     mainwindow/dialowWindowFragmet/dialogwindowfragment.cpp \
     mainwindow/mainwindow.cpp \
     mainwindow/navigationWindow/navigationwindow.cpp \
+    mainwindow/simulationWindow/basesimulionwindow.cpp \
+    mainwindow/simulationWindow/delayedsinglepulsewindow.cpp \
     waveform_mods/centralwaveform.cpp \
     waveform_mods/navigationwaveform.cpp \
     waveform_mods/scales_for_central_waveforms/templatescaleforcentralwaveform.cpp
@@ -40,6 +42,8 @@ HEADERS += \
     mainwindow/dialowWindowFragmet/dialogwindowfragment.h \
     mainwindow/mainwindow.h \
     mainwindow/navigationWindow/navigationwindow.h \
+    mainwindow/simulationWindow/basesimulionwindow.h \
+    mainwindow/simulationWindow/delayedsinglepulsewindow.h \
     waveform_mods/centralwaveform.h \
     waveform_mods/navigationwaveform.h \
     waveform_mods/scales_for_central_waveforms/templatescaleforcentralwaveform.h

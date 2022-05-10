@@ -17,6 +17,7 @@
 #include <QBoxLayout>
 #include <mainwindow/addwaveformaction.h>
 #include <mainwindow/mainwindow.h>
+#include <mainwindow/simulationWindow/delayedsinglepulsewindow.h>
 
 
 
@@ -263,3 +264,13 @@ void MainWindow::setSingleGlobalScale(){
     }
     return;
 }
+
+
+
+
+void MainWindow::on_delayed_single_pulse_triggered()
+{
+    DelayedSinglePulseWindow *d_s_p_window = new DelayedSinglePulseWindow(this);
+    d_s_p_window->exec();
+}
+
