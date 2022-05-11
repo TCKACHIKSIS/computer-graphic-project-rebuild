@@ -8,6 +8,8 @@ class DelayedSinglePulseWindow : public BaseSimulionWindow
 public:
     DelayedSinglePulseWindow(MainWindow *mwind);
     QLineEdit *n_0;
+
+    void simulateSignal();
 };
 
 #endif // DELAYEDSINGLEPULSEWINDOW_H
