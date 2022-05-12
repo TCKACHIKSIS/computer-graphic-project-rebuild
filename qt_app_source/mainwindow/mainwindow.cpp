@@ -50,6 +50,32 @@ QScrollArea* MainWindow::createWaveformView(){
 
     return scroll;
 }
+void MainWindow::initialInterfaceSetup(){
+    this->central_grid = new CentralGridArea();
+    this->setCentralWidget(this->central_grid);
+    this->main_waveform_area = this->createWaveformView();
+    this->navigation_window = new NavigationWindow();
+
+
+    this->central_grid->grid->addWidget(this->main_waveform_area, 0, 0);
+    this->central_grid->grid->setColumnStretch(0, 14);
+
+
+    this->right_mdi = new QMdiArea();
+
+    this->central_grid->grid->setColumnStretch(1, 1);
+    this->central_grid->grid->addWidget(this->right_mdi, 0, 1);
+    this->right_mdi->setFixedSize(170, 600);
+    this->navigation_window->setFixedSize(170, 600);
+    this->right_mdi->addSubWindow(this->navigation_window, Qt::FramelessWindowHint);
+
+    if ( this->current_scale_central_waveform != nullptr ){
+        this->current_scale_central_waveform = nullptr;
+    }
+    this->current_scale_central_waveform = new std::pair<int, int>();
+    this->current_scale_central_waveform->first = 0;
+    this->current_scale_central_waveform->second = 0;
+}
 
 void MainWindow::on_fileOpen_triggered()
 {

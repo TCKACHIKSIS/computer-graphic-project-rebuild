@@ -18,7 +18,8 @@ public:
 
     QLineEdit *number_of_samples;
     QLineEdit *sampling_frequency;
-    dataStructure *new_signal;
+    CanalOfSignal *new_signal = nullptr;
+    bool isRecreateChannel = false;
     void readBaseParametrs();
 };
 

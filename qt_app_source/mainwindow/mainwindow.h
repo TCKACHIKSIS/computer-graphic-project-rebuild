@@ -24,13 +24,19 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     std::pair<int, int> *current_scale_central_waveform;
-    dataStructure *main_data_from_file = nullptr;
-    std::vector<dataStructure> simulated_signals;
-    std::map<std::string, int> counting_simulated_signals = {
-        {"DelayedSinglePulse", 0}
-    };
 
+    dataStructure *main_data_from_file = nullptr;
+    dataStructure *simulated_signals;
+    QMdiArea *right_mdi;
     NavigationWindow *navigation_window;
+
+    Ui::MainWindow *ui;
+    CentralGridArea *central_grid;
+    QTabWidget *main_tab_widget;
+    QScrollArea *createWaveformView();
+    QScrollArea *main_waveform_area;
+    QScrollArea *createWaveformView2(QWidget *parent);
+    void openBasicInterfaceElements();
 public slots:
       void addWaveformToCentral(const navigationWaveform &package);
       void scaleToChosenFragment(int start, int end);
@@ -49,13 +55,7 @@ private slots:
     void on_delayed_single_pulse_triggered();
 
 private:
-    Ui::MainWindow *ui;
-    CentralGridArea *central_grid;
-    QTabWidget *main_tab_widget;
-    QScrollArea *createWaveformView();
-    QScrollArea *main_waveform_area;
-    QScrollArea *createWaveformView2(QWidget *parent);
-    QMdiArea *right_mdi;
+
 
     DialogWindowFragment *fragment_window;
 

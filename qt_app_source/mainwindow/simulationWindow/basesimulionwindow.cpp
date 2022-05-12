@@ -1,5 +1,6 @@
 #include "basesimulionwindow.h"
 #include <mainwindow/mainwindow.h>
+#include <QMessageBox>
 
 BaseSimulionWindow::BaseSimulionWindow(MainWindow *mwind)
 {
@@ -25,8 +26,63 @@ void clearLayout(QLayout *layout) {
 }
 
 void BaseSimulionWindow::readBaseParametrs(){
+    if ( this->main_window->main_data_from_file == nullptr){
+ //вынести в отделную функцию отсюда
+        this->main_window->central_grid = new CentralGridArea();
+        this->main_window->setCentralWidget(this->main_window->central_grid);
+        this->main_window->main_waveform_area = this->main_window->createWaveformView();
+        this->main_window->navigation_window = new NavigationWindow();
+
+
+        this->main_window->central_grid->grid->addWidget(this->main_window->main_waveform_area, 0, 0);
+        this->main_window->central_grid->grid->setColumnStretch(0, 14);
+
+
+        this->main_window->right_mdi = new QMdiArea();
+
+        this->main_window->central_grid->grid->setColumnStretch(1, 1);
+        this->main_window->central_grid->grid->addWidget(this->main_window->right_mdi, 0, 1);
+        this->main_window->right_mdi->setFixedSize(170, 600);
+        this->main_window->navigation_window->setFixedSize(170, 600);
+        this->main_window->right_mdi->addSubWindow(this->main_window->navigation_window, Qt::FramelessWindowHint);
+
+        if ( this->main_window->current_scale_central_waveform != nullptr ){
+            this->main_window->current_scale_central_waveform = nullptr;
+        }
+        this->main_window->current_scale_central_waveform = new std::pair<int, int>();
+        this->main_window->current_scale_central_waveform->first = 0;
+        this->main_window->current_scale_central_waveform->second = 0;
+  //      досюда
+
+
+        this->isRecreateChannel = true;
+
+        if ( this->number_of_samples->text().size() == 0 || this->sampling_frequency->text().size() == 0 ){
+            QMessageBox::warning(this, "Внимание", "Введите необходимую информацию");
+            return;
+        }
+        this->main_window->main_data_from_file = new dataStructure();
+        this->main_window->main_data_from_file->number_of_channels = 1;
+        this->main_window->main_data_from_file->channels_names.push_back("Model_1_1");
+        this->main_window->main_data_from_file->number_of_samples = this->number_of_samples->text().toInt();
+        this->main_window->main_data_from_file->period_of_tick = 1 / this->sampling_frequency->text().toInt();
+        this->main_window->main_data_from_file->sampling_frequency = this->sampling_frequency->text().toInt();
+        this->main_window->main_data_from_file->signal_start_date = "01-01-2000";
+        this->main_window->main_data_from_file->signal_start_time = "00:00:00";
+        return;
+    }
+    else{
+        if ( (this->sampling_frequency->text().size() != 0 && this->sampling_frequency->text().toInt() != this->main_window->main_data_from_file->sampling_frequency) ||
+             (this->number_of_samples->text().size() != 0 && this->number_of_samples->text().toInt() != this->main_window->main_data_from_file->number_of_samples)){
+            return;
+
+        }
+    }
+}
+
+/*  void BaseSimulionWindow::readBaseParametrs(){
     //это п***здец
-    this->new_signal = new dataStructure();
+   this->new_signal = new dataStructure();
 
     if ( this->number_of_samples->text().size() == 0 ){
         if ( this->main_window->main_data_from_file != nullptr ){
@@ -68,3 +124,4 @@ void BaseSimulionWindow::readBaseParametrs(){
     delete(this->main_window->main_data_from_file);
     this->main_window->main_data_from_file = nullptr;
 }
+   */

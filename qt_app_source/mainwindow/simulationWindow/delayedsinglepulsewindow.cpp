@@ -2,7 +2,7 @@
 #include <QLabel>
 #include <filehandler/dataStructure.h>
 #include <mainwindow/mainwindow.h>
-
+#include <QMessageBox>
 
 DelayedSinglePulseWindow::DelayedSinglePulseWindow(MainWindow *mwind) : BaseSimulionWindow(mwind)
 {
@@ -33,30 +33,37 @@ DelayedSinglePulseWindow::DelayedSinglePulseWindow(MainWindow *mwind) : BaseSimu
 
 }
 void DelayedSinglePulseWindow::simulateSignal(){
+
     this->readBaseParametrs();
 
-    CanalOfSignal *new_canal = new CanalOfSignal();
-    this->main_window->counting_simulated_signals["DelayedSinglePulse"]++;
-    new_canal->name_of_channel = "Model_1_" + std::to_string(this->main_window->counting_simulated_signals["DelayedSinglePulse"]);
-    new_canal->source_of_channel = "Смоделированный канал";
-    for ( int i = 0; i < this->new_signal->number_of_samples; i++ ){
+    if ( this->n_0->text().size() == 0 ){
+        QMessageBox::warning(this, "Внимание", "Введите необходимую информацию");
+        return;
+    }
+
+    this->new_signal = new CanalOfSignal();
+    new_signal->name_of_channel = this->main_window->main_data_from_file->channels_names.back();
+    new_signal->number_of_samples = this->main_window->main_data_from_file->number_of_samples;
+    new_signal->period_of_tick = this->main_window->main_data_from_file->period_of_tick;
+    new_signal->recording_duration = this->main_window->main_data_from_file->recording_duration;
+    new_signal->sampling_frequency = this->main_window->main_data_from_file->sampling_frequency;
+    new_signal->source_of_channel = "Моделирование";
+    for ( int i = 1; i <= new_signal->number_of_samples; i++ ){
         if ( i == this->n_0->text().toInt() ){
-            new_canal->values_of_signal.push_back(1);
+            new_signal->values_of_signal.push_back(1);
         }
         else{
-            new_canal->values_of_signal.push_back(0);
+            new_signal->values_of_signal.push_back(0);
         }
     }
-    this->new_signal->signals_channels.push_back(*new_canal);
 
-    navigationWaveform *a = new navigationWaveform(this->new_signal->signals_channels[0], this->main_window);
-    a->setTitle(new_canal->name_of_channel.c_str());
+    this->main_window->main_data_from_file->signals_channels.push_back(*new_signal);
+
+    navigationWaveform *a = new navigationWaveform(this->main_window->main_data_from_file->signals_channels.back() ,this->main_window);
+    a->setTitle(this->main_window->main_data_from_file->signals_channels.back().name_of_channel.c_str());
     a->setMinimumHeight(65);
-    this->main_window->navigation_window->widget()->layout()->addWidget(a);
-    this->main_window->simulated_signals.push_back(*this->new_signal);
 
-    //AddWaveformAction *waveform_add_action = new AddWaveformAction(this, channel.name_of_channel.c_str(), *a);
-    //this->main_window->ui->waveforms->addAction(waveform_add_action);
+    this->main_window->navigation_window->widget()->layout()->addWidget(a);
     this->close();
 }
 
