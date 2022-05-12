@@ -37,8 +37,7 @@ void DelayedSinglePulseWindow::simulateSignal(){
 
     CanalOfSignal *new_canal = new CanalOfSignal();
     this->main_window->counting_simulated_signals["DelayedSinglePulse"]++;
-    new_canal->name_of_channel = "Model_1_";
-    //new_canal->name_of_channel = "Model_1_" + std::to_string(this->main_window->counting_simulated_signals["DelayedSinglePulse"]);
+    new_canal->name_of_channel = "Model_1_" + std::to_string(this->main_window->counting_simulated_signals["DelayedSinglePulse"]);
     new_canal->source_of_channel = "Смоделированный канал";
     for ( int i = 0; i < this->new_signal->number_of_samples; i++ ){
         if ( i == this->n_0->text().toInt() ){

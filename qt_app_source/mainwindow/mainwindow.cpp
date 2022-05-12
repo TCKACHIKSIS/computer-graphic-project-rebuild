@@ -112,7 +112,7 @@ void MainWindow::on_fileOpen_triggered()
 
 
 void MainWindow::addWaveformToCentral(const navigationWaveform &package){
-    BaseWaveForm *a = new CentralWaveform(package.foundation, *this->main_data_from_file, this);
+    CentralWaveform *a = new CentralWaveform(package.foundation, *this->main_data_from_file, this);
     a->setTitle(a->foundation.name_of_channel.c_str());
     a->setMaximumWidth(this->main_waveform_area->width());
     a->setMinimumHeight(this->main_waveform_area->height()/5);
