@@ -116,6 +116,16 @@ dataStructure* FileHandler::getData() {
       this->readDataField(structured_data->signals_channels, structured_data->channels_names);
       structured_data->period_of_tick = ( 1 / structured_data->sampling_frequency);
       structured_data->recording_duration = ( 1 / structured_data->sampling_frequency) * structured_data->number_of_samples;
+
+      //цикл дополняющий каналы сигналов, через риддатафилд не прочитать, т.к нужно обращаться к structured data, а из
+      //риддатафилд доступа не имеем.
+      for ( auto canal: structured_data->signals_channels ){
+          canal.number_of_samples = structured_data->number_of_samples;
+          canal.period_of_tick = structured_data->period_of_tick;
+          canal.sampling_frequency = structured_data->sampling_frequency;
+          canal.recording_duration = structured_data->recording_duration;
+      }
+
     }
     return structured_data;
 }

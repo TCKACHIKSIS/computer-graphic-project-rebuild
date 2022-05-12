@@ -53,6 +53,10 @@ void DelayedSinglePulseWindow::simulateSignal(){
     a->setTitle(new_canal->name_of_channel.c_str());
     a->setMinimumHeight(65);
     this->main_window->navigation_window->widget()->layout()->addWidget(a);
+    this->main_window->simulated_signals.push_back(*this->new_signal);
+
+    //AddWaveformAction *waveform_add_action = new AddWaveformAction(this, channel.name_of_channel.c_str(), *a);
+    //this->main_window->ui->waveforms->addAction(waveform_add_action);
     this->close();
 }
 
