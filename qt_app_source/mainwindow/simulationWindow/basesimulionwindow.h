@@ -22,6 +22,7 @@ public:
     bool isRecreateChannel = false;
     void readBaseParametrs();
     void createMainSignal();
+    void complementMainSignal();
 };
 
 #endif // BASESIMULIONWINDOW_H

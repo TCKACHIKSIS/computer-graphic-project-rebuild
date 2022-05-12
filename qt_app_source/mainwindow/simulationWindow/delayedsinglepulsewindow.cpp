@@ -36,12 +36,14 @@ DelayedSinglePulseWindow::DelayedSinglePulseWindow(MainWindow *mwind) : BaseSimu
 void DelayedSinglePulseWindow::simulateSignal(){
 
     this->readBaseParametrs();
-
-    if ( this->n_0->text().size() == 0 ){
-        QMessageBox::warning(this, "Внимание", "Введите необходимую информацию");
+    if ( this->main_window->main_data_from_file == nullptr ){
         return;
     }
-    std::cout << "ok" << std::endl;
+
+    if ( this->n_0->text().size() == 0 ){
+        QMessageBox::warning(this, "Ошибка", "Введите необходимую информацию");
+        return;
+    }
     this->new_signal = new CanalOfSignal();
     new_signal->name_of_channel = this->main_window->main_data_from_file->channels_names.back();
     new_signal->number_of_samples = this->main_window->main_data_from_file->number_of_samples;

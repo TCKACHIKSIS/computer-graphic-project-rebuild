@@ -30,6 +30,8 @@ public:
     QMdiArea *right_mdi = nullptr;
     NavigationWindow *navigation_window = nullptr;
 
+    int count_delayed_single_pulse = 0;
+
     Ui::MainWindow *ui;
     CentralGridArea *central_grid = nullptr;
     QTabWidget *main_tab_widget = nullptr;
