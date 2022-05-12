@@ -26,17 +26,19 @@ public:
     std::pair<int, int> *current_scale_central_waveform;
 
     dataStructure *main_data_from_file = nullptr;
-    dataStructure *simulated_signals;
-    QMdiArea *right_mdi;
-    NavigationWindow *navigation_window;
+    dataStructure *simulated_signals = nullptr;
+    QMdiArea *right_mdi = nullptr;
+    NavigationWindow *navigation_window = nullptr;
 
     Ui::MainWindow *ui;
-    CentralGridArea *central_grid;
-    QTabWidget *main_tab_widget;
+    CentralGridArea *central_grid = nullptr;
+    QTabWidget *main_tab_widget = nullptr;
     QScrollArea *createWaveformView();
-    QScrollArea *main_waveform_area;
+    QScrollArea *main_waveform_area = nullptr;
     QScrollArea *createWaveformView2(QWidget *parent);
-    void openBasicInterfaceElements();
+
+    void initialInterfaceSetup();
+    void clearMainData();
 public slots:
       void addWaveformToCentral(const navigationWaveform &package);
       void scaleToChosenFragment(int start, int end);

@@ -50,16 +50,21 @@ QScrollArea* MainWindow::createWaveformView(){
 
     return scroll;
 }
-void MainWindow::initialInterfaceSetup(){
-    this->central_grid = new CentralGridArea();
-    this->setCentralWidget(this->central_grid);
-    this->main_waveform_area = this->createWaveformView();
-    this->navigation_window = new NavigationWindow();
 
+
+
+void MainWindow::initialInterfaceSetup(){
+    //ЗДЕСЬ ОГРОМНАЯ УТЕЧКА ПАМЯТИ
+    this->central_grid = new CentralGridArea();
+
+    this->setCentralWidget(this->central_grid);
+
+    this->main_waveform_area = this->createWaveformView();
+
+    this->navigation_window = new NavigationWindow();
 
     this->central_grid->grid->addWidget(this->main_waveform_area, 0, 0);
     this->central_grid->grid->setColumnStretch(0, 14);
-
 
     this->right_mdi = new QMdiArea();
 
@@ -69,9 +74,8 @@ void MainWindow::initialInterfaceSetup(){
     this->navigation_window->setFixedSize(170, 600);
     this->right_mdi->addSubWindow(this->navigation_window, Qt::FramelessWindowHint);
 
-    if ( this->current_scale_central_waveform != nullptr ){
-        this->current_scale_central_waveform = nullptr;
-    }
+    this->current_scale_central_waveform = nullptr;
+
     this->current_scale_central_waveform = new std::pair<int, int>();
     this->current_scale_central_waveform->first = 0;
     this->current_scale_central_waveform->second = 0;
@@ -98,13 +102,7 @@ void MainWindow::on_fileOpen_triggered()
         this->right_mdi->close();
     }
 
-    this->central_grid = new CentralGridArea();
-    this->setCentralWidget(this->central_grid);
-
-
-    this->main_waveform_area = this->createWaveformView();
-
-    this->navigation_window = new NavigationWindow();
+    this->initialInterfaceSetup();
 
     for ( auto channel: this->main_data_from_file->signals_channels ){
         navigationWaveform *a = new navigationWaveform(channel ,this);
@@ -115,27 +113,32 @@ void MainWindow::on_fileOpen_triggered()
         AddWaveformAction *waveform_add_action = new AddWaveformAction(this, channel.name_of_channel.c_str(), *a);
         this->ui->waveforms->addAction(waveform_add_action);
     }
-
-    this->central_grid->grid->addWidget(this->main_waveform_area, 0, 0);
-    this->central_grid->grid->setColumnStretch(0, 14);
-
-
-    this->right_mdi = new QMdiArea();
-
-    this->central_grid->grid->setColumnStretch(1, 1);
-    this->central_grid->grid->addWidget(right_mdi, 0, 1);
-    this->right_mdi->setFixedSize(170, 600);
-    this->navigation_window->setFixedSize(170, 600);
-    this->right_mdi->addSubWindow(navigation_window, Qt::FramelessWindowHint);
-
-    if ( this->current_scale_central_waveform != nullptr ){
-        this->current_scale_central_waveform = nullptr;
-    }
-    this->current_scale_central_waveform = new std::pair<int, int>();
-    this->current_scale_central_waveform->first = 0;
-    this->current_scale_central_waveform->second = 0;
 }
 
+void clearLayout(QLayout *layout) {
+    if (layout == NULL)
+        return;
+    QLayoutItem *item;
+    while((item = layout->takeAt(0))) {
+        if (item->layout()) {
+            clearLayout(item->layout());
+            delete item->layout();
+        }
+        if (item->widget()) {
+           delete item->widget();
+        }
+        delete item;
+    }
+}
+
+void MainWindow::clearMainData(){
+   clearLayout(this->navigation_window->widget()->layout());
+   clearLayout(this->main_waveform_area->widget()->layout());
+   this->navigation_window = nullptr;
+   this->main_waveform_area = nullptr;
+   delete this->main_data_from_file;
+   this->main_data_from_file = nullptr;
+}
 
 void MainWindow::addWaveformToCentral(const navigationWaveform &package){
     CentralWaveform *a = new CentralWaveform(package.foundation, this);
@@ -290,8 +293,6 @@ void MainWindow::setSingleGlobalScale(){
     }
     return;
 }
-
-
 
 
 void MainWindow::on_delayed_single_pulse_triggered()

@@ -3,6 +3,7 @@
 #include <filehandler/dataStructure.h>
 #include <mainwindow/mainwindow.h>
 #include <QMessageBox>
+#include <mainwindow/addwaveformaction.h>
 
 DelayedSinglePulseWindow::DelayedSinglePulseWindow(MainWindow *mwind) : BaseSimulionWindow(mwind)
 {
@@ -40,7 +41,7 @@ void DelayedSinglePulseWindow::simulateSignal(){
         QMessageBox::warning(this, "Внимание", "Введите необходимую информацию");
         return;
     }
-
+    std::cout << "ok" << std::endl;
     this->new_signal = new CanalOfSignal();
     new_signal->name_of_channel = this->main_window->main_data_from_file->channels_names.back();
     new_signal->number_of_samples = this->main_window->main_data_from_file->number_of_samples;
@@ -48,6 +49,7 @@ void DelayedSinglePulseWindow::simulateSignal(){
     new_signal->recording_duration = this->main_window->main_data_from_file->recording_duration;
     new_signal->sampling_frequency = this->main_window->main_data_from_file->sampling_frequency;
     new_signal->source_of_channel = "Моделирование";
+
     for ( int i = 1; i <= new_signal->number_of_samples; i++ ){
         if ( i == this->n_0->text().toInt() ){
             new_signal->values_of_signal.push_back(1);
@@ -58,12 +60,11 @@ void DelayedSinglePulseWindow::simulateSignal(){
     }
 
     this->main_window->main_data_from_file->signals_channels.push_back(*new_signal);
-
     navigationWaveform *a = new navigationWaveform(this->main_window->main_data_from_file->signals_channels.back() ,this->main_window);
     a->setTitle(this->main_window->main_data_from_file->signals_channels.back().name_of_channel.c_str());
     a->setMinimumHeight(65);
-
     this->main_window->navigation_window->widget()->layout()->addWidget(a);
+
     this->close();
 }
 

@@ -21,6 +21,7 @@ public:
     CanalOfSignal *new_signal = nullptr;
     bool isRecreateChannel = false;
     void readBaseParametrs();
+    void createMainSignal();
 };
 
 #endif // BASESIMULIONWINDOW_H
