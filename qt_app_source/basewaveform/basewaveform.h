@@ -22,8 +22,8 @@ public:
     CanalOfSignal foundation;
     dataStructure *data_from_file;
     QwtPlotCurve *curve;
-    BaseWaveForm(CanalOfSignal base, const dataStructure &data_from_file);
-    void createSimplePlot(const double &period_of_tick, const dataStructure &data_from_file);
+    BaseWaveForm(CanalOfSignal base);
+    void createSimplePlot();
     void clearPlot();
     void createCoordinates(const double &period_of_tick);
     QwtPlotGrid *grid_on_plot;

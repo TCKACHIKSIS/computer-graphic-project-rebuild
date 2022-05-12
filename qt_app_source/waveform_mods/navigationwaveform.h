@@ -7,7 +7,7 @@ class MainWindow;
 class navigationWaveform  : public BaseWaveForm
 {
 public:
-    navigationWaveform(CanalOfSignal base, const dataStructure &data_from_file , MainWindow *mwind);
+    navigationWaveform(CanalOfSignal base , MainWindow *mwind);
     void add_wave_form_was_clicked();
     MainWindow *mainWindow;
 protected:

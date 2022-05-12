@@ -9,15 +9,15 @@
 #include <basewaveform/Splitter/splitter.h>
 #include <basewaveform/timescaledraw.h>
 
-BaseWaveForm::BaseWaveForm(CanalOfSignal base, const dataStructure &data_from_file){
+BaseWaveForm::BaseWaveForm(CanalOfSignal base){
     this->foundation = base;
-    this->createSimplePlot(data_from_file.period_of_tick, data_from_file);
+    this->createSimplePlot();
 }
 
-void BaseWaveForm::createSimplePlot( const double &period_of_tick, const dataStructure &data_from_file){
+void BaseWaveForm::createSimplePlot(){
 
     this->setStyleSheet("border: 1px solid black ;color:black");
-    this->createCoordinates(period_of_tick);
+    this->createCoordinates(this->foundation.period_of_tick);
     this->enableAxis(QwtPlot::xBottom, false);
     this->enableAxis(QwtPlot::yLeft, false);
     this->grid_on_plot = new QwtPlotGrid();
@@ -49,7 +49,7 @@ void BaseWaveForm::clearPlot(){
 void BaseWaveForm::createCoordinates(const double &period_of_tick){
     int tick = 1;
     for ( auto y: this->foundation.values_of_signal ){
-        this->coordinates.push_back(std::pair(tick * period_of_tick, y));
+        this->coordinates.push_back(std::pair(tick * this->foundation.period_of_tick, y));
         tick++;
     }
 }

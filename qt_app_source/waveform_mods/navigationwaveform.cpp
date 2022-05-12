@@ -1,7 +1,7 @@
 #include "navigationwaveform.h"
 #include <context_menus/navigationContextMenu/navigationcontextmenu.h>
 #include <mainwindow/mainwindow.h>
-navigationWaveform::navigationWaveform(CanalOfSignal base, const dataStructure &data_from_file, MainWindow *mwind) : BaseWaveForm(base, data_from_file)
+navigationWaveform::navigationWaveform(CanalOfSignal base, MainWindow *mwind) : BaseWaveForm(base)
 {
     this->mainWindow = mwind;
     return;

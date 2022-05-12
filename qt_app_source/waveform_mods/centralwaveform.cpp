@@ -2,7 +2,7 @@
 #include <context_menus/centralContextMenu/centralcontextmenu.h>
 #include <mainwindow/mainwindow.h>
 #include <algorithm>
-CentralWaveform::CentralWaveform(CanalOfSignal base, const dataStructure &data_from_file, MainWindow *mwind) : BaseWaveForm(base, data_from_file)
+CentralWaveform::CentralWaveform(CanalOfSignal base, MainWindow *mwind) : BaseWaveForm(base)
 {
     this->mainWindow = mwind;
 

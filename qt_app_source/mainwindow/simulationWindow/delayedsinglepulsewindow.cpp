@@ -49,7 +49,7 @@ void DelayedSinglePulseWindow::simulateSignal(){
     }
     this->new_signal->signals_channels.push_back(*new_canal);
 
-    navigationWaveform *a = new navigationWaveform(*new_canal, *this->new_signal, this->main_window);
+    navigationWaveform *a = new navigationWaveform(this->new_signal->signals_channels[0], this->main_window);
     a->setTitle(new_canal->name_of_channel.c_str());
     a->setMinimumHeight(65);
     this->main_window->navigation_window->widget()->layout()->addWidget(a);

@@ -67,6 +67,7 @@ void MainWindow::on_fileOpen_triggered()
      }
 
     this->main_data_from_file = file.getData();
+
     if ( this->right_mdi != nullptr ){
         this->right_mdi->close();
     }
@@ -77,11 +78,10 @@ void MainWindow::on_fileOpen_triggered()
 
     this->main_waveform_area = this->createWaveformView();
 
-   this->navigation_window = new NavigationWindow();
+    this->navigation_window = new NavigationWindow();
 
     for ( auto channel: this->main_data_from_file->signals_channels ){
-
-        navigationWaveform *a = new navigationWaveform(channel, *this->main_data_from_file ,this);
+        navigationWaveform *a = new navigationWaveform(channel ,this);
         a->setTitle(channel.name_of_channel.c_str());
         a->setMinimumHeight(65);
         navigation_window->widget()->layout()->addWidget(a);
@@ -112,7 +112,7 @@ void MainWindow::on_fileOpen_triggered()
 
 
 void MainWindow::addWaveformToCentral(const navigationWaveform &package){
-    CentralWaveform *a = new CentralWaveform(package.foundation, *this->main_data_from_file, this);
+    CentralWaveform *a = new CentralWaveform(package.foundation, this);
     a->setTitle(a->foundation.name_of_channel.c_str());
     a->setMaximumWidth(this->main_waveform_area->width());
     a->setMinimumHeight(this->main_waveform_area->height()/5);

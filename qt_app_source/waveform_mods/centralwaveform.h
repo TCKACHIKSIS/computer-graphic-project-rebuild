@@ -21,7 +21,7 @@ public:
     QwtPlotZoomer *zoomer;
     QwtSymbol *markers = nullptr;
 
-    CentralWaveform(CanalOfSignal base, const dataStructure &data_from_file, MainWindow *mwind);
+    CentralWaveform(CanalOfSignal base, MainWindow *mwind);
     void mousePressEvent(QMouseEvent *event);
     void changeMarkersVision();
     void changePickerBehavior();
