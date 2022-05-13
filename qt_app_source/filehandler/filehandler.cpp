@@ -128,3 +128,31 @@ dataStructure* FileHandler::getData() {
     }
     return structured_data;
 }
+
+void FileHandler::saveFile(dataStructure data_for_save, QString path){
+
+    this->file_to_save.open(path.toStdString());
+    this->name_of_current_file = QString(QFileInfo(path).fileName()).toStdString();
+
+    this->file_to_save << data_for_save.number_of_channels << std::endl;
+    this->file_to_save << data_for_save.number_of_samples << std::endl;
+    this->file_to_save << data_for_save.sampling_frequency << std::endl;
+    this->file_to_save << data_for_save.signal_start_date << std::endl;
+    this->file_to_save << data_for_save.signal_start_time << std::endl;
+
+    for ( auto name: data_for_save.channels_names ){
+        this->file_to_save << name << ";";
+    }
+
+    this->file_to_save << std::endl;
+
+    for (int i = 0; i < data_for_save.number_of_samples; i++ ){
+        for (CanalOfSignal channel: data_for_save.signals_channels ){
+            this->file_to_save << channel.values_of_signal[i] << " ";
+            std::cout << "имя канала: " << channel.name_of_channel << std::endl;
+        }
+        this->file_to_save << std::endl;
+    }
+
+    this->file_to_save.close();
+}

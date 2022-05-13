@@ -1,19 +1,17 @@
-#include "delayedsinglepulsewindow.h"
-#include <QLabel>
-#include <filehandler/dataStructure.h>
+#include "discretizeddecreasingexponent.h"
 #include <mainwindow/mainwindow.h>
 #include <QMessageBox>
-#include <mainwindow/addwaveformaction.h>
+#include <math.h>
 
-DelayedSinglePulseWindow::DelayedSinglePulseWindow(MainWindow *mwind) : BaseSimulionWindow(mwind)
+DiscretizedDecreasingExponent::DiscretizedDecreasingExponent(MainWindow *mwind) : BaseSimulionWindow(mwind)
 {
-    QLabel *label = new QLabel("Задержанный единичный импульс");
+    QLabel *label = new QLabel("Дискретизированная убывающая экспонента");
     this->box_layout->addWidget(label);
-    label = new QLabel("Введите n0");
+    label = new QLabel("Введите a");
     this->box_layout->addWidget(label);
 
-    this->n_0 = new QLineEdit();
-    this->box_layout->addWidget(this->n_0);
+    this->a = new QLineEdit();
+    this->box_layout->addWidget(this->a);
 
     label = new QLabel("Введите количество отсчетов");
     this->box_layout->addWidget(label);
@@ -30,28 +28,26 @@ DelayedSinglePulseWindow::DelayedSinglePulseWindow(MainWindow *mwind) : BaseSimu
     this->simulation_button = new QPushButton("OK");
     this->box_layout->addWidget(this->simulation_button);
 
-    connect(this->simulation_button, &QPushButton::released, this, &DelayedSinglePulseWindow::simulateSignal);
-
+    connect(this->simulation_button, &QPushButton::released, this, &DiscretizedDecreasingExponent::simulateSignal);
 }
-void DelayedSinglePulseWindow::simulateSignal(){
 
+void DiscretizedDecreasingExponent::simulateSignal(){
     this->readBaseParametrs();
     if ( this->main_window->main_data_from_file == nullptr ){
         return;
     }
 
-    if ( this->n_0->text().size() == 0 ){
+    if ( this-a->text().size() == 0 ){
         QMessageBox::warning(this, "Ошибка", "Введите необходимую информацию");
         return;
     }
 
+    if ( this->a->text().toDouble() <= 0 || this->a->text().toDouble() >= 1 ){
+         QMessageBox::warning(this, "Ошибка", "Введите корректное a");
+    }
+
     for ( int i = 1; i <= new_signal->number_of_samples; i++ ){
-        if ( i == this->n_0->text().toInt() ){
-            new_signal->values_of_signal.push_back(1);
-        }
-        else{
-            new_signal->values_of_signal.push_back(0);
-        }
+        new_signal->values_of_signal.push_back(std::pow(this->a->text().toDouble(), i));
     }
 
     this->main_window->main_data_from_file->signals_channels.push_back(*new_signal);
@@ -62,4 +58,3 @@ void DelayedSinglePulseWindow::simulateSignal(){
 
     this->close();
 }
-

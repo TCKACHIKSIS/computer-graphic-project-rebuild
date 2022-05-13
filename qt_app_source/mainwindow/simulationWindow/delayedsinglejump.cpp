@@ -1,13 +1,10 @@
-#include "delayedsinglepulsewindow.h"
-#include <QLabel>
-#include <filehandler/dataStructure.h>
+#include "delayedsinglejump.h"
 #include <mainwindow/mainwindow.h>
 #include <QMessageBox>
-#include <mainwindow/addwaveformaction.h>
 
-DelayedSinglePulseWindow::DelayedSinglePulseWindow(MainWindow *mwind) : BaseSimulionWindow(mwind)
+DelayedSingleJump::DelayedSingleJump(MainWindow *mwind) : BaseSimulionWindow(mwind)
 {
-    QLabel *label = new QLabel("Задержанный единичный импульс");
+    QLabel *label = new QLabel("Задержанный единичный скачок");
     this->box_layout->addWidget(label);
     label = new QLabel("Введите n0");
     this->box_layout->addWidget(label);
@@ -30,11 +27,10 @@ DelayedSinglePulseWindow::DelayedSinglePulseWindow(MainWindow *mwind) : BaseSimu
     this->simulation_button = new QPushButton("OK");
     this->box_layout->addWidget(this->simulation_button);
 
-    connect(this->simulation_button, &QPushButton::released, this, &DelayedSinglePulseWindow::simulateSignal);
-
+    connect(this->simulation_button, &QPushButton::released, this, &DelayedSingleJump::simulateSignal);
 }
-void DelayedSinglePulseWindow::simulateSignal(){
 
+void DelayedSingleJump::simulateSignal(){
     this->readBaseParametrs();
     if ( this->main_window->main_data_from_file == nullptr ){
         return;
@@ -46,7 +42,7 @@ void DelayedSinglePulseWindow::simulateSignal(){
     }
 
     for ( int i = 1; i <= new_signal->number_of_samples; i++ ){
-        if ( i == this->n_0->text().toInt() ){
+        if ( i >= this->n_0->text().toInt() ){
             new_signal->values_of_signal.push_back(1);
         }
         else{
@@ -62,4 +58,3 @@ void DelayedSinglePulseWindow::simulateSignal(){
 
     this->close();
 }
-

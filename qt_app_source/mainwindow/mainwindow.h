@@ -58,6 +58,12 @@ private slots:
 
     void on_delayed_single_pulse_triggered();
 
+    void on_delayed_single_jump_triggered();
+
+    void on_discretized_decreasing_exponent_triggered();
+
+    void on_save_file_triggered();
+
 private:
 
 

@@ -18,7 +18,8 @@
 #include <mainwindow/addwaveformaction.h>
 #include <mainwindow/mainwindow.h>
 #include <mainwindow/simulationWindow/delayedsinglepulsewindow.h>
-
+#include <mainwindow/simulationWindow/delayedsinglejump.h>
+#include <mainwindow/simulationWindow/discretizeddecreasingexponent.h>
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -83,8 +84,8 @@ void MainWindow::initialInterfaceSetup(){
 
 void MainWindow::on_fileOpen_triggered()
 {
-    QString path_to_open_file = QFileDialog::getOpenFileName(this, "Выберите файл", "/", "*.txt");
 
+    QString path_to_open_file = QFileDialog::getOpenFileName(this, "Выберите файл", "/", "*.txt");
     if (path_to_open_file.isEmpty() && path_to_open_file.isNull()){
           return;
     }
@@ -138,6 +139,7 @@ void MainWindow::clearMainData(){
    this->main_waveform_area = nullptr;
    delete this->main_data_from_file;
    this->main_data_from_file = nullptr;
+   this->count_delayed_single_pulse = 0;
 }
 
 void MainWindow::addWaveformToCentral(const navigationWaveform &package){
@@ -299,5 +301,32 @@ void MainWindow::on_delayed_single_pulse_triggered()
 {
     DelayedSinglePulseWindow *d_s_p_window = new DelayedSinglePulseWindow(this);
     d_s_p_window->exec();
+}
+
+
+
+void MainWindow::on_delayed_single_jump_triggered()
+{
+    DelayedSingleJump *d_s_j_window = new DelayedSingleJump(this);
+    d_s_j_window->exec();
+}
+
+
+void MainWindow::on_discretized_decreasing_exponent_triggered()
+{
+    DiscretizedDecreasingExponent *d_d_e_window = new DiscretizedDecreasingExponent(this);
+    d_d_e_window->exec();
+}
+
+
+void MainWindow::on_save_file_triggered()
+{
+    QString path_to_save_file = QFileDialog::getSaveFileName(this, "Выберите директорию сохранения", "/", "*.txt");
+    if (path_to_save_file.isEmpty() && path_to_save_file.isNull()){
+          return;
+    }
+
+     FileHandler file;
+     file.saveFile(*this->main_data_from_file, path_to_save_file);
 }
 

@@ -28,6 +28,7 @@
      <string>Файл</string>
     </property>
     <addaction name="fileOpen"/>
+    <addaction name="save_file"/>
    </widget>
    <widget class="QMenu" name="menu_2">
     <property name="title">
@@ -72,8 +73,8 @@
     </property>
     <addaction name="separator"/>
     <addaction name="delayed_single_pulse"/>
-    <addaction name="action"/>
-    <addaction name="action_6"/>
+    <addaction name="delayed_single_jump"/>
+    <addaction name="discretized_decreasing_exponent"/>
     <addaction name="action_7"/>
     <addaction name="action_8"/>
     <addaction name="action_9"/>
@@ -139,12 +140,12 @@
     <string>Задержанный единичный импульс</string>
    </property>
   </action>
-  <action name="action">
+  <action name="delayed_single_jump">
    <property name="text">
     <string>Задержанный единичный скачок</string>
    </property>
   </action>
-  <action name="action_6">
+  <action name="discretized_decreasing_exponent">
    <property name="text">
     <string>Дискретизированная убывающая экспонента</string>
    </property>
@@ -187,6 +188,11 @@
   <action name="action_16">
    <property name="text">
     <string>Сигнал с линейной частотной модуляцией</string>
+   </property>
+  </action>
+  <action name="save_file">
+   <property name="text">
+    <string>Сохранить</string>
    </property>
   </action>
  </widget>
