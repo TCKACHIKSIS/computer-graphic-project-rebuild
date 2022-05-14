@@ -9,7 +9,7 @@
 # start time
 10:00:29
 # channels names
-h(t);
+h(t)
 4.8009 
 4.80088 
 4.80087 

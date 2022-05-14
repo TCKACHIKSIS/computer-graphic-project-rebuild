@@ -27,6 +27,8 @@ DelayedSingleJump::DelayedSingleJump(MainWindow *mwind) : BaseSimulionWindow(mwi
     this->simulation_button = new QPushButton("OK");
     this->box_layout->addWidget(this->simulation_button);
 
+    this->id = 2;
+
     connect(this->simulation_button, &QPushButton::released, this, &DelayedSingleJump::simulateSignal);
 }
 
@@ -58,3 +60,5 @@ void DelayedSingleJump::simulateSignal(){
 
     this->close();
 }
+
+

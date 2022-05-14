@@ -75,9 +75,9 @@
     <addaction name="delayed_single_pulse"/>
     <addaction name="delayed_single_jump"/>
     <addaction name="discretized_decreasing_exponent"/>
-    <addaction name="action_7"/>
-    <addaction name="action_8"/>
-    <addaction name="action_9"/>
+    <addaction name="sample_sine_wave"/>
+    <addaction name="meandr"/>
+    <addaction name="saw"/>
     <addaction name="separator"/>
     <addaction name="action_12"/>
     <addaction name="action_13"/>
@@ -150,17 +150,17 @@
     <string>Дискретизированная убывающая экспонента</string>
    </property>
   </action>
-  <action name="action_7">
+  <action name="sample_sine_wave">
    <property name="text">
     <string>Дискретизированная синусоида</string>
    </property>
   </action>
-  <action name="action_8">
+  <action name="meandr">
    <property name="text">
     <string>Меандр</string>
    </property>
   </action>
-  <action name="action_9">
+  <action name="saw">
    <property name="text">
     <string>Пила</string>
    </property>

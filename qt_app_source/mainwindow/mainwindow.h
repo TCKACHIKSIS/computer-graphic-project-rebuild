@@ -25,12 +25,17 @@ public:
     ~MainWindow();
     std::pair<int, int> *current_scale_central_waveform;
 
+    //прикол
+    std::map<int, int> counters_for_simulated_signals = {
+        {1, 0}, {2, 0}, {3, 0}, {4, 0}, {5, 0}, {6, 0},
+        {7, 0}, {8, 0}, {9, 0}, {10, 0}
+    };
+
+
     dataStructure *main_data_from_file = nullptr;
     dataStructure *simulated_signals = nullptr;
     QMdiArea *right_mdi = nullptr;
     NavigationWindow *navigation_window = nullptr;
-
-    int count_delayed_single_pulse = 0;
 
     Ui::MainWindow *ui;
     CentralGridArea *central_grid = nullptr;
@@ -39,13 +44,14 @@ public:
     QScrollArea *main_waveform_area = nullptr;
     QScrollArea *createWaveformView2(QWidget *parent);
 
+    void resetTheCounters();
     void initialInterfaceSetup();
     void clearMainData();
 public slots:
-      void addWaveformToCentral(const navigationWaveform &package);
-      void scaleToChosenFragment(int start, int end);
-      void setSingleLocalScale();
-      void setSingleGlobalScale();
+    void addWaveformToCentral(const navigationWaveform &package);
+    void scaleToChosenFragment(int start, int end);
+    void setSingleLocalScale();
+    void setSingleGlobalScale();
 private slots:
     void on_fileOpen_triggered();
 
@@ -63,6 +69,12 @@ private slots:
     void on_discretized_decreasing_exponent_triggered();
 
     void on_save_file_triggered();
+
+    void on_sample_sine_wave_triggered();
+
+    void on_meandr_triggered();
+
+    void on_saw_triggered();
 
 private:
 

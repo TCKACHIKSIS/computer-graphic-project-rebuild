@@ -18,9 +18,10 @@ void BaseSimulionWindow::createMainSignal(){
             QMessageBox::warning(this, "Внимание", "Введите необходимую информацию");
             return;
     }
+    this->main_window->counters_for_simulated_signals[this->id]++;
     this->main_window->main_data_from_file = new dataStructure();
     this->main_window->main_data_from_file->number_of_channels = 1;
-    this->main_window->main_data_from_file->channels_names.push_back("Model_1_1");
+    this->main_window->main_data_from_file->channels_names.push_back("Model_" + std::to_string(this->id) + "_" + std::to_string(this->main_window->counters_for_simulated_signals[this->id]));
     this->main_window->main_data_from_file->number_of_samples = this->number_of_samples->text().toInt();
     this->main_window->main_data_from_file->period_of_tick = 1 / this->sampling_frequency->text().toDouble();
     this->main_window->main_data_from_file->sampling_frequency = this->sampling_frequency->text().toDouble();
@@ -39,8 +40,8 @@ void BaseSimulionWindow::createMainSignal(){
 
 void BaseSimulionWindow::complementMainSignal(){
     this->main_window->main_data_from_file->number_of_channels++;
-
-    this->main_window->main_data_from_file->channels_names.push_back("Model_1_" + std::to_string(this->main_window->count_delayed_single_pulse));
+    this->main_window->counters_for_simulated_signals[this->id]++;
+    this->main_window->main_data_from_file->channels_names.push_back("Model_" + std::to_string(this->id) + "_" + std::to_string(this->main_window->counters_for_simulated_signals[this->id]));
 
     this->new_signal = new CanalOfSignal();
     new_signal->name_of_channel = this->main_window->main_data_from_file->channels_names.back();

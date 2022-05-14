@@ -12,6 +12,8 @@ class BaseSimulionWindow : public QDialog
 public:
     BaseSimulionWindow(MainWindow *mwind);
 
+    int id = 0;
+
     MainWindow *main_window;
     QBoxLayout *box_layout;
     QPushButton *simulation_button;

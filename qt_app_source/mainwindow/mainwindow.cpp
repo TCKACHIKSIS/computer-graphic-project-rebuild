@@ -20,7 +20,9 @@
 #include <mainwindow/simulationWindow/delayedsinglepulsewindow.h>
 #include <mainwindow/simulationWindow/delayedsinglejump.h>
 #include <mainwindow/simulationWindow/discretizeddecreasingexponent.h>
-
+#include <mainwindow/simulationWindow/sampledsinewave.h>
+#include <mainwindow/simulationWindow/rectangularlattice.h>
+#include <mainwindow/simulationWindow/saw.h>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -52,9 +54,14 @@ QScrollArea* MainWindow::createWaveformView(){
     return scroll;
 }
 
-
+void MainWindow::resetTheCounters(){
+    for ( auto& counter: this->counters_for_simulated_signals ){
+        counter.second = 0;
+    }
+}
 
 void MainWindow::initialInterfaceSetup(){
+    this->resetTheCounters();
     //ЗДЕСЬ ОГРОМНАЯ УТЕЧКА ПАМЯТИ
     this->central_grid = new CentralGridArea();
 
@@ -139,7 +146,6 @@ void MainWindow::clearMainData(){
    this->main_waveform_area = nullptr;
    delete this->main_data_from_file;
    this->main_data_from_file = nullptr;
-   this->count_delayed_single_pulse = 0;
 }
 
 void MainWindow::addWaveformToCentral(const navigationWaveform &package){
@@ -203,6 +209,7 @@ void MainWindow::on_signalInformation_triggered()
    info.layout()->addWidget(&table);
 
    info.exec();
+
    return;
 }
 
@@ -319,6 +326,7 @@ void MainWindow::on_discretized_decreasing_exponent_triggered()
 }
 
 
+
 void MainWindow::on_save_file_triggered()
 {
     QString path_to_save_file = QFileDialog::getSaveFileName(this, "Выберите директорию сохранения", "/", "*.txt");
@@ -328,5 +336,27 @@ void MainWindow::on_save_file_triggered()
 
      FileHandler file;
      file.saveFile(*this->main_data_from_file, path_to_save_file);
+}
+
+
+
+void MainWindow::on_sample_sine_wave_triggered()
+{
+    SampledSineWave * s_s_w_window = new SampledSineWave(this);
+    s_s_w_window->exec();
+}
+
+
+void MainWindow::on_meandr_triggered()
+{
+    RectangularLattice *r_l_window = new RectangularLattice(this);
+    r_l_window->exec();
+}
+
+
+void MainWindow::on_saw_triggered()
+{
+    Saw *s_window = new Saw(this);
+    s_window->exec();
 }
 

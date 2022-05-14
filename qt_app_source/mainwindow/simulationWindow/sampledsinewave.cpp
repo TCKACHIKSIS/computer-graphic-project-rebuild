@@ -1,17 +1,31 @@
-#include "discretizeddecreasingexponent.h"
+#include "sampledsinewave.h"
 #include <mainwindow/mainwindow.h>
 #include <QMessageBox>
 #include <math.h>
 
-DiscretizedDecreasingExponent::DiscretizedDecreasingExponent(MainWindow *mwind) : BaseSimulionWindow(mwind)
+SampledSineWave::SampledSineWave(MainWindow *m_wind) : BaseSimulionWindow(m_wind)
 {
-    QLabel *label = new QLabel("Дискретизированная убывающая экспонента");
+    QLabel *label = new QLabel("Дискретизированная синусоида");
     this->box_layout->addWidget(label);
+
     label = new QLabel("Введите a");
     this->box_layout->addWidget(label);
 
-    this->a = new QLineEdit();
+    this->a= new QLineEdit();
     this->box_layout->addWidget(this->a);
+
+    label = new QLabel("Введите w");
+    this->box_layout->addWidget(label);
+
+    this->w = new QLineEdit();
+    this->box_layout->addWidget(w);
+
+    label = new QLabel("Введите fi");
+    this->box_layout->addWidget(label);
+
+    this->fi = new QLineEdit();
+    this->box_layout->addWidget(fi);
+
 
     label = new QLabel("Введите количество отсчетов");
     this->box_layout->addWidget(label);
@@ -28,28 +42,24 @@ DiscretizedDecreasingExponent::DiscretizedDecreasingExponent(MainWindow *mwind) 
     this->simulation_button = new QPushButton("OK");
     this->box_layout->addWidget(this->simulation_button);
 
-    this->id = 3;
+    this->id = 4;
 
-    connect(this->simulation_button, &QPushButton::released, this, &DiscretizedDecreasingExponent::simulateSignal);
+    connect(this->simulation_button, &QPushButton::released, this, &SampledSineWave::simulateSignal);
 }
 
-void DiscretizedDecreasingExponent::simulateSignal(){
+void SampledSineWave::simulateSignal(){
     this->readBaseParametrs();
     if ( this->main_window->main_data_from_file == nullptr ){
         return;
     }
 
-    if ( this-a->text().size() == 0 ){
+    if ( this->a->text().size() == 0 || this->w->text().size() == 0 || this->fi->text().size() == 0 ){
         QMessageBox::warning(this, "Ошибка", "Введите необходимую информацию");
         return;
     }
 
-    if ( this->a->text().toDouble() <= 0 || this->a->text().toDouble() >= 1 ){
-         QMessageBox::warning(this, "Ошибка", "Введите корректное a");
-    }
-
     for ( int i = 1; i <= new_signal->number_of_samples; i++ ){
-        new_signal->values_of_signal.push_back(std::pow(this->a->text().toDouble(), i));
+        new_signal->values_of_signal.push_back( this->a->text().toDouble() * sin(i * this->w->text().toDouble() + this->fi->text().toDouble()) );
     }
 
     this->main_window->main_data_from_file->signals_channels.push_back(*new_signal);

@@ -73,7 +73,7 @@ void FileHandler::readDataField(std::vector<std::string> &field) {
       name += symbol;
     }
   }
-  if (!name.empty()) field.push_back(name);
+  if (!name.empty() && name != ";" && name != " " && (int)name[0] != 13) field.push_back(name);
 }
 
 void FileHandler::readDataField(std::vector<CanalOfSignal> &field, const std::vector<std::string> &names) {
@@ -113,6 +113,7 @@ dataStructure* FileHandler::getData() {
       this->readDataField(structured_data->signal_start_date);
       this->readDataField(structured_data->signal_start_time);
       this->readDataField(structured_data->channels_names);
+
       this->readDataField(structured_data->signals_channels, structured_data->channels_names);
       structured_data->period_of_tick = ( 1 / structured_data->sampling_frequency);
       structured_data->recording_duration = ( 1 / structured_data->sampling_frequency) * structured_data->number_of_samples;
@@ -149,7 +150,7 @@ void FileHandler::saveFile(dataStructure data_for_save, QString path){
     for (int i = 0; i < data_for_save.number_of_samples; i++ ){
         for (CanalOfSignal channel: data_for_save.signals_channels ){
             this->file_to_save << channel.values_of_signal[i] << " ";
-            std::cout << "имя канала: " << channel.name_of_channel << std::endl;
+            std::cout << "имя канала: " << channel.name_of_channel << "отсчет " << i << std::endl;
         }
         this->file_to_save << std::endl;
     }

@@ -30,6 +30,8 @@ DelayedSinglePulseWindow::DelayedSinglePulseWindow(MainWindow *mwind) : BaseSimu
     this->simulation_button = new QPushButton("OK");
     this->box_layout->addWidget(this->simulation_button);
 
+    this->id = 1;
+
     connect(this->simulation_button, &QPushButton::released, this, &DelayedSinglePulseWindow::simulateSignal);
 
 }

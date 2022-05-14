@@ -1,17 +1,16 @@
-#include "discretizeddecreasingexponent.h"
+#include "rectangularlattice.h"
 #include <mainwindow/mainwindow.h>
-#include <QMessageBox>
-#include <math.h>
+#include<QMessageBox>
 
-DiscretizedDecreasingExponent::DiscretizedDecreasingExponent(MainWindow *mwind) : BaseSimulionWindow(mwind)
+RectangularLattice::RectangularLattice(MainWindow *m_wind) : BaseSimulionWindow(m_wind)
 {
-    QLabel *label = new QLabel("Дискретизированная убывающая экспонента");
+    QLabel *label = new QLabel("Меандр (прямоугольная решетка)");
     this->box_layout->addWidget(label);
-    label = new QLabel("Введите a");
+    label = new QLabel("Введите L");
     this->box_layout->addWidget(label);
 
-    this->a = new QLineEdit();
-    this->box_layout->addWidget(this->a);
+    this->L = new QLineEdit();
+    this->box_layout->addWidget(this->L);
 
     label = new QLabel("Введите количество отсчетов");
     this->box_layout->addWidget(label);
@@ -28,28 +27,29 @@ DiscretizedDecreasingExponent::DiscretizedDecreasingExponent(MainWindow *mwind) 
     this->simulation_button = new QPushButton("OK");
     this->box_layout->addWidget(this->simulation_button);
 
-    this->id = 3;
+    this->id = 5;
 
-    connect(this->simulation_button, &QPushButton::released, this, &DiscretizedDecreasingExponent::simulateSignal);
+    connect(this->simulation_button, &QPushButton::released, this, &RectangularLattice::simulateSignal);
 }
 
-void DiscretizedDecreasingExponent::simulateSignal(){
+void RectangularLattice::simulateSignal(){
     this->readBaseParametrs();
     if ( this->main_window->main_data_from_file == nullptr ){
         return;
     }
 
-    if ( this-a->text().size() == 0 ){
+    if ( this->L->text().size() == 0 ){
         QMessageBox::warning(this, "Ошибка", "Введите необходимую информацию");
         return;
     }
 
-    if ( this->a->text().toDouble() <= 0 || this->a->text().toDouble() >= 1 ){
-         QMessageBox::warning(this, "Ошибка", "Введите корректное a");
-    }
-
     for ( int i = 1; i <= new_signal->number_of_samples; i++ ){
-        new_signal->values_of_signal.push_back(std::pow(this->a->text().toDouble(), i));
+        if ( i % this->L->text().toInt() <  this->L->text().toInt() / 2 ){
+            new_signal->values_of_signal.push_back(1);
+        }
+        else{
+            new_signal->values_of_signal.push_back(-1);
+        }
     }
 
     this->main_window->main_data_from_file->signals_channels.push_back(*new_signal);
