@@ -76,6 +76,14 @@ private slots:
 
     void on_saw_triggered();
 
+    void on_exponential_envelope_signal_2_triggered();
+
+    void on_balanced_envelope_signal_triggered();
+
+    void on_signal_with_tonal_envelope_triggered();
+
+    void on_lchs_triggered();
+
 private:
 
 

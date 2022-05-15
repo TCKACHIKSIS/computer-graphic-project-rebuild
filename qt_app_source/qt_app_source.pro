@@ -22,13 +22,17 @@ SOURCES += \
     mainwindow/dialowWindowFragmet/dialogwindowfragment.cpp \
     mainwindow/mainwindow.cpp \
     mainwindow/navigationWindow/navigationwindow.cpp \
+    mainwindow/simulationWindow/balancedenvelopesignal.cpp \
     mainwindow/simulationWindow/basesimulionwindow.cpp \
     mainwindow/simulationWindow/delayedsinglejump.cpp \
     mainwindow/simulationWindow/delayedsinglepulsewindow.cpp \
     mainwindow/simulationWindow/discretizeddecreasingexponent.cpp \
+    mainwindow/simulationWindow/exponentialenvelopesignal.cpp \
+    mainwindow/simulationWindow/lchmsignal.cpp \
     mainwindow/simulationWindow/rectangularlattice.cpp \
     mainwindow/simulationWindow/sampledsinewave.cpp \
     mainwindow/simulationWindow/saw.cpp \
+    mainwindow/simulationWindow/signalwithtonalenvelope.cpp \
     waveform_mods/centralwaveform.cpp \
     waveform_mods/navigationwaveform.cpp \
     waveform_mods/scales_for_central_waveforms/templatescaleforcentralwaveform.cpp
@@ -47,13 +51,17 @@ HEADERS += \
     mainwindow/dialowWindowFragmet/dialogwindowfragment.h \
     mainwindow/mainwindow.h \
     mainwindow/navigationWindow/navigationwindow.h \
+    mainwindow/simulationWindow/balancedenvelopesignal.h \
     mainwindow/simulationWindow/basesimulionwindow.h \
     mainwindow/simulationWindow/delayedsinglejump.h \
     mainwindow/simulationWindow/delayedsinglepulsewindow.h \
     mainwindow/simulationWindow/discretizeddecreasingexponent.h \
+    mainwindow/simulationWindow/exponentialenvelopesignal.h \
+    mainwindow/simulationWindow/lchmsignal.h \
     mainwindow/simulationWindow/rectangularlattice.h \
     mainwindow/simulationWindow/sampledsinewave.h \
     mainwindow/simulationWindow/saw.h \
+    mainwindow/simulationWindow/signalwithtonalenvelope.h \
     waveform_mods/centralwaveform.h \
     waveform_mods/navigationwaveform.h \
     waveform_mods/scales_for_central_waveforms/templatescaleforcentralwaveform.h

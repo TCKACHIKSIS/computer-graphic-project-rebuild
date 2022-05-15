@@ -79,11 +79,10 @@
     <addaction name="meandr"/>
     <addaction name="saw"/>
     <addaction name="separator"/>
-    <addaction name="action_12"/>
-    <addaction name="action_13"/>
-    <addaction name="action_14"/>
-    <addaction name="action_15"/>
-    <addaction name="action_16"/>
+    <addaction name="exponential_envelope_signal_2"/>
+    <addaction name="balanced_envelope_signal"/>
+    <addaction name="signal_with_tonal_envelope"/>
+    <addaction name="lchs"/>
    </widget>
    <addaction name="menu"/>
    <addaction name="menu_2"/>
@@ -165,27 +164,27 @@
     <string>Пила</string>
    </property>
   </action>
-  <action name="action_12">
+  <action name="exponential_envelope_signal">
    <property name="text">
     <string>Амплитудная модуляция</string>
    </property>
   </action>
-  <action name="action_13">
+  <action name="exponential_envelope_signal_2">
    <property name="text">
     <string>Сигнал с экспоненциальной огибающей</string>
    </property>
   </action>
-  <action name="action_14">
+  <action name="balanced_envelope_signal">
    <property name="text">
     <string>Сигнал с балансной огибающей</string>
    </property>
   </action>
-  <action name="action_15">
+  <action name="signal_with_tonal_envelope">
    <property name="text">
     <string>Сигнал с тональной огибающей</string>
    </property>
   </action>
-  <action name="action_16">
+  <action name="lchs">
    <property name="text">
     <string>Сигнал с линейной частотной модуляцией</string>
    </property>

@@ -23,6 +23,10 @@
 #include <mainwindow/simulationWindow/sampledsinewave.h>
 #include <mainwindow/simulationWindow/rectangularlattice.h>
 #include <mainwindow/simulationWindow/saw.h>
+#include <mainwindow/simulationWindow/exponentialenvelopesignal.h>
+#include <mainwindow/simulationWindow/balancedenvelopesignal.h>
+#include <mainwindow/simulationWindow/signalwithtonalenvelope.h>
+#include <mainwindow/simulationWindow/lchmsignal.h>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -358,5 +362,32 @@ void MainWindow::on_saw_triggered()
 {
     Saw *s_window = new Saw(this);
     s_window->exec();
+}
+
+void MainWindow::on_exponential_envelope_signal_2_triggered()
+{
+    ExponentialEnvelopeSignal *e_e_s_window = new ExponentialEnvelopeSignal(this);
+    e_e_s_window->exec();
+}
+
+
+void MainWindow::on_balanced_envelope_signal_triggered()
+{
+    BalancedEnvelopeSignal *b_e_s_window = new BalancedEnvelopeSignal(this);
+    b_e_s_window->exec();
+}
+
+
+void MainWindow::on_signal_with_tonal_envelope_triggered()
+{
+    SignalWithTonalEnvelope *s_w_t_e_window = new SignalWithTonalEnvelope(this);
+    s_w_t_e_window->exec();
+}
+
+
+void MainWindow::on_lchs_triggered()
+{
+    LCHMSignal *l_ch_m_s_s_window = new LCHMSignal(this);
+    l_ch_m_s_s_window->exec();
 }
 

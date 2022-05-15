@@ -1,17 +1,35 @@
-#include "discretizeddecreasingexponent.h"
+#include "lchmsignal.h"
 #include <mainwindow/mainwindow.h>
 #include <QMessageBox>
 #include <math.h>
 
-DiscretizedDecreasingExponent::DiscretizedDecreasingExponent(MainWindow *mwind) : BaseSimulionWindow(mwind)
+LCHMSignal::LCHMSignal(MainWindow *m_wind) : BaseSimulionWindow(m_wind)
 {
-    QLabel *label = new QLabel("Дискретизированная убывающая экспонента");
+    QLabel *label = new QLabel("Сигнал с линейной частотной модуляцией");
     this->box_layout->addWidget(label);
     label = new QLabel("Введите a");
     this->box_layout->addWidget(label);
 
     this->a = new QLineEdit();
     this->box_layout->addWidget(this->a);
+
+    label = new QLabel("Введите f0");
+    this->box_layout->addWidget(label);
+
+    this->f0 = new QLineEdit();
+    this->box_layout->addWidget(this->f0);
+
+    label = new QLabel("Введите fk");
+    this->box_layout->addWidget(label);
+
+    this->fk = new QLineEdit();
+    this->box_layout->addWidget(this->fk);
+
+    label = new QLabel("Введите fi");
+    this->box_layout->addWidget(label);
+
+    this->fi = new QLineEdit();
+    this->box_layout->addWidget(this->fi);
 
     label = new QLabel("Введите количество отсчетов");
     this->box_layout->addWidget(label);
@@ -28,28 +46,29 @@ DiscretizedDecreasingExponent::DiscretizedDecreasingExponent(MainWindow *mwind) 
     this->simulation_button = new QPushButton("OK");
     this->box_layout->addWidget(this->simulation_button);
 
-    this->id = 7;
+    this->id = 10;
 
-    connect(this->simulation_button, &QPushButton::released, this, &DiscretizedDecreasingExponent::simulateSignal);
+    connect(this->simulation_button, &QPushButton::released, this, &LCHMSignal::simulateSignal);
 }
 
-void DiscretizedDecreasingExponent::simulateSignal(){
+void LCHMSignal::simulateSignal(){
     this->readBaseParametrs();
     if ( this->main_window->main_data_from_file == nullptr ){
         return;
     }
 
-    if ( this-a->text().size() == 0 ){
+    if ( this->a->text().size() == 0 || this->f0 == 0 || this->fi->text().size() == 0 || this->fk->text().size() == 0){
         QMessageBox::warning(this, "Ошибка", "Введите необходимую информацию");
         return;
     }
 
-    if ( this->a->text().toDouble() <= 0 || this->a->text().toDouble() >= 1 ){
-         QMessageBox::warning(this, "Ошибка", "Введите корректное a");
-    }
-
     for ( int i = 1; i <= new_signal->number_of_samples; i++ ){
-        new_signal->values_of_signal.push_back(std::pow(this->a->text().toDouble(), i));
+        this->new_signal->values_of_signal.push_back(
+          this->a->text().toDouble() * cos(
+                        2 * M_PI * ( this->f0->text().toDouble() + (this->fk->text().toDouble() - this->f0->text().toDouble())/(this->new_signal->sampling_frequency * this->new_signal->period_of_tick) * i * this->new_signal->period_of_tick  )
+                        * i * this->new_signal->period_of_tick + this->f0->text().toDouble()
+                        )
+                    );
     }
 
     this->main_window->main_data_from_file->signals_channels.push_back(*new_signal);
