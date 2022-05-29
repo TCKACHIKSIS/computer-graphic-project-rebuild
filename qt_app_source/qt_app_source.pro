@@ -33,6 +33,8 @@ SOURCES += \
     mainwindow/simulationWindow/sampledsinewave.cpp \
     mainwindow/simulationWindow/saw.cpp \
     mainwindow/simulationWindow/signalwithtonalenvelope.cpp \
+    mainwindow/simulationWindow/whitenoiseinterval.cpp \
+    mainwindow/simulationWindow/whitenoisenormallaw.cpp \
     waveform_mods/centralwaveform.cpp \
     waveform_mods/navigationwaveform.cpp \
     waveform_mods/scales_for_central_waveforms/templatescaleforcentralwaveform.cpp
@@ -62,6 +64,8 @@ HEADERS += \
     mainwindow/simulationWindow/sampledsinewave.h \
     mainwindow/simulationWindow/saw.h \
     mainwindow/simulationWindow/signalwithtonalenvelope.h \
+    mainwindow/simulationWindow/whitenoiseinterval.h \
+    mainwindow/simulationWindow/whitenoisenormallaw.h \
     waveform_mods/centralwaveform.h \
     waveform_mods/navigationwaveform.h \
     waveform_mods/scales_for_central_waveforms/templatescaleforcentralwaveform.h

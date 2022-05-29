@@ -27,6 +27,8 @@
 #include <mainwindow/simulationWindow/balancedenvelopesignal.h>
 #include <mainwindow/simulationWindow/signalwithtonalenvelope.h>
 #include <mainwindow/simulationWindow/lchmsignal.h>
+#include <mainwindow/simulationWindow/whitenoiseinterval.h>
+#include <mainwindow/simulationWindow/whitenoisenormallaw.h>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -389,5 +391,19 @@ void MainWindow::on_lchs_triggered()
 {
     LCHMSignal *l_ch_m_s_s_window = new LCHMSignal(this);
     l_ch_m_s_s_window->exec();
+}
+
+
+void MainWindow::on_white_noise_interval_triggered()
+{
+    WhiteNoiseInterval *w_n_i_window = new WhiteNoiseInterval(this);
+    w_n_i_window->exec();
+}
+
+
+void MainWindow::on_white_noise_with_normal_law_triggered()
+{
+    WhiteNoiseNormalLaw *w_n_n_l_window = new WhiteNoiseNormalLaw(this);
+    w_n_n_l_window->exec();
 }
 

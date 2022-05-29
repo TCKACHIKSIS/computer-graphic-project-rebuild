@@ -84,6 +84,10 @@ private slots:
 
     void on_lchs_triggered();
 
+    void on_white_noise_interval_triggered();
+
+    void on_white_noise_with_normal_law_triggered();
+
 private:
 
 

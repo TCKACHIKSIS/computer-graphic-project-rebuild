@@ -83,6 +83,9 @@
     <addaction name="balanced_envelope_signal"/>
     <addaction name="signal_with_tonal_envelope"/>
     <addaction name="lchs"/>
+    <addaction name="separator"/>
+    <addaction name="white_noise_interval"/>
+    <addaction name="white_noise_with_normal_law"/>
    </widget>
    <addaction name="menu"/>
    <addaction name="menu_2"/>
@@ -192,6 +195,16 @@
   <action name="save_file">
    <property name="text">
     <string>Сохранить</string>
+   </property>
+  </action>
+  <action name="white_noise_interval">
+   <property name="text">
+    <string>Сигнал белого шума равномерно распределенный в интервале</string>
+   </property>
+  </action>
+  <action name="white_noise_with_normal_law">
+   <property name="text">
+    <string>Сигнал белого шума распределенного по нормальному закону</string>
    </property>
   </action>
  </widget>
