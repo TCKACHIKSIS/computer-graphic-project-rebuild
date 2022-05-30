@@ -1,5 +1,3 @@
-
-
 #include "mainwindow/mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QFileDialog>
@@ -29,6 +27,7 @@
 #include <mainwindow/simulationWindow/lchmsignal.h>
 #include <mainwindow/simulationWindow/whitenoiseinterval.h>
 #include <mainwindow/simulationWindow/whitenoisenormallaw.h>
+#include <mainwindow/simulationWindow/autoregressivemovingaverageordersignal.h>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -405,5 +404,12 @@ void MainWindow::on_white_noise_with_normal_law_triggered()
 {
     WhiteNoiseNormalLaw *w_n_n_l_window = new WhiteNoiseNormalLaw(this);
     w_n_n_l_window->exec();
+}
+
+
+void MainWindow::on_autoregresy_signal_triggered()
+{
+    AutoregressiveMovingAverageOrderSignal *a_r_m_a_o_s_window = new AutoregressiveMovingAverageOrderSignal(this);
+    a_r_m_a_o_s_window->exec();
 }
 

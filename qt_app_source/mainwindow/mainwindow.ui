@@ -86,6 +86,7 @@
     <addaction name="separator"/>
     <addaction name="white_noise_interval"/>
     <addaction name="white_noise_with_normal_law"/>
+    <addaction name="autoregresy_signal"/>
    </widget>
    <addaction name="menu"/>
    <addaction name="menu_2"/>
@@ -205,6 +206,11 @@
   <action name="white_noise_with_normal_law">
    <property name="text">
     <string>Сигнал белого шума распределенного по нормальному закону</string>
+   </property>
+  </action>
+  <action name="autoregresy_signal">
+   <property name="text">
+    <string>Сигнал авторегрессии скользящего среднего порядка</string>
    </property>
   </action>
  </widget>

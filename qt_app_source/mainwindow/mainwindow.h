@@ -88,6 +88,8 @@ private slots:
 
     void on_white_noise_with_normal_law_triggered();
 
+    void on_autoregresy_signal_triggered();
+
 private:
 
 

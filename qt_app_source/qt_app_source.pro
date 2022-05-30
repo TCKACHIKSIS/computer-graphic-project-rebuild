@@ -22,6 +22,7 @@ SOURCES += \
     mainwindow/dialowWindowFragmet/dialogwindowfragment.cpp \
     mainwindow/mainwindow.cpp \
     mainwindow/navigationWindow/navigationwindow.cpp \
+    mainwindow/simulationWindow/autoregressivemovingaverageordersignal.cpp \
     mainwindow/simulationWindow/balancedenvelopesignal.cpp \
     mainwindow/simulationWindow/basesimulionwindow.cpp \
     mainwindow/simulationWindow/delayedsinglejump.cpp \
@@ -53,6 +54,7 @@ HEADERS += \
     mainwindow/dialowWindowFragmet/dialogwindowfragment.h \
     mainwindow/mainwindow.h \
     mainwindow/navigationWindow/navigationwindow.h \
+    mainwindow/simulationWindow/autoregressivemovingaverageordersignal.h \
     mainwindow/simulationWindow/balancedenvelopesignal.h \
     mainwindow/simulationWindow/basesimulionwindow.h \
     mainwindow/simulationWindow/delayedsinglejump.h \
