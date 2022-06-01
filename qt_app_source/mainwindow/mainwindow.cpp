@@ -28,6 +28,7 @@
 #include <mainwindow/simulationWindow/whitenoiseinterval.h>
 #include <mainwindow/simulationWindow/whitenoisenormallaw.h>
 #include <mainwindow/simulationWindow/autoregressivemovingaverageordersignal.h>
+#include <mainwindow/superpositionwindow.h>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -411,5 +412,12 @@ void MainWindow::on_autoregresy_signal_triggered()
 {
     AutoregressiveMovingAverageOrderSignal *a_r_m_a_o_s_window = new AutoregressiveMovingAverageOrderSignal(this);
     a_r_m_a_o_s_window->exec();
+}
+
+
+void MainWindow::on_super_position_triggered()
+{
+    SuperPositionWindow *s_p_window = new SuperPositionWindow(this);
+    s_p_window->exec();
 }
 

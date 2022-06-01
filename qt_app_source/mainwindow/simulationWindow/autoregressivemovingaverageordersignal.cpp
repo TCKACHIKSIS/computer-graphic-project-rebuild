@@ -25,6 +25,7 @@ AutoregressiveMovingAverageOrderSignal::AutoregressiveMovingAverageOrderSignal(M
     this->q2 = new QLineEdit();
     this->box_layout->addWidget(q2);
 
+
     label = new QLabel("Введите количество отсчетов");
     this->box_layout->addWidget(label);
 
@@ -42,6 +43,26 @@ AutoregressiveMovingAverageOrderSignal::AutoregressiveMovingAverageOrderSignal(M
 
     this->id = 13;
 
+    connect(this->simulation_button, &QPushButton::released, this, &AutoregressiveMovingAverageOrderSignal::addLinesForBandAValues);
+}
+
+void AutoregressiveMovingAverageOrderSignal::addLinesForBandAValues(){
+    QLabel *label = new QLabel("Введите значения b");
+    this->box_layout->addWidget(label);
+
+    for ( int i = 1; i <= this->q->text().toInt(); i++ ){
+        QLineEdit *one_line_edit_for_b = new QLineEdit();
+        this->b_values.push_back(one_line_edit_for_b);
+        this->box_layout->addWidget(one_line_edit_for_b);
+    }
+    label = new QLabel("Введите значения a");
+    this->box_layout->addWidget(label);
+    for ( int i = 1; i <= this->p->text().toInt(); i++ ){
+        QLineEdit *one_line_edit_for_a = new QLineEdit();
+        this->a_values.push_back(one_line_edit_for_a);
+        this->box_layout->addWidget(one_line_edit_for_a);
+    }
+    this->repaint();
     connect(this->simulation_button, &QPushButton::released, this, &AutoregressiveMovingAverageOrderSignal::simulateSignal);
 }
 
@@ -71,6 +92,24 @@ void AutoregressiveMovingAverageOrderSignal::simulateSignal(){
 
     for ( int i = 1; i <= new_signal->number_of_samples; i++ ){
         double x0 = sqrt(this->q2->text().toDouble()) * this->getn();
+        double sigma_b = 0;
+        double sigma_a = 0;
+        for ( auto b: this->b_values ){
+            sigma_b += b->text().toDouble();
+        }
+        for ( auto a: this->a_values ){
+            sigma_a += a->text().toDouble();
+        }
+        x0 = x0 + sigma_b - sigma_a;
+        new_signal->values_of_signal.push_back(x0);
     }
+
+    this->main_window->main_data_from_file->signals_channels.push_back(*new_signal);
+    navigationWaveform *a = new navigationWaveform(this->main_window->main_data_from_file->signals_channels.back() ,this->main_window);
+    a->setTitle(this->main_window->main_data_from_file->signals_channels.back().name_of_channel.c_str());
+    a->setMinimumHeight(65);
+    this->main_window->navigation_window->widget()->layout()->addWidget(a);
+
+    this->close();
 
 }

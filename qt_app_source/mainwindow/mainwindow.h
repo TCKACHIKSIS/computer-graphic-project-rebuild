@@ -90,6 +90,8 @@ private slots:
 
     void on_autoregresy_signal_triggered();
 
+    void on_super_position_triggered();
+
 private:
 
 

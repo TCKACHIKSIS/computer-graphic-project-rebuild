@@ -48,7 +48,7 @@
     <property name="title">
      <string>Анализ</string>
     </property>
-    <addaction name="action_3"/>
+    <addaction name="super_position"/>
    </widget>
    <widget class="QMenu" name="menu_5">
     <property name="title">
@@ -113,9 +113,9 @@
     <string>Пункт 1</string>
    </property>
   </action>
-  <action name="action_3">
+  <action name="super_position">
    <property name="text">
-    <string>Пункт 1</string>
+    <string>Суперпозиция</string>
    </property>
   </action>
   <action name="action_4">
