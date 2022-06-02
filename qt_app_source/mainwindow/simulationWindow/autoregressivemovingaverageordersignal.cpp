@@ -5,62 +5,74 @@
 AutoregressiveMovingAverageOrderSignal::AutoregressiveMovingAverageOrderSignal(MainWindow *m_wind) : BaseSimulionWindow(m_wind)
 {
     QLabel *label = new QLabel("Сигнал авторегрессии скользящего среднего порядка");
-    this->box_layout->addWidget(label);
+
+    this->scroll_area = new QScrollArea();
+    this->scroll_area->setWidgetResizable(true);
+    this->scroll_layout = new QBoxLayout(QBoxLayout::Direction::TopToBottom);
+
 
     label = new QLabel("Введите p");
-    this->box_layout->addWidget(label);
+    this->scroll_layout->addWidget(label);
 
     this->p = new QLineEdit();
-    this->box_layout->addWidget(p);
+    this->scroll_layout->addWidget(p);
 
     label = new QLabel("Введите q");
-    this->box_layout->addWidget(label);
+    this->scroll_layout->addWidget(label);
 
     this->q = new QLineEdit();
-    this->box_layout->addWidget(q);
+    this->scroll_layout->addWidget(q);
 
     label = new QLabel("Введите q^2");
-    this->box_layout->addWidget(label);
+    this->scroll_layout->addWidget(label);
 
     this->q2 = new QLineEdit();
-    this->box_layout->addWidget(q2);
-
+    this->scroll_layout->addWidget(q2);
 
     label = new QLabel("Введите количество отсчетов");
-    this->box_layout->addWidget(label);
+    this->scroll_layout->addWidget(label);
 
     this->number_of_samples = new QLineEdit();
-    this->box_layout->addWidget(this->number_of_samples);
+    this->scroll_layout->addWidget(this->number_of_samples);
 
     label = new QLabel("Введите частоту сигнала");
-    this->box_layout->addWidget(label);
+    this->scroll_layout->addWidget(label);
 
     this->sampling_frequency = new QLineEdit();
-    this->box_layout->addWidget(this->sampling_frequency);
+    this->scroll_layout->addWidget(this->sampling_frequency);
 
     this->simulation_button = new QPushButton("OK");
-    this->box_layout->addWidget(this->simulation_button);
+    this->scroll_layout->addWidget(this->simulation_button);
 
     this->id = 13;
+
+    this->scroll_widget = new QWidget();
+    this->scroll_widget->setGeometry(this->geometry());
+
+    this->scroll_widget->setLayout(this->scroll_layout);
+
+    this->scroll_area->setWidget(this->scroll_widget);
+
+    this->box_layout->addWidget(this->scroll_area);
 
     connect(this->simulation_button, &QPushButton::released, this, &AutoregressiveMovingAverageOrderSignal::addLinesForBandAValues);
 }
 
 void AutoregressiveMovingAverageOrderSignal::addLinesForBandAValues(){
     QLabel *label = new QLabel("Введите значения b");
-    this->box_layout->addWidget(label);
+    this->scroll_layout->addWidget(label);
 
     for ( int i = 1; i <= this->q->text().toInt(); i++ ){
         QLineEdit *one_line_edit_for_b = new QLineEdit();
         this->b_values.push_back(one_line_edit_for_b);
-        this->box_layout->addWidget(one_line_edit_for_b);
+        this->scroll_layout->addWidget(one_line_edit_for_b);
     }
     label = new QLabel("Введите значения a");
-    this->box_layout->addWidget(label);
+    this->scroll_layout->addWidget(label);
     for ( int i = 1; i <= this->p->text().toInt(); i++ ){
         QLineEdit *one_line_edit_for_a = new QLineEdit();
         this->a_values.push_back(one_line_edit_for_a);
-        this->box_layout->addWidget(one_line_edit_for_a);
+        this->scroll_layout->addWidget(one_line_edit_for_a);
     }
     this->repaint();
     connect(this->simulation_button, &QPushButton::released, this, &AutoregressiveMovingAverageOrderSignal::simulateSignal);

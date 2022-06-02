@@ -13,6 +13,10 @@ public:
     void simulateSignal();
     void addLinesForBandAValues();
 
+    QScrollArea *scroll_area;
+    QBoxLayout *scroll_layout;
+    QWidget *scroll_widget;
+
     double frand();
     double getn();
 

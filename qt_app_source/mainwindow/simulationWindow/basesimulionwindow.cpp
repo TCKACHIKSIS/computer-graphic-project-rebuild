@@ -6,6 +6,7 @@ BaseSimulionWindow::BaseSimulionWindow(MainWindow *mwind)
 {
     this->main_window = mwind;
     this->box_layout = new QBoxLayout(QBoxLayout::Direction::TopToBottom, this);
+    this->setLayout(this->box_layout);
 
 }
 
