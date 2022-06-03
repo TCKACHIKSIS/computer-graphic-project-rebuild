@@ -2,11 +2,6 @@
 #include <mainwindow/mainwindow.h>
 #include <QButtonGroup>
 
-CheckBoxForChannels::CheckBoxForChannels(const QString &text, CanalOfSignal canal_of_signal, QWidget *parent) : QCheckBox(text, parent){
-    this->canal = canal_of_signal;
-    return;
-}
-
 SuperPositionWindow::SuperPositionWindow( MainWindow *m_wind )
 {
     this->main_window = m_wind;
@@ -94,7 +89,6 @@ void SuperPositionWindow::createSuperposition(){
                     }
                 }
             }
-
         }
     }
 

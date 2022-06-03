@@ -92,6 +92,8 @@ private slots:
 
     void on_super_position_triggered();
 
+    void on_statistics_triggered();
+
 private:
 
 

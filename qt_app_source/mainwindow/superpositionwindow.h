@@ -7,12 +7,7 @@
 #include <vector>
 #include <canalofsignal/canalofsignal.h>
 #include <QLineEdit>
-
-class CheckBoxForChannels : public QCheckBox{
-public:
-    CheckBoxForChannels(const QString &text, CanalOfSignal canal_of_signal, QWidget *parent = nullptr);
-    CanalOfSignal canal;
-};
+#include <mainwindow/Widgets/checkboxforchannels.h>
 
 typedef struct CheckBoxForChannelsAndLineEditForCoef{
     CheckBoxForChannels *check_box;

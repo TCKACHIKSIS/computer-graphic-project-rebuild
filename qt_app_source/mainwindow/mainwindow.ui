@@ -49,6 +49,7 @@
      <string>Анализ</string>
     </property>
     <addaction name="super_position"/>
+    <addaction name="statistics"/>
    </widget>
    <widget class="QMenu" name="menu_5">
     <property name="title">
@@ -211,6 +212,11 @@
   <action name="autoregresy_signal">
    <property name="text">
     <string>Сигнал авторегрессии скользящего среднего порядка</string>
+   </property>
+  </action>
+  <action name="statistics">
+   <property name="text">
+    <string>Статистика</string>
    </property>
   </action>
  </widget>

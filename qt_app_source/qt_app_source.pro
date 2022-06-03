@@ -17,6 +17,8 @@ SOURCES += \
     context_menus/navigationContextMenu/navigationcontextmenu.cpp \
     filehandler/filehandler.cpp \
     main.cpp \
+    mainwindow/Analis/statistics.cpp \
+    mainwindow/Widgets/checkboxforchannels.cpp \
     mainwindow/addwaveformaction.cpp \
     mainwindow/centralgridarea.cpp \
     mainwindow/dialowWindowFragmet/dialogwindowfragment.cpp \
@@ -50,6 +52,8 @@ HEADERS += \
     context_menus/navigationContextMenu/navigationcontextmenu.h \
     filehandler/dataStructure.h \
     filehandler/filehandler.h \
+    mainwindow/Analis/statistics.h \
+    mainwindow/Widgets/checkboxforchannels.h \
     mainwindow/addwaveformaction.h \
     mainwindow/centralgridarea.h \
     mainwindow/dialowWindowFragmet/dialogwindowfragment.h \

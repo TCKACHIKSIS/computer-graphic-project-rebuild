@@ -29,6 +29,7 @@
 #include <mainwindow/simulationWindow/whitenoisenormallaw.h>
 #include <mainwindow/simulationWindow/autoregressivemovingaverageordersignal.h>
 #include <mainwindow/superpositionwindow.h>
+#include <mainwindow/Analis/statistics.h>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -419,5 +420,12 @@ void MainWindow::on_super_position_triggered()
 {
     SuperPositionWindow *s_p_window = new SuperPositionWindow(this);
     s_p_window->exec();
+}
+
+
+void MainWindow::on_statistics_triggered()
+{
+    Statistics *s_window = new Statistics(this);
+    s_window->exec();
 }
 
