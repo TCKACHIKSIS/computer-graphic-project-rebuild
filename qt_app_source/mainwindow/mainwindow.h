@@ -94,6 +94,8 @@ private slots:
 
     void on_statistics_triggered();
 
+    void on_spectral_analysis_triggered();
+
 private:
 
 

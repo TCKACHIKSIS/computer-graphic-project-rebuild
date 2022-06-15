@@ -30,6 +30,7 @@
 #include <mainwindow/simulationWindow/autoregressivemovingaverageordersignal.h>
 #include <mainwindow/superpositionwindow.h>
 #include <mainwindow/Analis/statistics.h>
+#include <mainwindow/Analis/spectralanalysis.h>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -427,5 +428,12 @@ void MainWindow::on_statistics_triggered()
 {
     Statistics *s_window = new Statistics(this);
     s_window->exec();
+}
+
+
+void MainWindow::on_spectral_analysis_triggered()
+{
+    SpectralAnalysis *s_s_window = new SpectralAnalysis(this);
+    s_s_window->exec();
 }
 

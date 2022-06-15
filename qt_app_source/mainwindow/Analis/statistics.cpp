@@ -1,11 +1,21 @@
 #include "statistics.h"
 #include <mainwindow/mainwindow.h>
 
+typedef struct interval{
+    double min_value;
+    double max_value;
+    int amount;
+    interval( double min, double max, double a ){
+        this->min_value = min;
+        this->max_value = max;
+        this->amount = a;
+    }
+}interval;
 
 Statistics::Statistics( MainWindow *m_wind )
 {
     this->main_window = m_wind;
-
+    this->setStyleSheet("background: white; color: black");
 
     this->setUi();
     this->button_group = new QButtonGroup();
@@ -18,6 +28,9 @@ Statistics::Statistics( MainWindow *m_wind )
         this->list_of_checkbox.push_back(ptr);
     }
 
+    this->k_input = new QLineEdit();
+    this->scroll_layout->addWidget(this->k_input);
+
     this->action_button = new QPushButton("OK");
     this->scroll_layout->addWidget(this->action_button);
 
@@ -27,18 +40,25 @@ Statistics::Statistics( MainWindow *m_wind )
 
 //значение ты копируешь тут, потому что плохо написал класс чекбоксов, не разобрался там в ошибке
 void Statistics::showStatistickOfChosenChannel(){
+
+    if ( this->k_input->text().size() == 0 ){
+        return;
+    }
+
     for ( auto check_button: this->list_of_checkbox ){
         if ( check_button->checkState() ){
             this->chosen_source_channel = check_button->canal;
         }
     }
 
+    this->k_value = this->k_input->text().toInt();
+
     this->prepareUiToShowStatistic();
 
     QLabel *label = new QLabel("Статистика");
     this->scroll_layout->addWidget(label);
 
-    this->setGeometry(this->x()-300, this->y()-200, this->width()*1.5, this->height()*4);
+    this->setGeometry(this->x()-300, this->y()-200, this->width()*3, this->height()*4);
 
     this->getAverageX();
 
@@ -70,6 +90,12 @@ void Statistics::showStatistickOfChosenChannel(){
     label = new QLabel(ptr_for_out.c_str());
     this->scroll_layout->addWidget(label);
 
+    this->getKurtosisCoefficient();
+
+    ptr_for_out = "Коэффициент эксцесса: " + std::to_string(this->kurtosis_coefficient);
+    label = new QLabel(ptr_for_out.c_str());
+    this->scroll_layout->addWidget(label);
+
     this->getMaxValue();
 
     ptr_for_out = "Максимальное значение: " + std::to_string(this->max_value);
@@ -82,16 +108,73 @@ void Statistics::showStatistickOfChosenChannel(){
     label = new QLabel(ptr_for_out.c_str());
     this->scroll_layout->addWidget(label);
 
+    this->createHistogramm();
+    label = new QLabel("Распределение значений сигнала");
+    this->scroll_layout->addWidget(label);
+    this->scroll_layout->addWidget(this->plot_for_hystogram);
+
+}
+
+void Statistics::createHistogramm(){
+    this->hystogram = new QwtPlotHistogram();
+    this->hystogram->setPen(QPen(QColor(255, 0, 0, 255)));
+    this->hystogram->setBrush(QBrush(QColor(0, 255, 0, 255)));
+
+    this->plot_for_hystogram = new QwtPlot();
+
+    this->intervals_for_histogramm = new QVector<QwtIntervalSample>;
+
+    double h = (double)(this->max_value - this->min_value);
+    h = h / (double)this->k_value;
+
+
+    std::vector<interval> intervals;
+    double min_interval = this->min_value;
+    double max_interval = this->min_value + h;
+    while ( (float)this->max_value - (float)max_interval >= 0 ){
+        intervals.push_back(interval(min_interval, max_interval, 0));
+        min_interval = max_interval;
+        max_interval += h;
+    }
+    if ( (float) this->max_value - (float) max_interval > 0 ){
+        intervals.push_back(interval(min_interval, max_interval, 0));
+    }
+
+    //очень медленно
+    for ( auto value: this->chosen_source_channel.values_of_signal ){
+        for ( auto &interv: intervals ){
+            std::cout << "Интервал: " << interv.min_value << " " << interv.max_value << ". " << "Значение: " << value << " Условие: " <<std::endl;
+            if ( ((float)value - (float)interv.min_value > 0) && ( (float)interv.max_value - (float)value >= 0) ){
+                interv.amount++;
+                break;
+            }
+        }
+    }
+
+    for ( auto value: this->chosen_source_channel.values_of_signal ){
+        if ( value == intervals.front().min_value ){
+            intervals.front().amount++;
+        }
+    }
+
+
+    for ( auto interv: intervals ){
+        this->intervals_for_histogramm->append(QwtIntervalSample(interv.amount,  interv.min_value, interv.max_value ));
+    }
+
+    this->hystogram->setSamples(*this->intervals_for_histogramm);
+    this->hystogram->attach(this->plot_for_hystogram);
+
 }
 
 void Statistics::getKurtosisCoefficient(){
-    this->asymmetry_coefficient = 0;
+    this->kurtosis_coefficient = 0;
     for ( auto value: this->chosen_source_channel.values_of_signal ){
-        this->asymmetry_coefficient = this->asymmetry_coefficient + pow( (value - this->average_x), 4);
+        this->kurtosis_coefficient = this->kurtosis_coefficient + pow( (value - this->average_x), 4);
     }
-    this->asymmetry_coefficient = this->asymmetry_coefficient / (double)this->chosen_source_channel.number_of_samples;
-    this->asymmetry_coefficient = this->asymmetry_coefficient / pow(this->standard_deviation, 4);
-    this->asymmetry_coefficient -= 3;
+    this->kurtosis_coefficient = this->kurtosis_coefficient / (double)this->chosen_source_channel.number_of_samples;
+    this->kurtosis_coefficient = this->kurtosis_coefficient / pow(this->standard_deviation, 4);
+    this->kurtosis_coefficient -= 3;
 }
 
 void Statistics::getMaxValue(){
@@ -141,6 +224,7 @@ void Statistics::prepareUiToShowStatistic(){
     for ( auto button: this->list_of_checkbox ){
         delete button;
     }
+    delete this->k_input;
     delete this->button_group;
     delete this->action_button;
 }

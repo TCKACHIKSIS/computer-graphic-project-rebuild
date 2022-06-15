@@ -7,6 +7,8 @@
 #include <QScrollArea>
 #include <QPushButton>
 #include <QButtonGroup>
+#include <qwt_plot_histogram.h>
+#include <QLineEdit>
 
 class MainWindow;
 
@@ -24,6 +26,7 @@ public:
     CanalOfSignal chosen_source_channel;
 
     std::vector<CheckBoxForChannels*> list_of_checkbox;
+    QLineEdit *k_input;
 
     double average_x;
     double dispersion;
@@ -33,6 +36,11 @@ public:
     double kurtosis_coefficient;
     double max_value;
     double min_value;
+    int k_value;
+
+    QwtPlotHistogram *hystogram;
+    QwtPlot *plot_for_hystogram;
+    QVector<QwtIntervalSample> *intervals_for_histogramm;
 
     QPushButton *action_button;
     QButtonGroup *button_group;
@@ -50,6 +58,7 @@ private:
     void getKurtosisCoefficient();
     void getMaxValue();
     void getMinValue();
+    void createHistogramm();
 
 };
 
