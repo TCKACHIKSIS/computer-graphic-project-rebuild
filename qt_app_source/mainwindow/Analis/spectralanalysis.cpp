@@ -14,7 +14,7 @@ SpectralAnalysis::SpectralAnalysis( MainWindow *m_wind )
     this->button_group->setExclusive(true);
 
     for ( CanalOfSignal channel: this->main_window->main_data_from_file->signals_channels ){
-        CheckBoxForChannels *ptr = new CheckBoxForChannels(channel.name_of_channel.c_str() ,channel, this->scroll_widget);
+        CheckBoxForChannels *ptr = new CheckBoxForChannels(channel.name_of_channel.c_str(), channel, this->scroll_widget);
         this->scroll_layout->addWidget(ptr);
         this->button_group->addButton(ptr);
         this->list_of_checkbox.push_back(ptr);
@@ -45,29 +45,65 @@ void SpectralAnalysis::DoSpectralAnalis(){
     this->tool_bar->addAction(this->show_amplitude_spectrum);
     this->tool_bar->addAction(this->show_spm);
 
+    connect( this->show_amplitude_spectrum, &QAction::triggered, this, &SpectralAnalysis::paintAmplitudeSpectrum );
+    connect( this->show_spm, &QAction::triggered, this, &SpectralAnalysis::paintSPM );
+
     this->prepareUiToShowStatistic();
     this->calculateDPF();
-    this->paintResutlts();
-    this->scroll_layout->addWidget(this->plot);
+    this->calculateAmplitudeSpectrum();
+    this->calculateSPM();
+
+    this->paintAmplitudeSpectrum();
 }
 
-void SpectralAnalysis::paintResutlts(){
-    this->plot = new QwtPlot();
+void SpectralAnalysis::calculateAmplitudeSpectrum(){
+    for ( int i = 0; i <= this->chosen_source_channel.number_of_samples; i++ ){
+        this->amplitude_spectrum.push_back(abs(this->dpf_values[i]) * this->chosen_source_channel.sampling_frequency);
+    }
+}
 
-    this->plot->setAxisScaleDraw(QwtPlot::xBottom, new TimeScaleDraw);
+void SpectralAnalysis::paintAmplitudeSpectrum(){
 
+    std::cout << "ok" << std::endl;
 
-    QwtPlotCurve *curve = new QwtPlotCurve();
-    curve->setPen( Qt::blue, 2 );
+    this->amplitude_specturm_curve = new QwtPlotCurve();
+    this->amplitude_specturm_curve->setPen(Qt::blue, 2);
     QPolygonF points;
 
     for ( int i = 0; i < this->chosen_source_channel.number_of_samples; i++ ){
-        points << QPointF(i, this->dpf_values[i]);
+        points << QPointF(i, this->amplitude_spectrum[i]);
     }
 
-    curve->setSamples( points );
-    curve->attach( this->plot );
-    this->plot->repaint();
+    this->amplitude_specturm_curve->setSamples(points);
+
+    this->plot->detachItems(QwtPlotItem::Rtti_PlotItem,true);
+    this->amplitude_specturm_curve->attach( this->plot );
+    this->plot->replot();
+}
+
+void SpectralAnalysis::calculateSPM(){
+    for ( int i = 0;  i <= this->chosen_source_channel.number_of_samples; i++ ){
+        this->spm.push_back(
+                    pow( abs(this->dpf_values[i]), 2 ) * pow( this->chosen_source_channel.sampling_frequency, 2 )
+                    );
+    }
+}
+
+void SpectralAnalysis::paintSPM(){
+
+    this->spm_curve = new QwtPlotCurve();
+    this->spm_curve->setPen(Qt::blue, 2);
+    QPolygonF points;
+
+    for ( int i = 0; i < this->chosen_source_channel.number_of_samples; i++ ){
+        points << QPointF(i, this->spm[i]);
+    }
+
+    this->spm_curve->setSamples(points);
+
+    this->plot->detachItems(QwtPlotItem::Rtti_PlotItem,true);
+    this->spm_curve->attach(this->plot);
+    this->plot->replot();
 }
 
 void SpectralAnalysis::calculateDPF(){
@@ -77,12 +113,22 @@ void SpectralAnalysis::calculateDPF(){
     this->dpf_values = FFTAnalysis(this->chosen_source_channel.values_of_signal, this->chosen_source_channel.number_of_samples,
                                    this->chosen_source_channel.number_of_samples);
 
+    for ( auto value: this->dpf_values ){
+        std::cout << value << std::endl;
+    }
+
 }
 
 void SpectralAnalysis::prepareUiToShowStatistic(){
     for ( auto button: this->list_of_checkbox ){
         delete button;
     }
+    this->plot = new QwtPlot();
+
+    this->plot->setAxisScaleDraw(QwtPlot::xBottom, new TimeScaleDraw);
+
+    this->scroll_layout->addWidget(this->plot);
+
     delete this->button_group;
     delete this->action_button;
 }

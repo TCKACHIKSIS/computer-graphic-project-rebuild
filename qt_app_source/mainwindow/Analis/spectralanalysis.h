@@ -7,6 +7,7 @@
 #include <QScrollArea>
 #include <QToolBar>
 #include <qwt_plot.h>
+#include <qwt_plot_curve.h>
 
 class MainWindow;
 
@@ -30,13 +31,22 @@ public:
 
     std::vector<double> dpf_values;
 
+    std::vector<double> amplitude_spectrum;
+    QwtPlotCurve *amplitude_specturm_curve;
+
+    std::vector<double> spm;
+    QwtPlotCurve *spm_curve;
+
     QwtPlot *plot;
 
     SpectralAnalysis( MainWindow *m_wind );
 
     void DoSpectralAnalis();
     void calculateDPF();
-    void paintResutlts();
+    void calculateAmplitudeSpectrum();
+    void calculateSPM();
+    void paintAmplitudeSpectrum();
+    void paintSPM();
 
     void setUi();
     void prepareUiToShowStatistic();
