@@ -57,14 +57,15 @@ void SpectralAnalysis::DoSpectralAnalis(){
 }
 
 void SpectralAnalysis::calculateAmplitudeSpectrum(){
+
+    this->amplitude_spectrum.clear();
+
     for ( int i = 0; i <= this->chosen_source_channel.number_of_samples; i++ ){
         this->amplitude_spectrum.push_back(abs(this->dpf_values[i]) * this->chosen_source_channel.sampling_frequency);
     }
 }
 
 void SpectralAnalysis::paintAmplitudeSpectrum(){
-
-    std::cout << "ok" << std::endl;
 
     this->amplitude_specturm_curve = new QwtPlotCurve();
     this->amplitude_specturm_curve->setPen(Qt::blue, 2);
@@ -82,6 +83,7 @@ void SpectralAnalysis::paintAmplitudeSpectrum(){
 }
 
 void SpectralAnalysis::calculateSPM(){
+    this->spm.clear();
     for ( int i = 0;  i <= this->chosen_source_channel.number_of_samples; i++ ){
         this->spm.push_back(
                     pow( abs(this->dpf_values[i]), 2 ) * pow( this->chosen_source_channel.sampling_frequency, 2 )
@@ -113,10 +115,6 @@ void SpectralAnalysis::calculateDPF(){
     this->dpf_values = FFTAnalysis(this->chosen_source_channel.values_of_signal, this->chosen_source_channel.number_of_samples,
                                    this->chosen_source_channel.number_of_samples);
 
-    for ( auto value: this->dpf_values ){
-        std::cout << value << std::endl;
-    }
-
 }
 
 void SpectralAnalysis::prepareUiToShowStatistic(){
@@ -129,8 +127,51 @@ void SpectralAnalysis::prepareUiToShowStatistic(){
 
     this->scroll_layout->addWidget(this->plot);
 
+    this->input_L = new QLineEdit();
+    this->scroll_layout->addWidget(this->input_L);
+
+    this->set_L = new QPushButton("Ввести L");
+    this->scroll_layout->addWidget(this->set_L);
+
+    connect(this->set_L, &QPushButton::released, this, &SpectralAnalysis::smooth);
+
     delete this->button_group;
     delete this->action_button;
+}
+
+void SpectralAnalysis::smooth(){
+    this->L = this->input_L->text().toInt();
+    if ( this->L == 0 ){
+        this->calculateAmplitudeSpectrum();
+        this->calculateSPM();
+        this->paintAmplitudeSpectrum();
+    }
+    else{
+        for ( int k = 0; k < this->amplitude_spectrum.size(); k++  ){
+            double ptr_sum = 0;
+
+            for (int l = this->L * (-1) ;l <= this->L; l++){
+                if ( l + k > this->amplitude_spectrum.size() ){
+                    break;
+                }
+                 ptr_sum += this->amplitude_spectrum[l+k];
+            }
+            this->amplitude_spectrum[k] = 1 / (2 * this->L + 1 ) * ptr_sum;
+        }
+
+        for ( int k = 0; k < this->spm.size(); k++ ){
+            double ptr_sum = 0;
+            for (int l = this->L * (-1); l <= this->L ; l++ ){
+                if ( l + k > (int)this->spm.size() ){
+                    std::cout << l << std::endl;
+                    break;
+                }
+                ptr_sum += this->spm[l+k];
+            }
+            this->spm[k] =  1 / (2 * this->L + 1 ) * ptr_sum;
+        }
+        this->paintAmplitudeSpectrum();
+    }
 }
 
 void SpectralAnalysis::setUi(){

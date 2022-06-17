@@ -8,6 +8,7 @@
 #include <QToolBar>
 #include <qwt_plot.h>
 #include <qwt_plot_curve.h>
+#include <QLineEdit>
 
 class MainWindow;
 
@@ -25,6 +26,8 @@ public:
     QToolBar *tool_bar;
     QAction *show_amplitude_spectrum;
     QAction *show_spm;
+    QLineEdit *input_L;
+    QPushButton *set_L;
 
     MainWindow *main_window;
     CanalOfSignal chosen_source_channel;
@@ -37,6 +40,8 @@ public:
     std::vector<double> spm;
     QwtPlotCurve *spm_curve;
 
+    int L = 0;
+
     QwtPlot *plot;
 
     SpectralAnalysis( MainWindow *m_wind );
@@ -47,6 +52,8 @@ public:
     void calculateSPM();
     void paintAmplitudeSpectrum();
     void paintSPM();
+
+    void smooth();
 
     void setUi();
     void prepareUiToShowStatistic();
