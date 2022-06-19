@@ -140,35 +140,38 @@ void SpectralAnalysis::prepareUiToShowStatistic(){
 }
 
 void SpectralAnalysis::smooth(){
-    this->L = this->input_L->text().toInt();
+    this->L = this->input_L->text().toUInt();
     if ( this->L == 0 ){
         this->calculateAmplitudeSpectrum();
         this->calculateSPM();
         this->paintAmplitudeSpectrum();
     }
-    else{
-        for ( int k = 0; k < this->amplitude_spectrum.size(); k++  ){
-            double ptr_sum = 0;
+    else {
+        int k = 0 ;
 
-            for (int l = this->L * (-1) ;l <= this->L; l++){
-                if ( l + k > this->amplitude_spectrum.size() ){
+        for ( double &value: this->amplitude_spectrum ){
+            double ptr = 0;
+            for (int l = -1 * this->L ; l <= this->L; l++ ){
+                if ( l + k < 0 && l + k >= (int)this->amplitude_spectrum.size() ){
                     break;
                 }
-                 ptr_sum += this->amplitude_spectrum[l+k];
+                ptr = ptr + this->amplitude_spectrum[l+k];
             }
-            this->amplitude_spectrum[k] = 1 / (2 * this->L + 1 ) * ptr_sum;
+            value = ptr/(2*this->L + 1);
+            k++;
         }
 
-        for ( int k = 0; k < this->spm.size(); k++ ){
-            double ptr_sum = 0;
-            for (int l = this->L * (-1); l <= this->L ; l++ ){
-                if ( l + k > (int)this->spm.size() ){
-                    std::cout << l << std::endl;
+        k = 0;
+        for ( double &value: this->spm ){
+            double ptr = 0;
+            for (int l = -1 * this->L ; l <= this->L; l++ ){
+                if ( l + k < 0 && l + k >= (int)this->spm.size() ){
                     break;
                 }
-                ptr_sum += this->spm[l+k];
+                ptr = ptr + this->spm[l+k];
             }
-            this->spm[k] =  1 / (2 * this->L + 1 ) * ptr_sum;
+            value = ptr/(2*this->L + 1);
+            k++;
         }
         this->paintAmplitudeSpectrum();
     }
