@@ -9,6 +9,7 @@
 #include <qwt_plot.h>
 #include <qwt_plot_curve.h>
 #include <QLineEdit>
+#include <QCheckBox>
 
 class MainWindow;
 
@@ -29,6 +30,13 @@ public:
     QLineEdit *input_L;
     QPushButton *set_L;
 
+    QPushButton *do_nothing;
+    QPushButton *become_zero;
+    QPushButton *become_module;
+
+    int current_resolve_collision = 0;
+    void reCalcDPF();
+
     MainWindow *main_window;
     CanalOfSignal chosen_source_channel;
 
@@ -41,6 +49,8 @@ public:
     QwtPlotCurve *spm_curve;
 
     int L = 0;
+
+
 
     QwtPlot *plot;
 

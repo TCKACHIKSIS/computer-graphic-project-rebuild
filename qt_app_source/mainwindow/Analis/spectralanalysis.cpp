@@ -53,6 +53,8 @@ void SpectralAnalysis::DoSpectralAnalis(){
     this->calculateAmplitudeSpectrum();
     this->calculateSPM();
 
+
+
     this->paintAmplitudeSpectrum();
 }
 
@@ -115,12 +117,46 @@ void SpectralAnalysis::calculateDPF(){
     this->dpf_values = FFTAnalysis(this->chosen_source_channel.values_of_signal, this->chosen_source_channel.number_of_samples,
                                    this->chosen_source_channel.number_of_samples);
 
+    if ( this->current_resolve_collision == 1 ){
+        this->dpf_values[0] = 0;
+    }
+
+    if ( this->current_resolve_collision == 2 ){
+        this->dpf_values[0] = abs(this->dpf_values[1]);
+    }
+
+}
+
+void SpectralAnalysis::reCalcDPF(){
+    if ( this->current_resolve_collision == 1 ){
+        this->dpf_values[0] = 0;
+    }
+
+    if ( this->current_resolve_collision == 2 ){
+        this->dpf_values[0] = abs(this->dpf_values[1]);
+    }
+    this->calculateAmplitudeSpectrum();
+    this->calculateSPM();
+    this->paintAmplitudeSpectrum();
 }
 
 void SpectralAnalysis::prepareUiToShowStatistic(){
     for ( auto button: this->list_of_checkbox ){
         delete button;
     }
+
+    this->do_nothing = new QPushButton("Ничего не делать");
+    this->become_module = new QPushButton("Сделать модулем");
+    this->become_zero = new QPushButton("Сделать нулем");
+
+    this->scroll_layout->addWidget(this->do_nothing);
+    this->scroll_layout->addWidget(this->become_module);
+    this->scroll_layout->addWidget(this->become_zero);
+
+    connect(this->do_nothing, &QPushButton::released, this, &SpectralAnalysis::reCalcDPF);
+    connect(this->become_module, &QPushButton::released, this, &SpectralAnalysis::reCalcDPF);
+    connect(this->become_zero, &QPushButton::released, this, &SpectralAnalysis::reCalcDPF);
+
     this->plot = new QwtPlot();
 
     this->plot->setAxisScaleDraw(QwtPlot::xBottom, new TimeScaleDraw);
