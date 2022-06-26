@@ -18,6 +18,7 @@ SOURCES += \
     filehandler/filehandler.cpp \
     main.cpp \
     mainwindow/Analis/spectralanalysis.cpp \
+    mainwindow/Analis/spectralcontextmenu.cpp \
     mainwindow/Analis/statistics.cpp \
     mainwindow/Widgets/checkboxforchannels.cpp \
     mainwindow/addwaveformaction.cpp \
@@ -55,6 +56,7 @@ HEADERS += \
     filehandler/filehandler.h \
     mainwindow/Analis/dft.h \
     mainwindow/Analis/spectralanalysis.h \
+    mainwindow/Analis/spectralcontextmenu.h \
     mainwindow/Analis/statistics.h \
     mainwindow/Widgets/checkboxforchannels.h \
     mainwindow/addwaveformaction.h \

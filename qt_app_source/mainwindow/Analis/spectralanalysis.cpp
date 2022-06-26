@@ -26,6 +26,29 @@ SpectralAnalysis::SpectralAnalysis( MainWindow *m_wind )
 
 }
 
+void SpectralAnalysis::mousePressEvent(QMouseEvent *event){
+    if (event->button() == Qt::RightButton){
+        SpectralContextMenu *menu = new SpectralContextMenu(this);
+        menu->popup(this->mapToGlobal(event->pos()));
+    }
+}
+
+void SpectralAnalysis::changePickerBehavior(){
+    if ( this->picker == nullptr ){
+        this->picker = new QwtPlotPicker(QwtPlot::xBottom, QwtPlot::yLeft, QwtPlotPicker::CrossRubberBand, QwtPicker::AlwaysOn,
+                                         this->plot->canvas());
+        QPen *pen = new QPen(Qt::red);
+        pen->setWidth(2);
+        this->picker->setRubberBandPen(*pen);
+        this->picker->setTrackerPen( QPen( Qt::black ) );
+        this->picker->setStateMachine( new QwtPickerTrackerMachine );
+    }
+    else {
+        delete this->picker;
+        this->picker = nullptr;
+    }
+}
+
 void SpectralAnalysis::DoSpectralAnalis(){
 
     this->setGeometry(this->x(), this->y(), this->width() *4, this->height()*3);
@@ -188,7 +211,7 @@ void SpectralAnalysis::smooth(){
         for ( double &value: this->amplitude_spectrum ){
             double ptr = 0;
             for (int l = -1 * this->L ; l <= this->L; l++ ){
-                if ( l + k < 0 && l + k >= (int)this->amplitude_spectrum.size() ){
+                if ( l + k < 0 || l + k >= (int)this->amplitude_spectrum.size() ){
                     break;
                 }
                 ptr = ptr + this->amplitude_spectrum[l+k];
@@ -201,7 +224,7 @@ void SpectralAnalysis::smooth(){
         for ( double &value: this->spm ){
             double ptr = 0;
             for (int l = -1 * this->L ; l <= this->L; l++ ){
-                if ( l + k < 0 && l + k >= (int)this->spm.size() ){
+                if ( l + k < 0 || l + k >= (int)this->spm.size() ){
                     break;
                 }
                 ptr = ptr + this->spm[l+k];

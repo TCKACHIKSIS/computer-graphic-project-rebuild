@@ -10,6 +10,9 @@
 #include <qwt_plot_curve.h>
 #include <QLineEdit>
 #include <QCheckBox>
+#include <qwt_plot_picker.h>
+#include <qwt_picker_machine.h>
+#include <mainwindow/Analis/spectralcontextmenu.h>
 
 class MainWindow;
 
@@ -67,6 +70,11 @@ public:
 
     void setUi();
     void prepareUiToShowStatistic();
+
+    void mousePressEvent(QMouseEvent *event);
+
+    QwtPlotPicker *picker = nullptr;
+    void changePickerBehavior();
 };
 
 #endif // SPECTRALANALYSIS_H
