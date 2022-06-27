@@ -34,17 +34,8 @@ void SpectralAnalysis::mousePressEvent(QMouseEvent *event){
 }
 
 void SpectralAnalysis::changeMarkersVision(){
-    if ( this->markers == nullptr ){
-        this->markers = new QwtSymbol( QwtSymbol::Ellipse,
-                                   QBrush( Qt::yellow ), QPen( Qt::red, 2 ), QSize( 8, 8 ) );
-
-        this->paintAmplitudeSpectrum();
-    }
-    else{
-        delete this->markers;
-        this->markers = nullptr;
-        this->paintAmplitudeSpectrum();
-    }
+    this->is_markers_visible = !this->is_markers_visible;
+    this->paintAmplitudeSpectrum();
 
 }
 
@@ -116,12 +107,27 @@ void SpectralAnalysis::paintAmplitudeSpectrum(){
     }
 
     this->amplitude_specturm_curve->setSamples(points);
-
     this->plot->detachItems(QwtPlotItem::Rtti_PlotItem,true);
+
     this->amplitude_specturm_curve->attach( this->plot );
 
+
     if ( this->markers != nullptr ){
-        this->amplitude_specturm_curve->setSymbol(this->markers);
+        if ( this->is_markers_visible ){
+            this->markers = new QwtSymbol( QwtSymbol::Ellipse,
+                                               QBrush( Qt::yellow ), QPen( Qt::red, 2 ), QSize( 8, 8 ) );
+            this->amplitude_specturm_curve->setSymbol(this->markers);
+        }
+        else{
+            this->markers = nullptr;
+        }
+    }
+    else{
+        if ( this->is_markers_visible ){
+            this->markers = new QwtSymbol( QwtSymbol::Ellipse,
+                                               QBrush( Qt::yellow ), QPen( Qt::red, 2 ), QSize( 8, 8 ) );
+            this->amplitude_specturm_curve->setSymbol(this->markers);
+        }
     }
 
     this->plot->replot();
@@ -151,8 +157,23 @@ void SpectralAnalysis::paintSPM(){
     this->plot->detachItems(QwtPlotItem::Rtti_PlotItem,true);
     this->spm_curve->attach(this->plot);
 
+
     if ( this->markers != nullptr ){
-        this->spm_curve->setSymbol(this->markers);
+        if ( this->is_markers_visible ){
+            this->markers = new QwtSymbol( QwtSymbol::Ellipse,
+                                               QBrush( Qt::yellow ), QPen( Qt::red, 2 ), QSize( 8, 8 ) );
+            this->spm_curve->setSymbol(this->markers);
+        }
+        else{
+            this->markers = nullptr;
+        }
+    }
+    else{
+        if ( this->is_markers_visible ){
+            this->markers = new QwtSymbol( QwtSymbol::Ellipse,
+                                               QBrush( Qt::yellow ), QPen( Qt::red, 2 ), QSize( 8, 8 ) );
+            this->spm_curve->setSymbol(this->markers);
+        }
     }
 
     this->plot->replot();

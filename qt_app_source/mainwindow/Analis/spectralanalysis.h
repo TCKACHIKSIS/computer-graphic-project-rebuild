@@ -77,6 +77,7 @@ public:
     QwtPlotPicker *picker = nullptr;
     void changePickerBehavior();
 
+    bool is_markers_visible = false;
     QwtSymbol *markers = nullptr;
     void changeMarkersVision();
 };
