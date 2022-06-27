@@ -12,6 +12,9 @@ public:
 
     QAction *set_behavior_picker;
     void setPickerBehavior();
+
+    QAction *set_markers_vision;
+    void setMarkersVision();
 };
 
 #endif // SPECTRALCONTEXTMENU_H

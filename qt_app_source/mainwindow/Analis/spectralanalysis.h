@@ -13,6 +13,7 @@
 #include <qwt_plot_picker.h>
 #include <qwt_picker_machine.h>
 #include <mainwindow/Analis/spectralcontextmenu.h>
+#include <qwt_symbol.h>
 
 class MainWindow;
 
@@ -75,6 +76,9 @@ public:
 
     QwtPlotPicker *picker = nullptr;
     void changePickerBehavior();
+
+    QwtSymbol *markers = nullptr;
+    void changeMarkersVision();
 };
 
 #endif // SPECTRALANALYSIS_H

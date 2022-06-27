@@ -33,6 +33,21 @@ void SpectralAnalysis::mousePressEvent(QMouseEvent *event){
     }
 }
 
+void SpectralAnalysis::changeMarkersVision(){
+    if ( this->markers == nullptr ){
+        this->markers = new QwtSymbol( QwtSymbol::Ellipse,
+                                   QBrush( Qt::yellow ), QPen( Qt::red, 2 ), QSize( 8, 8 ) );
+
+        this->paintAmplitudeSpectrum();
+    }
+    else{
+        delete this->markers;
+        this->markers = nullptr;
+        this->paintAmplitudeSpectrum();
+    }
+
+}
+
 void SpectralAnalysis::changePickerBehavior(){
     if ( this->picker == nullptr ){
         this->picker = new QwtPlotPicker(QwtPlot::xBottom, QwtPlot::yLeft, QwtPlotPicker::CrossRubberBand, QwtPicker::AlwaysOn,
@@ -104,6 +119,11 @@ void SpectralAnalysis::paintAmplitudeSpectrum(){
 
     this->plot->detachItems(QwtPlotItem::Rtti_PlotItem,true);
     this->amplitude_specturm_curve->attach( this->plot );
+
+    if ( this->markers != nullptr ){
+        this->amplitude_specturm_curve->setSymbol(this->markers);
+    }
+
     this->plot->replot();
 }
 
@@ -130,6 +150,11 @@ void SpectralAnalysis::paintSPM(){
 
     this->plot->detachItems(QwtPlotItem::Rtti_PlotItem,true);
     this->spm_curve->attach(this->plot);
+
+    if ( this->markers != nullptr ){
+        this->spm_curve->setSymbol(this->markers);
+    }
+
     this->plot->replot();
 }
 
