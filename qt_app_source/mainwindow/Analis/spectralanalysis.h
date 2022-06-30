@@ -14,6 +14,7 @@
 #include <qwt_picker_machine.h>
 #include <mainwindow/Analis/spectralcontextmenu.h>
 #include <qwt_symbol.h>
+#include <mainwindow/Analis/spectralchoosefragmentwindow.h>
 
 class MainWindow;
 
@@ -31,8 +32,16 @@ public:
     QToolBar *tool_bar;
     QAction *show_amplitude_spectrum;
     QAction *show_spm;
+    QAction *choose_fragment;
+    QAction *reset_scale;
     QLineEdit *input_L;
     QPushButton *set_L;
+
+    std::pair<int, int> current_scale;
+    SpectralChooseFragmentWindow *s_c_f_w;
+    void showChooseFragmentWindow();
+    void scaleToChosenFragment(int start, int end);
+    void resetScale();
 
     QPushButton *do_nothing;
     QPushButton *become_zero;

@@ -70,12 +70,18 @@ void SpectralAnalysis::DoSpectralAnalis(){
 
     this->show_amplitude_spectrum = new QAction("Амплитудный спектр");
     this->show_spm = new QAction("СПМ");
+    this->choose_fragment = new QAction("Выбрать фрагмент");
+    this->reset_scale = new QAction("Сбросить фрагмент");
 
     this->tool_bar->addAction(this->show_amplitude_spectrum);
     this->tool_bar->addAction(this->show_spm);
+    this->tool_bar->addAction(this->choose_fragment);
+    this->tool_bar->addAction(this->reset_scale);
 
     connect( this->show_amplitude_spectrum, &QAction::triggered, this, &SpectralAnalysis::paintAmplitudeSpectrum );
     connect( this->show_spm, &QAction::triggered, this, &SpectralAnalysis::paintSPM );
+    connect( this->choose_fragment, &QAction::triggered, this,  &SpectralAnalysis::showChooseFragmentWindow);
+    connect( this->reset_scale, &QAction::triggered, this,  &SpectralAnalysis::resetScale);
 
     this->prepareUiToShowStatistic();
     this->calculateDPF();
@@ -85,6 +91,26 @@ void SpectralAnalysis::DoSpectralAnalis(){
 
 
     this->paintAmplitudeSpectrum();
+}
+
+void SpectralAnalysis::showChooseFragmentWindow(){
+    this->s_c_f_w = new SpectralChooseFragmentWindow(this, this->current_scale);
+    this->s_c_f_w->exec();
+}
+
+void SpectralAnalysis::scaleToChosenFragment(int start, int end){
+    this->current_scale.first = start;
+    this->current_scale.second = end;
+    this->plot->setAxisScale(QwtPlot::xBottom, this->main_window->main_data_from_file->period_of_tick*start, this->main_window->main_data_from_file->period_of_tick*end);
+    this->plot->replot();
+}
+
+void SpectralAnalysis::resetScale(){
+    this->current_scale.first = 0;
+    this->current_scale.second = 0;
+    this->plot->setAxisAutoScale(QwtPlot::xBottom);
+    this->plot->setAxisAutoScale(QwtPlot::yLeft);
+    this->plot->replot();
 }
 
 void SpectralAnalysis::calculateAmplitudeSpectrum(){
