@@ -96,6 +96,8 @@ private slots:
 
     void on_spectral_analysis_triggered();
 
+    void on_spectrogram_triggered();
+
 private:
 
 

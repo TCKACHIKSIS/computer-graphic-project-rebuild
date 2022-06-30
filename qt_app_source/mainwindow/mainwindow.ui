@@ -51,6 +51,7 @@
     <addaction name="super_position"/>
     <addaction name="statistics"/>
     <addaction name="spectral_analysis"/>
+    <addaction name="spectrogram"/>
    </widget>
    <widget class="QMenu" name="menu_5">
     <property name="title">
@@ -223,6 +224,11 @@
   <action name="spectral_analysis">
    <property name="text">
     <string>Спектральный анализ</string>
+   </property>
+  </action>
+  <action name="spectrogram">
+   <property name="text">
+    <string>Спектрограмма</string>
    </property>
   </action>
  </widget>

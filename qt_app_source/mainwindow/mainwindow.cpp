@@ -31,6 +31,7 @@
 #include <mainwindow/superpositionwindow.h>
 #include <mainwindow/Analis/statistics.h>
 #include <mainwindow/Analis/spectralanalysis.h>
+#include <mainwindow/Analis/spectrogram.h>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -435,5 +436,12 @@ void MainWindow::on_spectral_analysis_triggered()
 {
     SpectralAnalysis *s_s_window = new SpectralAnalysis(this);
     s_s_window->exec();
+}
+
+
+void MainWindow::on_spectrogram_triggered()
+{
+    Spectrogram *spectrogram_window = new Spectrogram(this);
+    spectrogram_window->exec();
 }
 

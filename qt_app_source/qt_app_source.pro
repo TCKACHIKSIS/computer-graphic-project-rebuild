@@ -20,6 +20,7 @@ SOURCES += \
     mainwindow/Analis/spectralanalysis.cpp \
     mainwindow/Analis/spectralchoosefragmentwindow.cpp \
     mainwindow/Analis/spectralcontextmenu.cpp \
+    mainwindow/Analis/spectrogram.cpp \
     mainwindow/Analis/statistics.cpp \
     mainwindow/Widgets/checkboxforchannels.cpp \
     mainwindow/addwaveformaction.cpp \
@@ -59,6 +60,7 @@ HEADERS += \
     mainwindow/Analis/spectralanalysis.h \
     mainwindow/Analis/spectralchoosefragmentwindow.h \
     mainwindow/Analis/spectralcontextmenu.h \
+    mainwindow/Analis/spectrogram.h \
     mainwindow/Analis/statistics.h \
     mainwindow/Widgets/checkboxforchannels.h \
     mainwindow/addwaveformaction.h \
