@@ -1,7 +1,6 @@
 #include "spectrogram.h"
 #include <mainwindow/mainwindow.h>
 
-
 Spectrogram::Spectrogram(MainWindow *m_wind)
 {
     this->main_window = m_wind;
@@ -32,6 +31,13 @@ Spectrogram::Spectrogram(MainWindow *m_wind)
         this->button_group->addButton(ptr);
         this->list_of_checkbox.push_back(ptr);
     }
+
+    this->width_of_image = new QLineEdit();
+    this->height_of_image = new QLineEdit();
+
+    this->scroll_layout->addWidget(this->width_of_image);
+    this->scroll_layout->addWidget(this->height_of_image);
+
     this->action_button = new QPushButton("OK");
     this->scroll_layout->addWidget(this->action_button);
 
@@ -45,5 +51,17 @@ void Spectrogram::createSpectrogram(){
     for ( auto button: this->list_of_checkbox ){
         delete button;
     }
+    this->spectrogram = new QImage(400, 400, QImage::Format_RGB32);
 
+    for ( int i = 1; i <= 400; i++ ){
+        for ( int j = 1; j <= 400; j++ ){
+            QRgb value;
+            value = qRgb(189, 149, 39); // 0xffbd9527
+            this->spectrogram->setPixel(i, j, value);
+        }
+    }
+
+    QLabel *label = new QLabel();
+    label->setPixmap(QPixmap::fromImage(*this->spectrogram));
+    this->scroll_layout->addWidget(label);
 }

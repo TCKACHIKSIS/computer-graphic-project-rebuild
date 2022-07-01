@@ -7,6 +7,8 @@
 #include <QButtonGroup>
 #include <mainwindow/Widgets/checkboxforchannels.h>
 #include <QPushButton>
+#include <QImage>
+#include <QLineEdit>
 
 class MainWindow;
 
@@ -24,7 +26,11 @@ public:
     QButtonGroup *button_group;
     std::vector<CheckBoxForChannels*> list_of_checkbox;
     QPushButton *action_button;
+    QLineEdit *width_of_image;
+    QLineEdit *height_of_image;
 
+
+    QImage *spectrogram;
     void createSpectrogram();
 
 };

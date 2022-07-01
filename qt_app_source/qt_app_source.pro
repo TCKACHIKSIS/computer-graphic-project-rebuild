@@ -17,6 +17,7 @@ SOURCES += \
     context_menus/navigationContextMenu/navigationcontextmenu.cpp \
     filehandler/filehandler.cpp \
     main.cpp \
+    mainwindow/Analis/frequencyscaledraw.cpp \
     mainwindow/Analis/spectralanalysis.cpp \
     mainwindow/Analis/spectralchoosefragmentwindow.cpp \
     mainwindow/Analis/spectralcontextmenu.cpp \
@@ -57,6 +58,7 @@ HEADERS += \
     filehandler/dataStructure.h \
     filehandler/filehandler.h \
     mainwindow/Analis/dft.h \
+    mainwindow/Analis/frequencyscaledraw.h \
     mainwindow/Analis/spectralanalysis.h \
     mainwindow/Analis/spectralchoosefragmentwindow.h \
     mainwindow/Analis/spectralcontextmenu.h \

@@ -1,8 +1,8 @@
 #include "spectralanalysis.h"
 #include <mainwindow/mainwindow.h>
 #include <math.h>
-#include <basewaveform/timescaledraw.h>
 #include <mainwindow/Analis/dft.h>
+#include <mainwindow/Analis/frequencyscaledraw.h>
 
 SpectralAnalysis::SpectralAnalysis( MainWindow *m_wind )
 {
@@ -253,8 +253,7 @@ void SpectralAnalysis::prepareUiToShowStatistic(){
     connect(this->become_zero, &QPushButton::released, this, &SpectralAnalysis::reCalcDPF);
 
     this->plot = new QwtPlot();
-
-    this->plot->setAxisScaleDraw(QwtPlot::xBottom, new TimeScaleDraw);
+    this->plot->setAxisScaleDraw(QwtPlot::xBottom, new FrequencyScaleDraw);
 
     this->scroll_layout->addWidget(this->plot);
 
