@@ -3,7 +3,7 @@
 #include <math.h>
 #include <mainwindow/Analis/dft.h>
 #include <mainwindow/Analis/frequencyscaledraw.h>
-
+#include <mainwindow/Analis/dft2.h>
 SpectralAnalysis::SpectralAnalysis( MainWindow *m_wind )
 {
     this->main_window = m_wind;
@@ -62,6 +62,7 @@ void SpectralAnalysis::DoSpectralAnalis(){
     for ( auto check_button: this->list_of_checkbox ){
         if ( check_button->checkState() ){
             this->chosen_source_channel = check_button->canal;
+
         }
     }
 
@@ -118,7 +119,9 @@ void SpectralAnalysis::calculateAmplitudeSpectrum(){
     this->amplitude_spectrum.clear();
 
     for ( int i = 0; i <= this->chosen_source_channel.number_of_samples; i++ ){
-        this->amplitude_spectrum.push_back(abs(this->dpf_values[i]) * this->chosen_source_channel.sampling_frequency);
+        this->amplitude_spectrum.push_back(
+                    (abs(this->dpf_values[i].real()) + abs(this->dpf_values[i].imag())) * this->chosen_source_channel.sampling_frequency
+                    );
     }
 }
 
@@ -209,8 +212,15 @@ void SpectralAnalysis::calculateDPF(){
     if ( this->chosen_source_channel.values_of_signal.size() % 2 != 0 ){
         this->chosen_source_channel.values_of_signal.push_back(0);
     }
-    this->dpf_values = FFTAnalysis(this->chosen_source_channel.values_of_signal, this->chosen_source_channel.number_of_samples,
-                                   this->chosen_source_channel.number_of_samples);
+    std::vector<complex<double>> a;
+    for ( auto value: this->chosen_source_channel.values_of_signal ){
+        complex<double> ptr (value, 0);
+        a.push_back( ptr );
+        this->dpf_values.push_back( ptr );
+    }
+
+
+    fft(a.begin(), this->dpf_values.begin(), log2(this->chosen_source_channel.number_of_samples));
 
     if ( this->current_resolve_collision == 1 ){
         this->dpf_values[0] = 0;

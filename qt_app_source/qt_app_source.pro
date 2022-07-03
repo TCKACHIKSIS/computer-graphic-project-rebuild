@@ -17,6 +17,7 @@ SOURCES += \
     context_menus/navigationContextMenu/navigationcontextmenu.cpp \
     filehandler/filehandler.cpp \
     main.cpp \
+    mainwindow/Analis/dft2.h \
     mainwindow/Analis/frequencyscaledraw.cpp \
     mainwindow/Analis/spectralanalysis.cpp \
     mainwindow/Analis/spectralchoosefragmentwindow.cpp \

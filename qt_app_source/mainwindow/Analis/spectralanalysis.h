@@ -15,6 +15,7 @@
 #include <mainwindow/Analis/spectralcontextmenu.h>
 #include <qwt_symbol.h>
 #include <mainwindow/Analis/spectralchoosefragmentwindow.h>
+#include <complex>
 
 class MainWindow;
 
@@ -53,7 +54,7 @@ public:
     MainWindow *main_window;
     CanalOfSignal chosen_source_channel;
 
-    std::vector<double> dpf_values;
+    std::vector<std::complex<double>> dpf_values;
 
     std::vector<double> amplitude_spectrum;
     QwtPlotCurve *amplitude_specturm_curve;

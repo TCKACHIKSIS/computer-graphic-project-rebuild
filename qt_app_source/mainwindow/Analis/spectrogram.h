@@ -9,6 +9,7 @@
 #include <QPushButton>
 #include <QImage>
 #include <QLineEdit>
+#include <canalofsignal/canalofsignal.h>
 
 class MainWindow;
 
@@ -29,7 +30,9 @@ public:
     QLineEdit *width_of_image;
     QLineEdit *height_of_image;
 
-
+    CanalOfSignal chosen_source_channel;
+    int chosen_width = 0;
+    int chose_height = 0;
     QImage *spectrogram;
     void createSpectrogram();
 

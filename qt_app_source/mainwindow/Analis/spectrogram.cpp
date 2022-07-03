@@ -48,13 +48,32 @@ Spectrogram::Spectrogram(MainWindow *m_wind)
 }
 
 void Spectrogram::createSpectrogram(){
+
+    if ( this->height_of_image->text().isEmpty() || this->width_of_image->text().isEmpty()){
+        return;
+    }
+
+    for ( auto check_button: this->list_of_checkbox ){
+        if ( check_button->checkState() ){
+            this->chosen_source_channel = check_button->canal;
+        }
+    }
+
     for ( auto button: this->list_of_checkbox ){
         delete button;
     }
-    this->spectrogram = new QImage(400, 400, QImage::Format_RGB32);
 
-    for ( int i = 1; i <= 400; i++ ){
-        for ( int j = 1; j <= 400; j++ ){
+    this->chosen_width = this->width_of_image->text().toInt();
+    this->chose_height = this->height_of_image->text().toInt();
+
+    delete this->width_of_image;
+    delete this->height_of_image;
+    delete this->action_button;
+
+    this->spectrogram = new QImage(this->chosen_width, this->chose_height, QImage::Format_RGB32);
+
+    for ( int i = 0; i <= 399; i++ ){
+        for ( int j = 0; j <= 399; j++ ){
             QRgb value;
             value = qRgb(189, 149, 39); // 0xffbd9527
             this->spectrogram->setPixel(i, j, value);
