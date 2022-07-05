@@ -79,7 +79,8 @@ void Spectrogram::calculateSpectrogrammMatrix(){
     int K = this->height_of_image->text().toInt();
     delete this->width_of_image;
     delete this->height_of_image;
-    double Section_Base = this->chosen_source_channel.number_of_samples / Ns;
+    double Section_Base = (double)this->chosen_source_channel.number_of_samples / (double)Ns;
+
 
     double coeff_n = 1.5;
     int Section_N = (int) (Section_Base * coeff_n);
@@ -102,7 +103,6 @@ void Spectrogram::calculateSpectrogrammMatrix(){
         NN = L * 2 * K;
         }
 
-        double *A = new double[Ns * K];
         double *x = new double[NN];
 
         for (int ns = 0; ns < Ns; ns++)
@@ -119,7 +119,7 @@ void Spectrogram::calculateSpectrogrammMatrix(){
                  }
          }
 
-         /* double s = 0;
+         double s = 0;
          for (int i = 0; i < Section_N; i++)
               {
                s += x[i];
@@ -136,11 +136,10 @@ void Spectrogram::calculateSpectrogrammMatrix(){
              double w = 0.54 - 0.46 * cos((2 * M_PI * i) / (Section_N - 1));
              x[i] *= w;
          }
-         */
+
 
          for (int i = Section_N; i < NN; i++)
          {
-             std::cout << i << std::endl;
              x[i] = 0;
          }
 
@@ -152,6 +151,8 @@ void Spectrogram::calculateSpectrogrammMatrix(){
                 this->dpf_values.push_back(ptr);
              }
 
+
+            fft(start_values.begin(), dpf_values.begin(), log2(start_values.size()));
 
             for ( int i = 0; i < K; i++ ){
 
@@ -165,6 +166,9 @@ void Spectrogram::calculateSpectrogrammMatrix(){
                 this->spectrogramm_values.back()[i] = this->amplitude_spectrum_values[i];
             }
          }
+         else {
+
+         }
 
     }
 
@@ -173,10 +177,12 @@ void Spectrogram::calculateSpectrogrammMatrix(){
        for ( auto value: this->spectrogramm_values ){
            for ( int i = 0; i < K; i++ ){
                if ( value[i] > Amax ){
-                        Amax = value[i];
+                   Amax = value[i];
                }
             }
        }
+
+
 
        for ( int i = 0; i < 256; i++ ){
             this->gray_pallete.push_back(new(int[3]));
@@ -189,7 +195,7 @@ void Spectrogram::calculateSpectrogrammMatrix(){
        this->spectrogram = new QImage(Ns, K, QImage::Format_RGB32);
        for ( int i = 0; i < K; i++ ){
            for (int j = 0; j < Ns; j++){
-               int current_blind = (int)this->spectrogramm_values[i][j]/Amax*1*256;
+               int current_blind = this->spectrogramm_values[i][j]/Amax*1*256;
                int I = std::min(255, current_blind);
                QRgb value;
                value = qRgb(this->gray_pallete[I][0], this->gray_pallete[I][1], this->gray_pallete[I][2]);
@@ -197,8 +203,20 @@ void Spectrogram::calculateSpectrogrammMatrix(){
                        }
 
        }
-       QLabel *label = new QLabel();
-       label->setPixmap(QPixmap::fromImage(*this->spectrogram));
-       this->scroll_layout->addWidget(label);
+       this->image_spectrogram_label = new QLabel();
+       this->image_spectrogram_label->setPixmap(QPixmap::fromImage(*this->spectrogram));
+       this->image_spectrogram_label->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+       this->scroll_layout->addWidget(this->image_spectrogram_label);
+       this->image_spectrogram_label->setFixedWidth(this->width());
+       this->image_spectrogram_label->setFixedHeight(this->height());
 
 }
+
+void Spectrogram::resizeEvent(QResizeEvent *event){
+    if ( this->image_spectrogram_label != nullptr ){
+        this->image_spectrogram_label->setFixedWidth(this->width());
+        this->image_spectrogram_label->setFixedHeight(this->height());
+    }
+}
+
+

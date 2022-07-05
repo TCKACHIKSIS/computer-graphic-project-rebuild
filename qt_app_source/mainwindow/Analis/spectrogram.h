@@ -11,6 +11,7 @@
 #include <QLineEdit>
 #include <canalofsignal/canalofsignal.h>
 #include <complex>
+#include <QLabel>
 
 class MainWindow;
 
@@ -43,6 +44,9 @@ public:
     QImage *spectrogram;
     void createSpectrogram();
 
+    QLabel *image_spectrogram_label = nullptr;
+
+    void resizeEvent(QResizeEvent *event);
 };
 
 #endif // SPECTROGRAM_H

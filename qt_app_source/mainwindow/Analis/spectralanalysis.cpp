@@ -141,7 +141,6 @@ void SpectralAnalysis::calculateAmplitudeSpectrum(){
         this->log_amplitude_spectrum.push_back(
                      20 * log10( this->amplitude_spectrum[i])
                     );
-        std::cout << this->log_amplitude_spectrum.back() << std::endl;
     }
 }
 
