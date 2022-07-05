@@ -34,6 +34,8 @@ public:
     QAction *show_amplitude_spectrum;
     QAction *show_spm;
     QAction *choose_fragment;
+    QAction *set_log_display;
+    QAction *set_linear_display;
     QAction *reset_scale;
     QLineEdit *input_L;
     QPushButton *set_L;
@@ -57,9 +59,13 @@ public:
     std::vector<std::complex<double>> dpf_values;
 
     std::vector<double> amplitude_spectrum;
+    std::vector<double> log_amplitude_spectrum;
+
     QwtPlotCurve *amplitude_specturm_curve;
 
     std::vector<double> spm;
+    std::vector<double> log_spm;
+
     QwtPlotCurve *spm_curve;
 
     int L = 0;
@@ -78,6 +84,10 @@ public:
     void paintSPM();
 
     void smooth();
+
+    bool is_log = false;
+    void setLogDisplay();
+    void setLinearDisplay();
 
     void setUi();
     void prepareUiToShowStatistic();

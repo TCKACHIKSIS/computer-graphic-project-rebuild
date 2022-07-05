@@ -4,6 +4,7 @@
 #include <mainwindow/Analis/dft.h>
 #include <mainwindow/Analis/frequencyscaledraw.h>
 #include <mainwindow/Analis/dft2.h>
+
 SpectralAnalysis::SpectralAnalysis( MainWindow *m_wind )
 {
     this->main_window = m_wind;
@@ -73,16 +74,22 @@ void SpectralAnalysis::DoSpectralAnalis(){
     this->show_spm = new QAction("СПМ");
     this->choose_fragment = new QAction("Выбрать фрагмент");
     this->reset_scale = new QAction("Сбросить фрагмент");
+    this->set_linear_display = new QAction("linear");
+    this->set_log_display = new QAction("lg");
 
     this->tool_bar->addAction(this->show_amplitude_spectrum);
     this->tool_bar->addAction(this->show_spm);
     this->tool_bar->addAction(this->choose_fragment);
     this->tool_bar->addAction(this->reset_scale);
+    this->tool_bar->addAction(this->set_linear_display);
+    this->tool_bar->addAction(this->set_log_display);
 
     connect( this->show_amplitude_spectrum, &QAction::triggered, this, &SpectralAnalysis::paintAmplitudeSpectrum );
     connect( this->show_spm, &QAction::triggered, this, &SpectralAnalysis::paintSPM );
     connect( this->choose_fragment, &QAction::triggered, this,  &SpectralAnalysis::showChooseFragmentWindow);
     connect( this->reset_scale, &QAction::triggered, this,  &SpectralAnalysis::resetScale);
+    connect( this->set_log_display, &QAction::triggered, this, &SpectralAnalysis::setLogDisplay );
+    connect( this->set_linear_display, &QAction::triggered, this, &SpectralAnalysis::setLinearDisplay );
 
     this->prepareUiToShowStatistic();
     this->calculateDPF();
@@ -91,6 +98,15 @@ void SpectralAnalysis::DoSpectralAnalis(){
 
 
 
+    this->paintAmplitudeSpectrum();
+}
+
+void SpectralAnalysis::setLogDisplay(){
+    this->is_log = true;
+    this->paintAmplitudeSpectrum();
+}
+void SpectralAnalysis::setLinearDisplay(){
+    this->is_log = false;
     this->paintAmplitudeSpectrum();
 }
 
@@ -118,10 +134,14 @@ void SpectralAnalysis::calculateAmplitudeSpectrum(){
 
     this->amplitude_spectrum.clear();
 
-    for ( int i = 0; i <= this->chosen_source_channel.number_of_samples; i++ ){
+    for ( int i = 0; i <= this->chosen_source_channel.number_of_samples / 2 - 1; i++ ){
         this->amplitude_spectrum.push_back(
                     (abs(this->dpf_values[i].real()) + abs(this->dpf_values[i].imag())) * this->chosen_source_channel.sampling_frequency
                     );
+        this->log_amplitude_spectrum.push_back(
+                     20 * log10( this->amplitude_spectrum[i])
+                    );
+        std::cout << this->log_amplitude_spectrum.back() << std::endl;
     }
 }
 
@@ -131,10 +151,16 @@ void SpectralAnalysis::paintAmplitudeSpectrum(){
     this->amplitude_specturm_curve->setPen(Qt::blue, 2);
     QPolygonF points;
 
-    for ( int i = 0; i < this->chosen_source_channel.number_of_samples; i++ ){
-        points << QPointF(i, this->amplitude_spectrum[i]);
+    if ( !this->is_log ){
+        for ( int i = 0; i < this->chosen_source_channel.number_of_samples / 2 - 1; i++ ){
+            points << QPointF(i, this->amplitude_spectrum[i]);
+        }
     }
-
+    else {
+        for ( int i = 0; i < this->chosen_source_channel.number_of_samples / 2 - 1; i++ ){
+            points << QPointF(i, this->log_amplitude_spectrum[i]);
+        }
+    }
     this->amplitude_specturm_curve->setSamples(points);
     this->plot->detachItems(QwtPlotItem::Rtti_PlotItem,true);
 
@@ -164,9 +190,12 @@ void SpectralAnalysis::paintAmplitudeSpectrum(){
 
 void SpectralAnalysis::calculateSPM(){
     this->spm.clear();
-    for ( int i = 0;  i <= this->chosen_source_channel.number_of_samples; i++ ){
+    for ( int i = 0;  i <= this->chosen_source_channel.number_of_samples / 2 - 1; i++ ){
         this->spm.push_back(
                     pow( abs(this->dpf_values[i]), 2 ) * pow( this->chosen_source_channel.sampling_frequency, 2 )
+                    );
+        this->log_spm.push_back(
+                     10 *log10( this->spm[i] )
                     );
     }
 }
@@ -177,10 +206,16 @@ void SpectralAnalysis::paintSPM(){
     this->spm_curve->setPen(Qt::blue, 2);
     QPolygonF points;
 
-    for ( int i = 0; i < this->chosen_source_channel.number_of_samples; i++ ){
-        points << QPointF(i, this->spm[i]);
+    if ( this->is_log ){
+        for ( int i = 0; i < this->chosen_source_channel.number_of_samples / 2 - 1; i++ ){
+            points << QPointF( i, this->spm[i]);
+        }
     }
-
+    else{
+        for ( int i = 0; i < this->chosen_source_channel.number_of_samples / 2 - 1; i++ ){
+            points << QPointF( i, this->log_spm[i] );
+        }
+    }
     this->spm_curve->setSamples(points);
 
     this->plot->detachItems(QwtPlotItem::Rtti_PlotItem,true);

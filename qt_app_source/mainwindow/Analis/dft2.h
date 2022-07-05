@@ -18,7 +18,7 @@ unsigned int bitReverse(unsigned int x, int log2n)
     }
     return n;
 }
-const double PI = 3.1415926536;
+static const double PI = 3.1415926536;
 template<class Iter_T>
 void fft(Iter_T a, Iter_T b, int log2n)
 {

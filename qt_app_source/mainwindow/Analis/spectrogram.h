@@ -10,6 +10,7 @@
 #include <QImage>
 #include <QLineEdit>
 #include <canalofsignal/canalofsignal.h>
+#include <complex>
 
 class MainWindow;
 
@@ -31,8 +32,23 @@ public:
     QLineEdit *height_of_image;
 
     CanalOfSignal chosen_source_channel;
-    int chosen_width = 0;
-    int chose_height = 0;
+
+
+    int Ns = 0;
+    int K = 0;
+    double section_base = 0;
+    double coeff_n = 1.5;
+    int section_n = 0;
+    int NN;
+    int L;
+    double Amax = 0;
+    double Coeff = 0;
+
+    std::vector<int*> gray_pallete;
+    std::vector<double*> spectrogramm_values;
+    std::vector<std::complex<double>> dpf_values;
+    std::vector<double> amplitude_spectrum_values;
+
     QImage *spectrogram;
     void createSpectrogram();
 
