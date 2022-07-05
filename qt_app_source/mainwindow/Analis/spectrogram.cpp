@@ -56,8 +56,8 @@ void Spectrogram::createSpectrogram(){
         return;
     }
 
-    this->Ns = this->width_of_image->text().toInt();
-    this->K = this->height_of_image->text().toInt();
+    int Ns = this->width_of_image->text().toInt();
+    int K = this->height_of_image->text().toInt();
 
     for ( auto check_button: this->list_of_checkbox ){
         if ( check_button->checkState() ){
@@ -69,146 +69,136 @@ void Spectrogram::createSpectrogram(){
         delete button;
     }
 
-    delete this->width_of_image;
-    delete this->height_of_image;
     delete this->action_button;
 
+    this->calculateSpectrogrammMatrix();
+}
 
+void Spectrogram::calculateSpectrogrammMatrix(){
+    int Ns = this->width_of_image->text().toInt();
+    int K = this->height_of_image->text().toInt();
+    delete this->width_of_image;
+    delete this->height_of_image;
+    double Section_Base = this->chosen_source_channel.number_of_samples / Ns;
 
-    this->section_base = this->chosen_source_channel.number_of_samples / this->Ns ;
-    this->section_n = (int)(this->section_base * this->coeff_n);
+    double coeff_n = 1.5;
+    int Section_N = (int) (Section_Base * coeff_n);
 
-    if ( this->section_n <= this->K * 2 ){
-        this->L = 1;
-        this->NN = this->K * 2;
-    }
-
-    if ( this->section_n > this->chosen_source_channel.number_of_samples ){
-        this->L = this->section_n / ( 2 * this->K );
-        if ( this->section_n % (2 * this->K) != 0 ){
-            this->L += 1;
-        }
-        this->NN = this->L * 2 * this->K;
-    }
-
-    std::vector<double> a(this->Ns * this->K);
-
-    for ( int ns = 0; ns < this->chosen_source_channel.number_of_samples; ns++ ){
-        int n0 = ns * this->section_base;
-        int count_on_mas = n0;
-        int count_cnt = 0;
-        while ( count_on_mas < this->chosen_source_channel.number_of_samples && count_cnt < this->section_n ){
-            a[count_cnt] = this->chosen_source_channel.values_of_signal[count_on_mas];
-
-            count_on_mas++;
-            count_cnt++;
+    int NN;
+    int L;
+    if (Section_N <= 2 * K)
+       {
+         NN = 2 * K;
+          L = 1;
+       }
+     else
+       {
+        L = Section_N / (2 * K);
+        if (Section_N % (2 * K) != 0)
+        {
+          L += 1;
         }
 
-        double s = 0;
-        count_on_mas = 0;
-        count_cnt = 0;
-
-        while ( count_on_mas < this->section_n  ){
-            s += a[count_on_mas];
-            count_on_mas++;
+        NN = L * 2 * K;
         }
 
-        s = s / (this->section_n);
+        double *A = new double[Ns * K];
+        double *x = new double[NN];
 
-        count_on_mas = 0;
+        for (int ns = 0; ns < Ns; ns++)
+         {
+          int n0 = (int) (ns * Section_Base);
+          for (int i = 0; i < Section_N; i++)
+          {
+            try
+                {
+                x[i] = this->chosen_source_channel.values_of_signal[n0 + i];
+                 }
+                 catch(std::exception)
+                 {
+                 }
+         }
 
-        while ( count_on_mas < this->section_n ){
-            a[count_on_mas] = a[count_on_mas] - s;
-            count_on_mas++;
-        }
+         /* double s = 0;
+         for (int i = 0; i < Section_N; i++)
+              {
+               s += x[i];
+         }
 
-        count_on_mas = 0;
+         s *= (double) 1 / Section_N;
+         for (int i = 0; i < Section_N; i++)
+            {
+             x[i] -= s;
+         }
 
-        while ( count_on_mas < this->section_n ){
-            a[count_on_mas] = a[count_on_mas] * (
-                        0.54 - 0.46*cos((2*M_PI*count_on_mas)/(this->section_n-1))
-                        );
-            count_on_mas++;
-        }
+         for (int i = 0; i < Section_N; i++)
+         {
+             double w = 0.54 - 0.46 * cos((2 * M_PI * i) / (Section_N - 1));
+             x[i] *= w;
+         }
+         */
 
-        count_on_mas = section_n;
-        while ( count_on_mas < this->NN ){
-            a[count_on_mas] = 0;
-            count_on_mas++;
-        }
+         for (int i = Section_N; i < NN; i++)
+         {
+             std::cout << i << std::endl;
+             x[i] = 0;
+         }
 
-        std::vector<std::complex<double>> start_values;
-        count_on_mas = 0;
-        for ( auto value: a ){
-            std::complex<double> ptr(value, 0);
-            start_values.push_back(ptr);
-            this->dpf_values.push_back(ptr);
-        }
+         if ( L == 1 ){
+            std::vector<std::complex<double>> start_values;
+            for ( int i = 0; i < NN; i++ ){
+                std::complex<double> ptr(x[i], 0);
+                start_values.push_back(ptr);
+                this->dpf_values.push_back(ptr);
+             }
 
-        fft(start_values.begin(), dpf_values.begin(), log2(a.size()));
-        if ( this->L == 1 ){
-            for ( int i = 0; i < this->dpf_values.size(); i++ ){
-                this->amplitude_spectrum_values.push_back(
-                            abs(this->dpf_values[i])*this->chosen_source_channel.sampling_frequency
-                            );
+
+            for ( int i = 0; i < K; i++ ){
+
+               this->amplitude_spectrum_values.push_back( (1.0 / K) *
+                       abs(sqrt(pow(this->dpf_values[i].real(), 2) + pow(this->dpf_values[i].imag(), 2)))
+                                                          );
             }
-        }
-        if ( this->L > 1 ){
-            for ( int i = 0; i < this->NN; i++ ){
-                std::cout << this->dpf_values[i] << std::endl;
-                this->amplitude_spectrum_values.push_back(
-                            abs(this->dpf_values[i])*this->chosen_source_channel.sampling_frequency
-                            );
+
+            this->spectrogramm_values.push_back(new double[K]);
+            for ( int i = 0; i < K; i++ ){
+                this->spectrogramm_values.back()[i] = this->amplitude_spectrum_values[i];
             }
-        }
+         }
 
-        for ( int k = 0; k < this->K; k++ ){
-            double ptr_a = 0;
-            for ( int i = (-1*(this->L-1))/2; i <= this->L / 2; i++  ){
-                ptr_a = ptr_a + this->amplitude_spectrum_values[this->L*k + i];
+    }
+
+       double Amax = this->spectrogramm_values[0][0];
+
+       for ( auto value: this->spectrogramm_values ){
+           for ( int i = 0; i < K; i++ ){
+               if ( value[i] > Amax ){
+                        Amax = value[i];
+               }
             }
-            ptr_a = ptr_a/this->L;
-            this->amplitude_spectrum_values[k] = ptr_a;
-        }
+       }
 
-        this->spectrogramm_values.push_back(new double[this->K]);
-        for ( int i = 0; i < this->K; i++ ){
-            this->spectrogramm_values.back()[i] = this->amplitude_spectrum_values[i];
-        }
-    }
-
-    this->Amax = this->spectrogramm_values[0][0];
-
-    for ( auto value: this->spectrogramm_values ){
-        for ( int i = 0; i < this->K; i++ ){
-            if ( value[i] > this->Amax ){
-                this->Amax = value[i];
+       for ( int i = 0; i < 256; i++ ){
+            this->gray_pallete.push_back(new(int[3]));
+            this->gray_pallete.back()[0] = i;
+            this->gray_pallete.back()[1] = i;
+            this->gray_pallete.back()[2] = i;
             }
-        }
-    }
-
-    for ( int i = 0; i < 256; i++ ){
-        this->gray_pallete.push_back(new(int[3]));
-        this->gray_pallete.back()[0] = i;
-        this->gray_pallete.back()[1] = i;
-        this->gray_pallete.back()[2] = i;
-    }
 
 
-    this->spectrogram = new QImage(this->Ns, this->K, QImage::Format_RGB32);
+       this->spectrogram = new QImage(Ns, K, QImage::Format_RGB32);
+       for ( int i = 0; i < K; i++ ){
+           for (int j = 0; j < Ns; j++){
+               int current_blind = (int)this->spectrogramm_values[i][j]/Amax*1*256;
+               int I = std::min(255, current_blind);
+               QRgb value;
+               value = qRgb(this->gray_pallete[I][0], this->gray_pallete[I][1], this->gray_pallete[I][2]);
+               this->spectrogram->setPixel(j, i, value);
+                       }
 
+       }
+       QLabel *label = new QLabel();
+       label->setPixmap(QPixmap::fromImage(*this->spectrogram));
+       this->scroll_layout->addWidget(label);
 
-    for ( int i = 0; i < this->K; i++ ){
-        for (int j = 0; j < this->Ns; j++){
-            int current_blind = (int)this->spectrogramm_values[i][j]/this->Amax*this->Coeff*256;
-            int I = std::min(255, current_blind);
-            QRgb value;
-            value = qRgb(this->gray_pallete[I][0], this->gray_pallete[I][1], this->gray_pallete[I][2]);
-            this->spectrogram->setPixel(j, i, value);
-        }
-    }
-
-    QLabel *label = new QLabel();
-    label->setPixmap(QPixmap::fromImage(*this->spectrogram));
-    this->scroll_layout->addWidget(label);
 }

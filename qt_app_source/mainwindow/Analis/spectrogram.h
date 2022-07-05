@@ -33,21 +33,12 @@ public:
 
     CanalOfSignal chosen_source_channel;
 
-
-    int Ns = 0;
-    int K = 0;
-    double section_base = 0;
-    double coeff_n = 1.5;
-    int section_n = 0;
-    int NN;
-    int L;
-    double Amax = 0;
-    double Coeff = 0;
-
     std::vector<int*> gray_pallete;
     std::vector<double*> spectrogramm_values;
     std::vector<std::complex<double>> dpf_values;
     std::vector<double> amplitude_spectrum_values;
+
+    void calculateSpectrogrammMatrix();
 
     QImage *spectrogram;
     void createSpectrogram();
