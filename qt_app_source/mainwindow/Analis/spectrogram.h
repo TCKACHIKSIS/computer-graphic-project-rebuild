@@ -32,7 +32,12 @@ public:
     QLineEdit *width_of_image;
     QLineEdit *height_of_image;
 
+    QWidget *tool_widget;
+    QBoxLayout *tool_layout;
+
     CanalOfSignal chosen_source_channel;
+    QLineEdit *Coeff;
+    QPushButton *set_Coeff;
 
     std::vector<int*> gray_pallete;
     std::vector<double*> spectrogramm_values;
@@ -43,6 +48,13 @@ public:
 
     QImage *spectrogram;
     void createSpectrogram();
+    void repainSpectrogram();
+    void setCoeff();
+
+    int current_Coeff = 1;
+    double Amax;
+    int Ns;
+    int K;
 
     QLabel *image_spectrogram_label = nullptr;
 

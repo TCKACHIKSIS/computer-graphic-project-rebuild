@@ -1,5 +1,6 @@
 #include "spectrogram.h"
 #include <mainwindow/mainwindow.h>
+#include <QAction>
 
 template<class Iter_T>
 void fft(Iter_T a, Iter_T b, int log2n);
@@ -75,8 +76,8 @@ void Spectrogram::createSpectrogram(){
 }
 
 void Spectrogram::calculateSpectrogrammMatrix(){
-    int Ns = this->width_of_image->text().toInt();
-    int K = this->height_of_image->text().toInt();
+    this->Ns = this->width_of_image->text().toInt();
+    this->K = this->height_of_image->text().toInt();
     delete this->width_of_image;
     delete this->height_of_image;
     double Section_Base = (double)this->chosen_source_channel.number_of_samples / (double)Ns;
@@ -172,12 +173,12 @@ void Spectrogram::calculateSpectrogrammMatrix(){
 
     }
 
-       double Amax = this->spectrogramm_values[0][0];
+       this->Amax = this->spectrogramm_values[0][0];
 
        for ( auto value: this->spectrogramm_values ){
            for ( int i = 0; i < K; i++ ){
-               if ( value[i] > Amax ){
-                   Amax = value[i];
+               if ( value[i] > this->Amax ){
+                   this->Amax = value[i];
                }
             }
        }
@@ -189,24 +190,43 @@ void Spectrogram::calculateSpectrogrammMatrix(){
             this->gray_pallete.back()[0] = i;
             this->gray_pallete.back()[1] = i;
             this->gray_pallete.back()[2] = i;
-            }
+       }
 
 
        this->spectrogram = new QImage(Ns, K, QImage::Format_RGB32);
+
        for ( int i = 0; i < K; i++ ){
            for (int j = 0; j < Ns; j++){
-               int current_blind = this->spectrogramm_values[i][j]/Amax*1*256;
+               int current_blind = this->spectrogramm_values[i][j]/this->Amax*this->current_Coeff*256;
                int I = std::min(255, current_blind);
                QRgb value;
                value = qRgb(this->gray_pallete[I][0], this->gray_pallete[I][1], this->gray_pallete[I][2]);
                this->spectrogram->setPixel(j, i, value);
-                       }
-
+           }
        }
+       this->scroll_layout->setContentsMargins(0, 0, 0, 0);
+
+       this->tool_widget = new QWidget();
+       this->tool_layout = new QBoxLayout(QBoxLayout::Direction::LeftToRight);
+       this->tool_widget->setLayout(this->tool_layout);
+       this->scroll_layout->addWidget(this->tool_widget);
+
+       this->Coeff = new QLineEdit();
+       this->tool_layout->addWidget(this->Coeff);
+
+       this->set_Coeff = new QPushButton("Установить Coeff");
+       this->tool_layout->addWidget(this->set_Coeff);
+       connect(this->set_Coeff, &QPushButton::released, this, &Spectrogram::setCoeff);
+
        this->image_spectrogram_label = new QLabel();
        this->image_spectrogram_label->setPixmap(QPixmap::fromImage(*this->spectrogram));
        this->image_spectrogram_label->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
        this->scroll_layout->addWidget(this->image_spectrogram_label);
+
+       this->image_spectrogram_label->setScaledContents(true);
+
+       this->scroll_layout->addStretch(1);
+
        this->image_spectrogram_label->setFixedWidth(this->width());
        this->image_spectrogram_label->setFixedHeight(this->height());
 
@@ -214,9 +234,27 @@ void Spectrogram::calculateSpectrogrammMatrix(){
 
 void Spectrogram::resizeEvent(QResizeEvent *event){
     if ( this->image_spectrogram_label != nullptr ){
-        this->image_spectrogram_label->setFixedWidth(this->width());
-        this->image_spectrogram_label->setFixedHeight(this->height());
+        this->image_spectrogram_label->setFixedWidth(this->width() - 70);
+        this->image_spectrogram_label->setFixedHeight(this->height() - 70);
     }
 }
 
+void Spectrogram::setCoeff(){
+    this->current_Coeff = this->Coeff->text().toInt();
+    this->repainSpectrogram();
+}
+
+void Spectrogram::repainSpectrogram(){
+    for ( int i = 0; i < K; i++ ){
+        for (int j = 0; j < Ns; j++){
+            int current_blind = this->spectrogramm_values[i][j]/this->Amax*this->current_Coeff*256;
+            int I = std::min(255, current_blind);
+            QRgb value;
+            value = qRgb(this->gray_pallete[I][0], this->gray_pallete[I][1], this->gray_pallete[I][2]);
+            this->spectrogram->setPixel(j, i, value);
+        }
+    }
+    this->image_spectrogram_label->setPixmap(QPixmap::fromImage(*this->spectrogram));
+    this->image_spectrogram_label->repaint();
+}
 
