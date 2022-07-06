@@ -40,9 +40,26 @@ public:
     QPushButton *set_Coeff;
 
     std::vector<int*> gray_pallete;
+    std::vector<int*> copper_pallete;
+    std::vector<int*> hot_pallete;
+    std::vector<int*> cool_pallete;
+
+    void setGray();
+    void setCopper();
+    void setHot();
+    void setCool();
+
+    QPushButton *set_gray;
+    QPushButton *set_copper;
+    QPushButton *set_hot;
+    QPushButton *set_cool;
+
+    std::vector<int*> current_pallete;
+
     std::vector<double*> spectrogramm_values;
     std::vector<std::complex<double>> dpf_values;
     std::vector<double> amplitude_spectrum_values;
+
 
     void calculateSpectrogrammMatrix();
 

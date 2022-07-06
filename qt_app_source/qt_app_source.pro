@@ -104,5 +104,7 @@ INCLUDEPATH += /usr/local/qwt-6.2.0/lib/qwt.framework/Versions/6/Headers
 LIBS  += -F "/usr/local/qwt-6.2.0/lib/qwt.framework"
 LIBS += -framework qwt
 
+INCLUDEPATH += /Users/ivan/Downloads/kfr-master/include/kfr
+
 DISTFILES += \
     data.txt

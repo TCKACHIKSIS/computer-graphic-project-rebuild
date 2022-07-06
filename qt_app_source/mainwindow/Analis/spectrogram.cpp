@@ -1,12 +1,16 @@
 #include "spectrogram.h"
 #include <mainwindow/mainwindow.h>
 #include <QAction>
+#include <mainwindow/Analis/dft.h>
+
+
 
 template<class Iter_T>
 void fft(Iter_T a, Iter_T b, int log2n);
 
 Spectrogram::Spectrogram(MainWindow *m_wind)
 {
+
     this->main_window = m_wind;
     this->setStyleSheet("background: white; color: black");
 
@@ -156,15 +160,15 @@ void Spectrogram::calculateSpectrogrammMatrix(){
             fft(start_values.begin(), dpf_values.begin(), log2(start_values.size()));
 
             for ( int i = 0; i < K; i++ ){
-
+                std::cout << start_values[0] << " " << this->dpf_values[0] << std::endl;
                this->amplitude_spectrum_values.push_back( (1.0 / K) *
-                       abs(sqrt(pow(this->dpf_values[i].real(), 2) + pow(this->dpf_values[i].imag(), 2)))
+                       (abs(this->dpf_values[i].real()) + abs(this->dpf_values[i].imag()))*this->chosen_source_channel.sampling_frequency
                                                           );
             }
 
             this->spectrogramm_values.push_back(new double[K]);
             for ( int i = 0; i < K; i++ ){
-                this->spectrogramm_values.back()[i] = this->amplitude_spectrum_values[i];
+                this->spectrogramm_values.back()[i] = this->amplitude_spectrum_values[i] ;
             }
          }
          else {
@@ -192,6 +196,64 @@ void Spectrogram::calculateSpectrogrammMatrix(){
             this->gray_pallete.back()[2] = i;
        }
 
+       for ( int i = 0; i <= 85; i++ ){
+           this->copper_pallete.push_back(new(int[3]));
+           this->copper_pallete.back()[0] = i;
+           this->copper_pallete.back()[1] = i * 8;
+           this->copper_pallete.back()[2] = i * 3;
+       }
+       for ( int i = 86; i <= 170; i++ ){
+           this->copper_pallete.push_back(new(int[3]));
+           this->copper_pallete.back()[0] = 0;
+           this->copper_pallete.back()[1] = i * 8;
+           this->copper_pallete.back()[2] = i * 3;
+       }
+       for ( int i = 171; i < 256; i++ ){
+           this->copper_pallete.push_back(new(int[3]));
+           this->copper_pallete.back()[0] = 0;
+           this->copper_pallete.back()[1] = 170;
+           this->copper_pallete.back()[2] = 255;
+       }
+
+       for ( int i = 0; i <= 85; i++ ){
+           this->hot_pallete.push_back(new(int[3]));
+           this->hot_pallete.back()[0] = 0;
+           this->hot_pallete.back()[1] = 0;
+           this->hot_pallete.back()[2] = i * 3;
+       }
+       for ( int i = 86; i <= 170; i++ ){
+           this->hot_pallete.push_back(new(int[3]));
+           this->hot_pallete.back()[0] = 0;
+           this->hot_pallete.back()[1] = (i - 85)*3;
+           this->hot_pallete.back()[2] = 255;
+       }
+       for ( int i = 171; i < 256; i++ ){
+           this->hot_pallete.push_back(new(int[3]));
+           this->hot_pallete.back()[0] = (i - 170) * 3;
+           this->hot_pallete.back()[1] = 255;
+           this->hot_pallete.back()[2] = 255;
+       }
+
+       for ( int i = 0; i <= 85; i++ ){
+           this->cool_pallete.push_back(new(int[3]));
+           this->cool_pallete.back()[0] = 255;
+           this->cool_pallete.back()[1] = i * 3;
+           this->cool_pallete.back()[2] = 0;
+       }
+       for ( int i = 86; i <= 170; i++ ){
+           this->cool_pallete.push_back(new(int[3]));
+           this->cool_pallete.back()[0] = 0;
+           this->cool_pallete.back()[1] = 255;
+           this->cool_pallete.back()[2] = (i - 85) * 3;
+       }
+       for ( int i = 171; i < 256; i++ ){
+           this->cool_pallete.push_back(new(int[3]));
+           this->cool_pallete.back()[0] = 0;
+           this->cool_pallete.back()[1] = 0;
+           this->cool_pallete.back()[2] = (i - 170) * 3;
+       }
+
+       this->current_pallete = this->gray_pallete;
 
        this->spectrogram = new QImage(Ns, K, QImage::Format_RGB32);
 
@@ -200,7 +262,7 @@ void Spectrogram::calculateSpectrogrammMatrix(){
                int current_blind = this->spectrogramm_values[i][j]/this->Amax*this->current_Coeff*256;
                int I = std::min(255, current_blind);
                QRgb value;
-               value = qRgb(this->gray_pallete[I][0], this->gray_pallete[I][1], this->gray_pallete[I][2]);
+               value = qRgb(this->current_pallete[I][0], this->current_pallete[I][1], this->current_pallete[I][2]);
                this->spectrogram->setPixel(j, i, value);
            }
        }
@@ -218,6 +280,21 @@ void Spectrogram::calculateSpectrogrammMatrix(){
        this->tool_layout->addWidget(this->set_Coeff);
        connect(this->set_Coeff, &QPushButton::released, this, &Spectrogram::setCoeff);
 
+       this->set_gray = new QPushButton("GRAY");
+       this->set_copper = new QPushButton("COPPER");
+       this->set_hot = new QPushButton("HOT");
+       this->set_cool = new QPushButton("COOL");
+
+       connect(this->set_gray, &QPushButton::released, this, &Spectrogram::setGray);
+       connect(this->set_copper, &QPushButton::released, this, &Spectrogram::setCopper);
+       connect(this->set_hot, &QPushButton::released, this, &Spectrogram::setHot);
+       connect(this->set_cool, &QPushButton::released, this, &Spectrogram::setCool);
+
+       this->tool_layout->addWidget(this->set_gray);
+       this->tool_layout->addWidget(this->set_copper);
+       this->tool_layout->addWidget(this->set_hot);
+       this->tool_layout->addWidget(this->set_cool);
+
        this->image_spectrogram_label = new QLabel();
        this->image_spectrogram_label->setPixmap(QPixmap::fromImage(*this->spectrogram));
        this->image_spectrogram_label->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
@@ -230,6 +307,26 @@ void Spectrogram::calculateSpectrogrammMatrix(){
        this->image_spectrogram_label->setFixedWidth(this->width());
        this->image_spectrogram_label->setFixedHeight(this->height());
 
+}
+
+void Spectrogram::setGray(){
+    this->current_pallete = this->gray_pallete;
+    this->repainSpectrogram();
+}
+
+void Spectrogram::setCopper(){
+    this->current_pallete = this->copper_pallete;
+    this->repainSpectrogram();
+}
+
+void Spectrogram::setHot(){
+    this->current_pallete = this->hot_pallete;
+    this->repainSpectrogram();
+}
+
+void Spectrogram::setCool(){
+    this->current_pallete = this->cool_pallete;
+    this->repainSpectrogram();
 }
 
 void Spectrogram::resizeEvent(QResizeEvent *event){
@@ -250,7 +347,7 @@ void Spectrogram::repainSpectrogram(){
             int current_blind = this->spectrogramm_values[i][j]/this->Amax*this->current_Coeff*256;
             int I = std::min(255, current_blind);
             QRgb value;
-            value = qRgb(this->gray_pallete[I][0], this->gray_pallete[I][1], this->gray_pallete[I][2]);
+            value = qRgb(this->current_pallete[I][0], this->current_pallete[I][1], this->current_pallete[I][2]);
             this->spectrogram->setPixel(j, i, value);
         }
     }
