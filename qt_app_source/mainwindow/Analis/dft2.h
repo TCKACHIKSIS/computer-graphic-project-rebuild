@@ -1,4 +1,4 @@
-/* #include <iostream>
+#include <iostream>
 #include <complex>
 #include <cmath>
 #include <iterator>
@@ -51,4 +51,3 @@ void fft(Iter_T a, Iter_T b, int log2n)
         }
     }
 }
-*/

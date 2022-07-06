@@ -3,7 +3,10 @@
 
 const double TwoPi = 6.283185307179586;
 
-void FFTAnalysis(double *AVal, double *FTvl, int Nvl, int Nft) {
+std::vector<double> FFTAnalysis(std::vector<double> AVal, int Nvl, int Nft) {
+
+  std::vector<double> FTvl;
+
   int i, j, n, m, Mmax, Istp;
   double Tmpr, Tmpi, Wtmp, Theta;
   double Wpr, Wpi, Wr, Wi;
@@ -55,8 +58,10 @@ void FFTAnalysis(double *AVal, double *FTvl, int Nvl, int Nft) {
   }
 
   for (i = 0; i < Nft; i++) {
-    j = i * 2; FTvl[i] = 2*sqrt(pow(Tmvl[j],2) + pow(Tmvl[j+1],2))/Nvl;
+    j = i * 2;
+    FTvl.push_back( 2*sqrt(pow(Tmvl[j],2) + pow(Tmvl[j+1],2))/Nvl);
   }
 
   delete []Tmvl;
+  return FTvl;
 }
