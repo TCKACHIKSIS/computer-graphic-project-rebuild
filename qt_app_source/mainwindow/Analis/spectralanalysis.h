@@ -56,7 +56,7 @@ public:
     MainWindow *main_window;
     CanalOfSignal chosen_source_channel;
 
-    std::vector<std::complex<double>> dpf_values;
+    std::vector<double> dpf_values;
 
     std::vector<double> amplitude_spectrum;
     std::vector<double> log_amplitude_spectrum;

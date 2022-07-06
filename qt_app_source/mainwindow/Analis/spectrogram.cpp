@@ -153,7 +153,7 @@ void Spectrogram::calculateSpectrogrammMatrix(){
              }
 
 
-            fft(start_values.begin(), dpf_values.begin(), log2(start_values.size()));
+            //fft(start_values.begin(), dpf_values.begin(), log2(start_values.size()));
 
             for ( int i = 0; i < K; i++ ){
 
