@@ -136,7 +136,7 @@ void SpectralAnalysis::calculateAmplitudeSpectrum(){
 
     for ( int i = 0; i <= this->chosen_source_channel.number_of_samples / 2 - 1; i++ ){
         this->amplitude_spectrum.push_back(
-                    (abs(this->dpf_values[i].real()) + abs(this->dpf_values[i].imag())) * this->chosen_source_channel.sampling_frequency
+                    (abs(this->dpf_values[i])) * this->chosen_source_channel.sampling_frequency
                     );
         this->log_amplitude_spectrum.push_back(
                      20 * log10( this->amplitude_spectrum[i])
@@ -245,16 +245,20 @@ void SpectralAnalysis::paintSPM(){
 void SpectralAnalysis::calculateDPF(){
     if ( this->chosen_source_channel.values_of_signal.size() % 2 != 0 ){
         this->chosen_source_channel.values_of_signal.push_back(0);
-    }
-    std::vector<complex<double>> a;
-    for ( auto value: this->chosen_source_channel.values_of_signal ){
-        complex<double> ptr (value, 0);
-        a.push_back( ptr );
-        this->dpf_values.push_back( ptr );
+        this->chosen_source_channel.number_of_samples++;
     }
 
+    double a[this->chosen_source_channel.number_of_samples];
+    for ( int i = 0; i < this->chosen_source_channel.number_of_samples; i++ ){
+        a[i] = this->chosen_source_channel.values_of_signal[i];
+    }
+    double b[this->chosen_source_channel.number_of_samples];
 
-    fft(a.begin(), this->dpf_values.begin(), log2(this->chosen_source_channel.number_of_samples));
+
+
+    for ( int i = 0; i < this->chosen_source_channel.number_of_samples; i++){
+        this->dpf_values.push_back(b[i]);
+    }
 
     if ( this->current_resolve_collision == 1 ){
         this->dpf_values[0] = 0;
