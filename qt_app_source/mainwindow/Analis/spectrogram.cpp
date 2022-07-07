@@ -61,9 +61,6 @@ void Spectrogram::createSpectrogram(){
         return;
     }
 
-    int Ns = this->width_of_image->text().toInt();
-    int K = this->height_of_image->text().toInt();
-
     for ( auto check_button: this->list_of_checkbox ){
         if ( check_button->checkState() ){
             this->chosen_source_channel = check_button->canal;
@@ -94,6 +91,7 @@ void Spectrogram::calculateSpectrogrammMatrix(){
     int L;
     if (Section_N <= 2 * K)
        {
+
          NN = 2 * K;
           L = 1;
        }
@@ -105,18 +103,26 @@ void Spectrogram::calculateSpectrogrammMatrix(){
           L += 1;
         }
 
-        NN = L * 2 * K;
+            NN = L * 2 * K;
         }
 
         double *x = new double[NN];
+        this->A = new double[this->Ns*this->K];
 
         for (int ns = 0; ns < Ns; ns++)
          {
+          if ( !this->amplitude_spectrum_values.empty() ){
+              this->amplitude_spectrum_values.clear();
+          }
+          if ( !this->dpf_values.empty() ){
+              this->dpf_values.clear();
+          }
           int n0 = (int) (ns * Section_Base);
           for (int i = 0; i < Section_N; i++)
           {
             try
                 {
+
                 x[i] = this->chosen_source_channel.values_of_signal[n0 + i];
                  }
                  catch(std::exception)
@@ -131,6 +137,7 @@ void Spectrogram::calculateSpectrogrammMatrix(){
          }
 
          s *= (double) 1 / Section_N;
+
          for (int i = 0; i < Section_N; i++)
             {
              x[i] -= s;
@@ -160,7 +167,6 @@ void Spectrogram::calculateSpectrogrammMatrix(){
             fft(start_values.begin(), dpf_values.begin(), log2(start_values.size()));
 
             for ( int i = 0; i < K; i++ ){
-                std::cout << start_values[0] << " " << this->dpf_values[0] << std::endl;
                this->amplitude_spectrum_values.push_back( (1.0 / K) *
                        (abs(this->dpf_values[i].real()) + abs(this->dpf_values[i].imag()))*this->chosen_source_channel.sampling_frequency
                                                           );
@@ -257,13 +263,13 @@ void Spectrogram::calculateSpectrogrammMatrix(){
 
        this->spectrogram = new QImage(Ns, K, QImage::Format_RGB32);
 
-       for ( int i = 0; i < K; i++ ){
-           for (int j = 0; j < Ns; j++){
+       for ( int i = 0; i < Ns; i++ ){
+           for (int j = 0; j < K; j++){
                int current_blind = this->spectrogramm_values[i][j]/this->Amax*this->current_Coeff*256;
                int I = std::min(255, current_blind);
                QRgb value;
                value = qRgb(this->current_pallete[I][0], this->current_pallete[I][1], this->current_pallete[I][2]);
-               this->spectrogram->setPixel(j, i, value);
+               this->spectrogram->setPixel(i, j, value);
            }
        }
        this->scroll_layout->setContentsMargins(0, 0, 0, 0);
@@ -342,13 +348,13 @@ void Spectrogram::setCoeff(){
 }
 
 void Spectrogram::repainSpectrogram(){
-    for ( int i = 0; i < K; i++ ){
-        for (int j = 0; j < Ns; j++){
+    for ( int i = 0; i < Ns; i++ ){
+        for (int j = 0; j < K; j++){
             int current_blind = this->spectrogramm_values[i][j]/this->Amax*this->current_Coeff*256;
             int I = std::min(255, current_blind);
             QRgb value;
             value = qRgb(this->current_pallete[I][0], this->current_pallete[I][1], this->current_pallete[I][2]);
-            this->spectrogram->setPixel(j, i, value);
+            this->spectrogram->setPixel(i, j, value);
         }
     }
     this->image_spectrogram_label->setPixmap(QPixmap::fromImage(*this->spectrogram));

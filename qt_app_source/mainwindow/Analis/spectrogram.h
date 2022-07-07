@@ -56,6 +56,7 @@ public:
 
     std::vector<int*> current_pallete;
 
+    double *A;
     std::vector<double*> spectrogramm_values;
     std::vector<std::complex<double>> dpf_values;
     std::vector<double> amplitude_spectrum_values;
