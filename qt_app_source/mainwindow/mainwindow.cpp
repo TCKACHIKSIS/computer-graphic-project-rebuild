@@ -101,7 +101,7 @@ void MainWindow::initialInterfaceSetup(){
 void MainWindow::on_fileOpen_triggered()
 {
 
-    QString path_to_open_file = QFileDialog::getOpenFileName(this, "Выберите файл", "/", "*.txt");
+    QString path_to_open_file = QFileDialog::getOpenFileName(this, "Выберите файл", "/", "*.txt *.csv");
     if (path_to_open_file.isEmpty() && path_to_open_file.isNull()){
           return;
     }

@@ -1,6 +1,6 @@
 #include "frequencyscaledraw.h"
 
-FrequencyScaleDraw::FrequencyScaleDraw()
+FrequencyScaleDraw::FrequencyScaleDraw(CanalOfSignal *s)
 {
-
+    this->source = s;
 }

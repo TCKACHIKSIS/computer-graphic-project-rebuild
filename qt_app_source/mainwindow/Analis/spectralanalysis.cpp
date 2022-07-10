@@ -137,7 +137,6 @@ void SpectralAnalysis::calculateAmplitudeSpectrum(){
     for ( int i = 0; i <= this->chosen_source_channel.number_of_samples / 2 - 1; i++ ){
 
         this->amplitude_spectrum.push_back(
-
                     abs(this->dpf_values[i]) * this->chosen_source_channel.sampling_frequency
                     );
         this->log_amplitude_spectrum.push_back(
@@ -162,6 +161,7 @@ void SpectralAnalysis::paintAmplitudeSpectrum(){
             points << QPointF(i, this->log_amplitude_spectrum[i]);
         }
     }
+
     this->amplitude_specturm_curve->setSamples(points);
     this->plot->detachItems(QwtPlotItem::Rtti_PlotItem,true);
 
@@ -301,7 +301,7 @@ void SpectralAnalysis::prepareUiToShowStatistic(){
     connect(this->become_zero, &QPushButton::released, this, &SpectralAnalysis::reCalcDPF);
 
     this->plot = new QwtPlot();
-    this->plot->setAxisScaleDraw(QwtPlot::xBottom, new FrequencyScaleDraw);
+    this->plot->setAxisScaleDraw(QwtPlot::xBottom, new FrequencyScaleDraw(&this->chosen_source_channel));
 
     this->scroll_layout->addWidget(this->plot);
 

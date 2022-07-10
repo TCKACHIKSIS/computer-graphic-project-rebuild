@@ -107,7 +107,6 @@ void Spectrogram::calculateSpectrogrammMatrix(){
         }
 
         double *x = new double[NN];
-        this->A = new double[this->Ns*this->K];
 
         for (int ns = 0; ns < Ns; ns++)
          {
@@ -117,6 +116,7 @@ void Spectrogram::calculateSpectrogrammMatrix(){
           if ( !this->dpf_values.empty() ){
               this->dpf_values.clear();
           }
+
           int n0 = (int) (ns * Section_Base);
           for (int i = 0; i < Section_N; i++)
           {
@@ -168,7 +168,7 @@ void Spectrogram::calculateSpectrogrammMatrix(){
 
             for ( int i = 0; i < K; i++ ){
                this->amplitude_spectrum_values.push_back( (1.0 / K) *
-                       (abs(this->dpf_values[i].real()) + abs(this->dpf_values[i].imag()))*this->chosen_source_channel.sampling_frequency
+                       abs(sqrt(pow(this->dpf_values[i].real(), 2) + pow(this->dpf_values[i].imag(), 2)))
                                                           );
             }
 

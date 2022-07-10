@@ -10,9 +10,11 @@ class FileHandler
 private:
     std::ifstream file;
     std::ofstream file_to_save;
+    void readNamesOfChannelFromCVS();
 public:
     dataStructure* getData();
     std::string name_of_current_file;
+    std::string extension_of_current_file;
     void openFile(const QString &path);
     bool isFileOpen();
     void readDataField(int &field);
