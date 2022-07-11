@@ -4,6 +4,7 @@
 #include <mainwindow/Analis/dft.h>
 #include <mainwindow/Analis/frequencyscaledraw.h>
 #include <mainwindow/Analis/dft2.h>
+#include <mainwindow/Analis/FFT3.h>
 
 SpectralAnalysis::SpectralAnalysis( MainWindow *m_wind )
 {
@@ -249,15 +250,16 @@ void SpectralAnalysis::calculateDPF(){
         this->chosen_source_channel.values_of_signal.push_back(0);
         this->chosen_source_channel.number_of_samples++;
     }
-    std::vector<complex<double>> a;
+
+    complex<double> *a = new complex<double>( this->chosen_source_channel.values_of_signal.size() );
+    int itre = 0;
     for ( auto value: this->chosen_source_channel.values_of_signal ){
         complex<double> ptr (value, 0);
-        a.push_back( ptr );
-        this->dpf_values.push_back( ptr );
+        a[itre] = ptr;
+        itre++;
     }
 
-
-    fft(a.begin(), this->dpf_values.begin(), log2(this->chosen_source_channel.number_of_samples));
+    this->dpf_values = FFT3(a, this->chosen_source_channel.values_of_signal.size());
 
     if ( this->current_resolve_collision == 1 ){
         this->dpf_values[0] = 0;
