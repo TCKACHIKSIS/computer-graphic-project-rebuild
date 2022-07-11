@@ -58,7 +58,6 @@ HEADERS += \
     context_menus/navigationContextMenu/navigationcontextmenu.h \
     filehandler/dataStructure.h \
     filehandler/filehandler.h \
-    mainwindow/Analis/FFT3.h \
     mainwindow/Analis/dft.h \
     mainwindow/Analis/frequencyscaledraw.h \
     mainwindow/Analis/spectralanalysis.h \
