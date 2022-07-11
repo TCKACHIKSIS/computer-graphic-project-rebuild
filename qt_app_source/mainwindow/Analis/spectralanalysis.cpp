@@ -259,8 +259,6 @@ void SpectralAnalysis::calculateDPF(){
         itre++;
     }
 
-   std::cout << "ФФТ ОТРАБОТАЛО" << std::endl;
-
     this->dpf_values = FFT3(a, this->chosen_source_channel.values_of_signal.size());
 
     if ( this->current_resolve_collision == 1 ){
